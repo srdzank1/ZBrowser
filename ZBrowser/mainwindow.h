@@ -31,8 +31,8 @@ protected:
     void resizeEvent(QResizeEvent *event) override;
 private:
     Ui::MainWindow *ui;
-    QHorizontalMenu *customerList;
-    CMenuForm *centralMainFormS;
+    QHorizontalMenu *horizontalMenu;
+    CMenuForm *centralMenu;
     QWebEngineView *view;
     int height;
     int width;

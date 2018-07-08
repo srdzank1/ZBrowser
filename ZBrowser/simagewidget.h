@@ -13,6 +13,7 @@ class SImageWidget : public QWidget
 public:
     explicit SImageWidget(QWidget *parent = nullptr);
     void setImagePathName(int id, const QString& pathName);
+    void setTitleIcon(const QString& name);
 
 protected:
     void paintEvent(QPaintEvent *event);
@@ -27,6 +28,7 @@ private:
     bool bmouseOver;
     QString m_pathName;
     int iItem;
+    QString m_titleIcon;
 };
 
 #endif // SIMAGEWIDGET_H

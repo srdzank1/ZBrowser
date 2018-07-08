@@ -13,25 +13,25 @@ MainWindow::MainWindow(QWidget *parent) :
     height = rec.height()*0.95;
     width = rec.width();
 
+    CParserXML *parser = new CParserXML(this);
+    QString filePath = "://res/xml/menu.xml";
+    parser->loadThemeXmlFile(filePath);
+    tgroup xmlData = parser->getParsedData();
+    delete parser;
 
 //    view = new QWebEngineView(this);
 //    view->setUrl(QUrl(QStringLiteral("https://youtu.be/qQKPFJ2y-_w")));
 //    view->setGeometry(0,0, width, height);
 //    view->show();
 
+    horizontalMenu = new QHorizontalMenu(this, xmlData);
 
-    customerList = new QHorizontalMenu(this);
-    customerList->setGeometry(0,height-50, width, height);
-    connect(customerList, SIGNAL(click(int)), this, SLOT(processClick(int)));
+    horizontalMenu->setGeometry(0,height-90, width, height);
+    connect(horizontalMenu, SIGNAL(click(int)), this, SLOT(processClick(int)));
 
-    centralMainFormS = new CMenuForm(this);
-    centralMainFormS->setGeometry(100,100, width-100, height-150);
-    centralMainFormS->hide();
-    CParserXML *parser = new CParserXML(this);
-    QString filePath = "://res/xml/menu.xml";
-    parser->loadThemeXmlFile(filePath);
-    tgroup xmlData = parser->getParsedData();
-    delete parser;
+    centralMenu = new CMenuForm(this);
+    centralMenu->setGeometry(100,100, width-100, height-150);
+    centralMenu->hide();
 
 
 }
@@ -42,16 +42,16 @@ MainWindow::~MainWindow()
 }
 
 void MainWindow::processClick(int i){
-    centralMainFormS->show();
+    centralMenu->show();
 }
 
 void MainWindow::resizeEvent(QResizeEvent *event)
 {
 //    view->setGeometry(0,0, width, height);
-    customerList->setGeometry(0, height-50, width, height);
-    customerList->UpdateD(QRect(0, 0, width, 50));
+    horizontalMenu->setGeometry(0, height-90, width, height);
+    horizontalMenu->UpdateD(QRect(0, 0, width, 80));
 
-    centralMainFormS->setGeometry(100,100, width-100, height-150);
-    centralMainFormS->UpdateD(QRect(100,100, width-100, height-150));
+    centralMenu->setGeometry(100,100, width-100, height-150);
+    centralMenu->UpdateD(QRect(100,100, width-100, height-150));
     QWidget::resizeEvent(event);
 }
