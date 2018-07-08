@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui webenginewidgets multimedia
+QT       += core gui webenginewidgets multimedia webengine
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -28,13 +28,15 @@ SOURCES += \
         mainwindow.cpp \
     qhorizontalmenu.cpp \
     simagewidget.cpp \
-    cmenuform.cpp
+    cmenuform.cpp \
+    cparserxml.cpp
 
 HEADERS += \
         mainwindow.h \
     qhorizontalmenu.h \
     simagewidget.h \
-    cmenuform.h
+    cmenuform.h \
+    cparserxml.h
 
 FORMS += \
         mainwindow.ui \

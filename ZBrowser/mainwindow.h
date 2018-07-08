@@ -11,6 +11,7 @@
 #include <QMenu>
 #include "qhorizontalmenu.h"
 #include "cmenuform.h"
+#include "cparserxml.h"
 
 
 

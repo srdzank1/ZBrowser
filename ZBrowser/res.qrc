@@ -1,6 +1,5 @@
 <RCC>
     <qresource prefix="/">
-        <file>../../polyedit/VGEdit/res/add.png</file>
-        <file>sound/click.wav</file>
+        <file>res/xml/menu.xml</file>
     </qresource>
 </RCC>

@@ -7,16 +7,17 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
     setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
     QRect rec = QApplication::desktop()->screenGeometry();
-    height = rec.height();
+    height = rec.height()*0.95;
     width = rec.width();
 
 
-    view = new QWebEngineView(this);
-    view->setUrl(QUrl(QStringLiteral("https://youtu.be/qQKPFJ2y-_w")));
-    view->setGeometry(0,0, width, height-50);
-    view->show();
+//    view = new QWebEngineView(this);
+//    view->setUrl(QUrl(QStringLiteral("https://youtu.be/qQKPFJ2y-_w")));
+//    view->setGeometry(0,0, width, height);
+//    view->show();
 
 
     customerList = new QHorizontalMenu(this);
@@ -26,6 +27,10 @@ MainWindow::MainWindow(QWidget *parent) :
     centralMainFormS = new CMenuForm(this);
     centralMainFormS->setGeometry(100,100, width-100, height-150);
     centralMainFormS->hide();
+    CParserXML *parser = new CParserXML(this);
+    QString filePath = "://res/xml/menu.xml";
+    parser->loadThemeXmlFile(filePath);
+    delete parser;
 
 
 }
@@ -41,9 +46,9 @@ void MainWindow::processClick(int i){
 
 void MainWindow::resizeEvent(QResizeEvent *event)
 {
-    view->setGeometry(0,0, ui->centralWidget->width(), ui->centralWidget->height()-50);
-    customerList->setGeometry(0,ui->centralWidget->height()-50, ui->centralWidget->width(), ui->centralWidget->height());
-    customerList->UpdateD(QRect(0, 0, ui->centralWidget->width(), 50));
+//    view->setGeometry(0,0, width, height);
+    customerList->setGeometry(0, height-50, width, height);
+    customerList->UpdateD(QRect(0, 0, width, 50));
 
     centralMainFormS->setGeometry(100,100, width-100, height-150);
     centralMainFormS->UpdateD(QRect(100,100, width-100, height-150));
