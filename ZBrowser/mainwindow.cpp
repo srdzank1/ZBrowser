@@ -30,6 +30,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(horizontalMenu, SIGNAL(click(int)), this, SLOT(processClick(int)));
 
     centralMenu = new CMenuForm(this, xmlData);
+    connect(centralMenu, SIGNAL(clickForUrl(QString&)), this, SLOT(ProcClickForUrl(QString&)));
     centralMenu->setGeometry(20,20, width-20, height-150);
     centralMenu->hide();
 
@@ -48,6 +49,14 @@ void MainWindow::processClick(int i){
     view->hide();
     centralMenu->show();
 }
+
+
+void MainWindow::ProcClickForUrl(QString &url){
+    centralMenu->close();
+    view->setUrl(QUrl(url));
+    view->show();
+}
+
 
 void MainWindow::resizeEvent(QResizeEvent *event)
 {

@@ -14,6 +14,7 @@ public:
     explicit CLargeImage(QWidget *parent = nullptr);
     void setImagePathName(int id, const QString& pathName);
     void setTitleIcon(const QString& name);
+    void setUrl(const QString& url){m_url = url;}
 
 protected:
     void paintEvent(QPaintEvent *event);
@@ -23,6 +24,7 @@ protected:
     virtual void mouseReleaseEvent(QMouseEvent * event);
 signals:
     void click(int);
+    void clickForUrl(QString&);
 public slots:
 private:
     bool bmouseOver;
@@ -30,6 +32,7 @@ private:
     int iItem;
     QString m_titleIcon;
     QImage mImage;
+    QString m_url;
 };
 
 

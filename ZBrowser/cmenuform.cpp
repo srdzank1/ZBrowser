@@ -13,6 +13,7 @@ CMenuForm::CMenuForm(QWidget *parent, tgroup &data) :
             label[i][j]->resize(QSize(0, 0));
             label[i][j]->repaint();
             connect(label[i][j], SIGNAL(click(int)), this, SLOT(processClick(int)));
+            connect(label[i][j], SIGNAL(clickForUrl(QString&)), this, SLOT(processClickForUrl(QString&)));
         }
     }
     update();
@@ -43,10 +44,10 @@ void CMenuForm::createMenuByCategory(int id){
     int webCount = websitesList.count();
     for(int i = 0; i < 5; i++){
         for(int j = 0; j < 5; j++){
-            if (i*j < webCount){
+            if (i*5+j < webCount){
                 QString iconPath = QDir::toNativeSeparators(QDir::currentPath() +"/"+ websitesList.at(i*5+j)->icon);
                 label[i][j]->setImagePathName(i, iconPath);
-//                label[i][j]->setUrl(i, websitesList.at(i*5+j));
+                label[i][j]->setUrl( websitesList.at(i*5+j)->url);
 
             }else{
                 label[i][j]->setImagePathName(i, "");
@@ -72,5 +73,10 @@ bool CMenuForm::event(QEvent *event)
 }
 
 void CMenuForm::processClick(int i){
-    close();
+//    close();
 }
+
+void CMenuForm::processClickForUrl(QString& url){
+   emit clickForUrl(url);
+}
+

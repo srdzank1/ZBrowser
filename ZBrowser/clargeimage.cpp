@@ -56,4 +56,5 @@ void CLargeImage::leaveEvent(QEvent * event){
 
 void CLargeImage::mouseReleaseEvent(QMouseEvent * event){
     emit click(iItem);
+    emit clickForUrl(m_url);
 }

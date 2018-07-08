@@ -25,10 +25,13 @@ protected:
     virtual bool event(QEvent *event);
 public slots:
     void processClick(int i);
+    void processClickForUrl(QString&);
 private:
     Ui::CMenuForm *ui;
     CLargeImage *label[5][5];
     tgroup m_group;
+signals:
+    void clickForUrl(QString&);
 };
 
 #endif // CMENUFORM_H

@@ -38,6 +38,7 @@ private:
     int width;
 public slots:
     void processClick(int i);
+    void ProcClickForUrl(QString &i);
 
 
 };
