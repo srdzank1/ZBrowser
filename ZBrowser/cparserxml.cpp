@@ -120,15 +120,15 @@ bool CParserXML::loadThemeXmlFile(const QString &xmlFile)
     file.close();
     if (xmlReader.hasError())
     {
-        qDebug() << "Error: Failed to parse file "
-                 << qPrintable(xmlFile) << ": "
-                 << qPrintable(xmlReader.errorString());
+//        qDebug() << "Error: Failed to parse file "
+//                 << qPrintable(xmlFile) << ": "
+//                 << qPrintable(xmlReader.errorString());
         return false;
     }
     else if (file.error() != QFile::NoError)
     {
-        qDebug() << "Error: Cannot read file " << qPrintable(xmlFile)
-                 << ": " << qPrintable(file.errorString());
+//        qDebug() << "Error: Cannot read file " << qPrintable(xmlFile)
+//                 << ": " << qPrintable(file.errorString());
         return false;
     }
     return true;

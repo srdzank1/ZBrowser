@@ -2,8 +2,10 @@
 #define CMENUFORM_H
 
 #include <QWidget>
-#include "simagewidget.h"
+//#include "simagewidget.h"
 #include "cparserxml.h"
+#include "clargeimage.h"
+
 #include "QDir"
 
 namespace Ui {
@@ -25,7 +27,7 @@ public slots:
     void processClick(int i);
 private:
     Ui::CMenuForm *ui;
-    SImageWidget *label[5][5];
+    CLargeImage *label[5][5];
     tgroup m_group;
 };
 

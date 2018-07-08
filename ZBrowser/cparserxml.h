@@ -5,7 +5,7 @@
 #include <QXmlStreamReader>
 #include <QFile>
 #include <QMessageBox>
-#include <qDebug>
+
 
 typedef struct {
    QString  id;

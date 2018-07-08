@@ -29,14 +29,16 @@ SOURCES += \
     qhorizontalmenu.cpp \
     simagewidget.cpp \
     cmenuform.cpp \
-    cparserxml.cpp
+    cparserxml.cpp \
+    clargeimage.cpp
 
 HEADERS += \
         mainwindow.h \
     qhorizontalmenu.h \
     simagewidget.h \
     cmenuform.h \
-    cparserxml.h
+    cparserxml.h \
+    clargeimage.h
 
 FORMS += \
         mainwindow.ui \

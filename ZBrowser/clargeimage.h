@@ -1,5 +1,5 @@
-#ifndef SIMAGEWIDGET_H
-#define SIMAGEWIDGET_H
+#ifndef CLARGEIMAGE_H
+#define CLARGEIMAGE_H
 
 #include <QWidget>
 #include <QPainter>
@@ -7,11 +7,11 @@
 #include <QSound>
 
 
-class SImageWidget : public QWidget
+class CLargeImage : public QWidget
 {
     Q_OBJECT
 public:
-    explicit SImageWidget(QWidget *parent = nullptr);
+    explicit CLargeImage(QWidget *parent = nullptr);
     void setImagePathName(int id, const QString& pathName);
     void setTitleIcon(const QString& name);
 
@@ -32,4 +32,5 @@ private:
     QImage mImage;
 };
 
-#endif // SIMAGEWIDGET_H
+
+#endif // CLARGEIMAGE_H
