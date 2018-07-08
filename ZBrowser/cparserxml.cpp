@@ -23,134 +23,99 @@ bool CParserXML::loadThemeXmlFile(const QString &xmlFile)
             {
                 if (xmlReader.name() == "GroupName"){
                     QXmlStreamAttributes attribs = xmlReader.attributes();
-                    xmlReader.readElementText();
+                    m_group.name = xmlReader.readElementText();
                 }else if (xmlReader.name() == "GroupUrl"){
                     QXmlStreamAttributes attribs = xmlReader.attributes();
-                    xmlReader.readElementText();
+                    m_group.url = xmlReader.readElementText();
                 } else if (xmlReader.name() == "GroupIcon"){
                     QXmlStreamAttributes attribs = xmlReader.attributes();
-                    xmlReader.readElementText();
+                    m_group.icon = xmlReader.readElementText();
                 } else if (xmlReader.name() == "GroupUniqueID"){
                     QXmlStreamAttributes attribs = xmlReader.attributes();
-                    xmlReader.readElementText();
+                    m_group.uniqueid = xmlReader.readElementText();
                 } else if (xmlReader.name() == "version"){
                     QXmlStreamAttributes attribs = xmlReader.attributes();
-                    xmlReader.readElementText();
+                    m_group.version = xmlReader.readElementText();
                 } else if (xmlReader.name() == "updatetime"){
                     QXmlStreamAttributes attribs = xmlReader.attributes();
-                    xmlReader.readElementText();
+                    m_group.updatetime = xmlReader.readElementText();
                 } else if (xmlReader.name() == "categories"){
-                        while (xmlReader.readNextStartElement()){
+                    QList<tcategory*> listCategory;
+                    while (xmlReader.readNextStartElement()){
                             if (xmlReader.name() == "category"){
+                               tcategory *categoryItem = new tcategory;
                                 while (xmlReader.readNextStartElement()){
                                     if (xmlReader.name() == "name"){
-                                        QXmlStreamAttributes attribs = xmlReader.attributes();
-                                        xmlReader.readElementText();
+                                        categoryItem->name = xmlReader.readElementText();
                                     }else if (xmlReader.name() == "icon"){
-                                        QXmlStreamAttributes attribs = xmlReader.attributes();
-                                        xmlReader.readElementText();
+                                        categoryItem->icon = xmlReader.readElementText();
                                     }else if (xmlReader.name() == "background"){
-                                        QXmlStreamAttributes attribs = xmlReader.attributes();
-                                        xmlReader.readElementText();
+                                        categoryItem->background = xmlReader.readElementText();
                                     }else if (xmlReader.name() == "updatetime"){
-                                        QXmlStreamAttributes attribs = xmlReader.attributes();
-                                        xmlReader.readElementText();
+                                        categoryItem->updatetime = xmlReader.readElementText();
                                     }else if (xmlReader.name() == "isupdated"){
-                                        QXmlStreamAttributes attribs = xmlReader.attributes();
-                                        xmlReader.readElementText();
+                                        categoryItem->isupdated = xmlReader.readElementText();
                                     }else if (xmlReader.name() == "bgvideo"){
-                                        QXmlStreamAttributes attribs = xmlReader.attributes();
-                                        xmlReader.readElementText();
+                                        categoryItem->bgvideo = xmlReader.readElementText();
                                     }else if (xmlReader.name() == "videosound"){
-                                        QXmlStreamAttributes attribs = xmlReader.attributes();
-                                        xmlReader.readElementText();
+                                        categoryItem->videosound = xmlReader.readElementText();
                                     }else if (xmlReader.name() == "videoopacity"){
-                                        QXmlStreamAttributes attribs = xmlReader.attributes();
-                                        xmlReader.readElementText();
+                                        categoryItem->videoopacity = xmlReader.readElementText();
                                     }else if (xmlReader.name() == "textcolor"){
-                                        QXmlStreamAttributes attribs = xmlReader.attributes();
-                                        xmlReader.readElementText();
+                                        categoryItem->textcolor = xmlReader.readElementText();
                                     }else if (xmlReader.name() == "bartextcolor"){
-                                        QXmlStreamAttributes attribs = xmlReader.attributes();
-                                        xmlReader.readElementText();
+                                        categoryItem->bartextcolor = xmlReader.readElementText();
                                     }else if (xmlReader.name() == "barcolor"){
-                                        QXmlStreamAttributes attribs = xmlReader.attributes();
-                                        xmlReader.readElementText();
+                                        categoryItem->barcolor = xmlReader.readElementText();
                                     }else if (xmlReader.name() == "baropacity"){
-                                        QXmlStreamAttributes attribs = xmlReader.attributes();
-                                        xmlReader.readElementText();
+                                        categoryItem->baropacity = xmlReader.readElementText();
                                     }else if (xmlReader.name() == "tooltipcolor"){
-                                        QXmlStreamAttributes attribs = xmlReader.attributes();
-                                        xmlReader.readElementText();
+                                        categoryItem->tooltipcolor = xmlReader.readElementText();
                                     }else if (xmlReader.name() == "arrowcolor"){
-                                        QXmlStreamAttributes attribs = xmlReader.attributes();
-                                        xmlReader.readElementText();
+                                        categoryItem->arrowcolor = xmlReader.readElementText();
                                     }else if (xmlReader.name() == "websites"){
+                                        QList<twebsite*> listWebsites;
                                         while (xmlReader.readNextStartElement()){
                                             if (xmlReader.name() == "website"){
+                                                twebsite* websiteItem = new twebsite;
                                                 while (xmlReader.readNextStartElement()){
                                                     if (xmlReader.name() == "id"){
-                                                        QXmlStreamAttributes attribs = xmlReader.attributes();
-                                                        QString id =  xmlReader.readElementText();
-                                                        int stop = 0;
+                                                       websiteItem->id = xmlReader.readElementText();
                                                     }else if (xmlReader.name() == "name"){
-                                                        QXmlStreamAttributes attribs = xmlReader.attributes();
-                                                        xmlReader.readElementText();
+                                                       websiteItem->name = xmlReader.readElementText();
                                                     }else if (xmlReader.name() == "url"){
-                                                        QXmlStreamAttributes attribs = xmlReader.attributes();
-                                                        xmlReader.readElementText();
+                                                       websiteItem->url = xmlReader.readElementText();
                                                     }else if (xmlReader.name() == "icon"){
-                                                        QXmlStreamAttributes attribs = xmlReader.attributes();
-                                                        xmlReader.readElementText();
+                                                       websiteItem->icon = xmlReader.readElementText();
                                                     }else if (xmlReader.name() == "type"){
-                                                        QXmlStreamAttributes attribs = xmlReader.attributes();
-                                                        xmlReader.readElementText();
+                                                       websiteItem->type = xmlReader.readElementText();
                                                     }else if (xmlReader.name() == "allow"){
-                                                        QXmlStreamAttributes attribs = xmlReader.attributes();
-                                                        xmlReader.readElementText();
+                                                       websiteItem->allow = xmlReader.readElementText();
                                                     }else if (xmlReader.name() == "restriction"){
-                                                        QXmlStreamAttributes attribs = xmlReader.attributes();
-                                                        xmlReader.readElementText();
+                                                       websiteItem->restriction = xmlReader.readElementText();
                                                     }else if (xmlReader.name() == "language"){
-                                                        QXmlStreamAttributes attribs = xmlReader.attributes();
-                                                        xmlReader.readElementText();
+                                                       websiteItem->language = xmlReader.readElementText();
                                                     }else if (xmlReader.name() == "updatetime"){
-                                                        QXmlStreamAttributes attribs = xmlReader.attributes();
-                                                        xmlReader.readElementText();
+                                                       websiteItem->updatetime = xmlReader.readElementText();
                                                     }else if (xmlReader.name() == "isupdated"){
-                                                        QXmlStreamAttributes attribs = xmlReader.attributes();
-                                                        xmlReader.readElementText();
+                                                       websiteItem->isupdated = xmlReader.readElementText();
                                                     }
                                                 }
+                                                listWebsites.append(websiteItem);
                                             }
                                         }
-
+                                        categoryItem->websites = listWebsites;
                                     }
                                 }
+                                listCategory.append(categoryItem);
                             }
                         }
+                    m_group.categories = listCategory;
+                    int stop = 0;
                 }
             }
         }
     }
-
-
-//    <name>Zac Browser</name>
-//    <icon>images/0138dd49a38e8e64eb2a4738dba6dc4f_8d442.png</icon>
-//    <background>images/0138dd49a38e8e64eb2a4738dba6dc4f_6478f.jpg</background>
-//    <updatetime>2017-03-05 09:21:15</updatetime>
-//    <isupdated>no</isupdated>
-//    <bgvideo>https://vimeo.com/182513271</bgvideo>
-//    <videosound>true</videosound>
-//    <videoopacity>0</videoopacity>
-//    <textcolor>#ffffff</textcolor>
-//    <bartextcolor>#ffffff</bartextcolor>
-//    <barcolor>#ffffff</barcolor>
-//    <baropacity>0</baropacity>
-//    <tooltipcolor/>
-//    <arrowcolor>#ffffff</arrowcolor>
-//    <websites> </websites>
-
 
     file.close();
     if (xmlReader.hasError())

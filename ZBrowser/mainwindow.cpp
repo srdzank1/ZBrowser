@@ -30,6 +30,7 @@ MainWindow::MainWindow(QWidget *parent) :
     CParserXML *parser = new CParserXML(this);
     QString filePath = "://res/xml/menu.xml";
     parser->loadThemeXmlFile(filePath);
+    tgroup xmlData = parser->getParsedData();
     delete parser;
 
 
