@@ -29,7 +29,7 @@ MainWindow::MainWindow(QWidget *parent) :
     horizontalMenu->setGeometry(0,height-90, width, height);
     connect(horizontalMenu, SIGNAL(click(int)), this, SLOT(processClick(int)));
 
-    centralMenu = new CMenuForm(this);
+    centralMenu = new CMenuForm(this, xmlData);
     centralMenu->setGeometry(100,100, width-100, height-150);
     centralMenu->hide();
 
@@ -42,6 +42,7 @@ MainWindow::~MainWindow()
 }
 
 void MainWindow::processClick(int i){
+    centralMenu->createMenuByCategory(i);
     centralMenu->show();
 }
 
