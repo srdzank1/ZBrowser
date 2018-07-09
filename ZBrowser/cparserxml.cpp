@@ -87,6 +87,8 @@ bool CParserXML::loadThemeXmlFile(const QString &xmlFile)
                                                        websiteItem->url = xmlReader.readElementText();
                                                     }else if (xmlReader.name() == "icon"){
                                                        websiteItem->icon = xmlReader.readElementText();
+//                                                       QString iconPath = QDir::toNativeSeparators(QDir::currentPath() +"/"+ websiteItem->icon);
+//                                                       websiteItem->iconImage = QImage(iconPath);
                                                     }else if (xmlReader.name() == "type"){
                                                        websiteItem->type = xmlReader.readElementText();
                                                     }else if (xmlReader.name() == "allow"){
@@ -132,4 +134,17 @@ bool CParserXML::loadThemeXmlFile(const QString &xmlFile)
         return false;
     }
     return true;
+}
+
+
+void CParserXML::CreateCashImage(){
+    QImage * imgObj = new QImage();
+    for(int i = 0; i < m_group.categories.count(); i++){
+        tcategory *item = m_group.categories.at(i);
+        for (int j = 0; j < item->websites.count(); j++){
+            twebsite *webItem = item->websites.at(j);
+            webItem->iconImage = QImage(QDir::toNativeSeparators(QDir::currentPath() +"/"+ webItem->icon)).scaled(200, 200, Qt::IgnoreAspectRatio, Qt::FastTransformation);;
+
+        }
+    }
 }

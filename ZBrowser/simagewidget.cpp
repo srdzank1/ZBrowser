@@ -45,7 +45,7 @@ void SImageWidget::mouseMoveEvent(QMouseEvent *event)
 
 void SImageWidget::enterEvent(QEvent * event){
      bmouseOver = true;
-     QSound::play(":sound/click.wav");
+//     QSound::play(":sound/click.wav");
      repaint();
 }
 void SImageWidget::leaveEvent(QEvent * event){

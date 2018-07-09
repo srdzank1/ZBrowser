@@ -22,6 +22,12 @@ CMenuForm::CMenuForm(QWidget *parent, tgroup &data) :
 
 CMenuForm::~CMenuForm()
 {
+    for(int i = 0; i < 5; i++){
+        for(int j = 0; j < 5; j++){
+            delete label[i][j];
+        }
+    }
+
     delete ui;
 }
 
@@ -42,21 +48,20 @@ void CMenuForm::createMenuByCategory(int id){
     tcategory* currentCategory =  m_group.categories.at(id);
     QList<twebsite*> websitesList = currentCategory->websites;
     int webCount = websitesList.count();
-    for(int i = 0; i < 5; i++){
-        for(int j = 0; j < 5; j++){
+    for(int j = 0; j < 5; j++){
+        for(int i = 0; i < 5; i++){
             if (i*5+j < webCount){
-                QString iconPath = QDir::toNativeSeparators(QDir::currentPath() +"/"+ websitesList.at(i*5+j)->icon);
-                label[i][j]->setImagePathName(i, iconPath);
+//                QString iconPath = QDir::toNativeSeparators(QDir::currentPath() +"/"+ websitesList.at(i*5+j)->icon);
+//                label[i][j]->setImagePathName(i, iconPath);
+                label[i][j]->setImage(i, websitesList.at(i*5+j)->iconImage);
                 label[i][j]->setUrl( websitesList.at(i*5+j)->url);
-
             }else{
                 label[i][j]->setImagePathName(i, "");
+
             }
-
         }
+         repaint();
     }
-
-
 
 }
 

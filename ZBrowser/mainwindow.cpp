@@ -16,11 +16,13 @@ MainWindow::MainWindow(QWidget *parent) :
     CParserXML *parser = new CParserXML(this);
     QString filePath = "://res/xml/menu.xml";
     parser->loadThemeXmlFile(filePath);
+    parser->CreateCashImage();
     tgroup xmlData = parser->getParsedData();
     delete parser;
 
     view = new QWebEngineView(this);
-    view->setUrl(QUrl(QStringLiteral("https://youtu.be/qQKPFJ2y-_w")));
+//    view->setUrl(QUrl(QStringLiteral("https://youtu.be/qQKPFJ2y-_w")));
+    view->setUrl(QUrl(""));
     view->setGeometry(0,0, width, height);
     view->show();
 
@@ -39,13 +41,15 @@ MainWindow::MainWindow(QWidget *parent) :
 
 MainWindow::~MainWindow()
 {
+    delete view;
+    delete centralMenu;
+    delete horizontalMenu;
     delete ui;
 }
 
 void MainWindow::processClick(int i){
     centralMenu->createMenuByCategory(i);
     view->setUrl(QUrl(QStringLiteral("")));
-
     view->hide();
     centralMenu->show();
 }
@@ -60,7 +64,7 @@ void MainWindow::ProcClickForUrl(QString &url){
 
 void MainWindow::resizeEvent(QResizeEvent *event)
 {
-    view->setGeometry(0,0, width, height);
+    view->setGeometry(0,0, width, height-120);
     horizontalMenu->setGeometry(0, height-120, width, height);
     horizontalMenu->UpdateD(QRect(0, 0, width, 120));
 

@@ -4,7 +4,7 @@
 #include <QWidget>
 #include <QPainter>
 #include <QMouseEvent>
-#include <QSound>
+//#include <QSound>
 
 
 class CLargeImage : public QWidget
@@ -15,6 +15,7 @@ public:
     void setImagePathName(int id, const QString& pathName);
     void setTitleIcon(const QString& name);
     void setUrl(const QString& url){m_url = url;}
+    void setImage(int id, QImage & img );
 
 protected:
     void paintEvent(QPaintEvent *event);

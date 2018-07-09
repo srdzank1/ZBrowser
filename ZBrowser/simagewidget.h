@@ -4,7 +4,7 @@
 #include <QWidget>
 #include <QPainter>
 #include <QMouseEvent>
-#include <QSound>
+//#include <QSound>
 
 
 class SImageWidget : public QWidget

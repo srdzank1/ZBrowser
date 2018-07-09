@@ -17,6 +17,11 @@ void CLargeImage::setImagePathName(int id, const QString& pathName){
     iItem = id;
 }
 
+
+void CLargeImage::setImage(int id, QImage & img ){
+    mImage = img;
+    iItem = id;
+}
 void CLargeImage::setTitleIcon(const QString& name){
     m_titleIcon = name;
 }
@@ -46,7 +51,7 @@ void CLargeImage::mouseMoveEvent(QMouseEvent *event)
 
 void CLargeImage::enterEvent(QEvent * event){
      bmouseOver = true;
-     QSound::play(":sound/click.wav");
+//     QSound::play(":sound/click.wav");
      repaint();
 }
 void CLargeImage::leaveEvent(QEvent * event){

@@ -27,6 +27,7 @@ private:
     QHBoxLayout *hlayout;
     SImageWidget *imageItem[10];
     tgroup m_group;
+    int catwegoryCount;
 
 public slots:
     void processClick(int i);

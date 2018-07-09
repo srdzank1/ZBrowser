@@ -5,6 +5,8 @@
 #include <QXmlStreamReader>
 #include <QFile>
 #include <QMessageBox>
+#include <QDir>
+#include <QImage>
 
 
 typedef struct {
@@ -12,6 +14,7 @@ typedef struct {
    QString  name;
    QString  url;
    QString  icon;
+   QImage  iconImage;
    QString  type;
    QString  allow;
    QString  restriction;
@@ -57,7 +60,8 @@ public:
     explicit CParserXML(QWidget *parent = nullptr);
     bool loadThemeXmlFile(const QString &xmlFile);
     tgroup getParsedData(){return m_group;}
-;
+    void CreateCashImage();
+
 signals:
 
 public slots:

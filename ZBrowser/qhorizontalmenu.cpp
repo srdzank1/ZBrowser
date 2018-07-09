@@ -8,7 +8,7 @@ QHorizontalMenu::QHorizontalMenu(QWidget *parent, tgroup &data) :
 {
     ui->setupUi(this);
     m_group = data;
-    int catwegoryCount = m_group.categories.count();
+    catwegoryCount = m_group.categories.count();
 
     for(int i = 0; i < catwegoryCount; i++){
         imageItem[i] = new SImageWidget(this);
@@ -25,6 +25,9 @@ void QHorizontalMenu::processClick(int i){
 
 QHorizontalMenu::~QHorizontalMenu()
 {
+    for(int i = 0; i < catwegoryCount; i++){
+        delete imageItem[i];
+    }
     delete ui;
 }
 
