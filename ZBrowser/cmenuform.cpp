@@ -35,10 +35,14 @@ void CMenuForm::UpdateD(QRect r)
 {
     int width = r.width();
     int height = r.height();
-    for(int i = 0; i < 5; i++){
-        for(int j = 0; j < 5; j++){
-            QRect r1 = QRect(width/5 * i, height/5 * j ,width/1 * i+ 180, height/1 * j + 180);
+    int xOffset = width/5;
+    int yOffset = height/5;
+    for(int j = 0; j < 5; j++){
+        for(int i = 0; i < 5; i++){
+            QRect r1 = QRect( xOffset* i, yOffset* j , xOffset * (i+1) , yOffset * (j + 1));
             label[i][j]->setGeometry(r1);
+            label[i][j]->setWidth(xOffset);
+            label[i][j]->setHeight(yOffset);
         }
     }
 }
@@ -51,10 +55,9 @@ void CMenuForm::createMenuByCategory(int id){
     for(int j = 0; j < 5; j++){
         for(int i = 0; i < 5; i++){
             if (i*5+j < webCount){
-//                QString iconPath = QDir::toNativeSeparators(QDir::currentPath() +"/"+ websitesList.at(i*5+j)->icon);
-//                label[i][j]->setImagePathName(i, iconPath);
                 label[i][j]->setImage(i, websitesList.at(i*5+j)->iconImage);
                 label[i][j]->setUrl( websitesList.at(i*5+j)->url);
+                label[i][j]->setTitleIcon(websitesList.at(i*5+j)->name);
             }else{
                 label[i][j]->setImagePathName(i, "");
 

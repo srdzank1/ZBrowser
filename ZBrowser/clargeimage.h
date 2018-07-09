@@ -16,7 +16,8 @@ public:
     void setTitleIcon(const QString& name);
     void setUrl(const QString& url){m_url = url;}
     void setImage(int id, QImage & img );
-
+    void setWidth(int w){m_width = w;}
+    void setHeight(int h){m_height = h;}
 protected:
     void paintEvent(QPaintEvent *event);
     void mouseMoveEvent(QMouseEvent *event);
@@ -34,6 +35,8 @@ private:
     QString m_titleIcon;
     QImage mImage;
     QString m_url;
+    int m_width;
+    int m_height;
 };
 
 

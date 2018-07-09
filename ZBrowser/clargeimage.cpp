@@ -7,8 +7,6 @@ CLargeImage::CLargeImage(QWidget *parent) : QWidget(parent)
 {
     setAttribute(Qt::WA_StaticContents);
     setMouseTracking(true);
-    setGeometry(0,0,0,0);
-
 }
 
 void CLargeImage::setImagePathName(int id, const QString& pathName){
@@ -33,12 +31,12 @@ void CLargeImage::paintEvent(QPaintEvent *event){
 
     if (!bmouseOver) {
         painter.setFont(QFont("Arial", 11, QFont::Normal));
-        painter.drawImage(QRect(20, 40, 160, 100), mImage);
-        painter.drawText(QRect(0, 0, 180, 40), m_titleIcon, opt);
+        painter.drawImage(QRect(20, 40, m_width-40, m_height-50), mImage);
+        painter.drawText(QRect(10, 0, m_width-10, 40), m_titleIcon, opt);
     }else{
         painter.setFont(QFont("Arial", 13, QFont::Bold));
-        painter.drawImage(QRect(10, 40, 170, 100), mImage);
-        painter.drawText(QRect(0, 0, 180, 40), m_titleIcon, opt);
+        painter.drawImage(QRect(10, 30, m_width-20, m_height-30), mImage);
+        painter.drawText(QRect(10, 0, m_width-10, 40), m_titleIcon, opt);
     }
     painter.end();
 }

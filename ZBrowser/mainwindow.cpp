@@ -35,8 +35,6 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(centralMenu, SIGNAL(clickForUrl(QString&)), this, SLOT(ProcClickForUrl(QString&)));
     centralMenu->setGeometry(20,20, width-20, height-150);
     centralMenu->hide();
-
-
 }
 
 MainWindow::~MainWindow()
@@ -68,7 +66,7 @@ void MainWindow::resizeEvent(QResizeEvent *event)
     horizontalMenu->setGeometry(0, height-120, width, height);
     horizontalMenu->UpdateD(QRect(0, 0, width, 120));
 
-    centralMenu->setGeometry(20, 20, width-20, height-150);
-    centralMenu->UpdateD(QRect(20, 20, width-20, height-150));
+    centralMenu->setGeometry(150, 50, width-300, height-170);
+    centralMenu->UpdateD(QRect(150, 50, width-300, height-170));
     QWidget::resizeEvent(event);
 }
