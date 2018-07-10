@@ -7,8 +7,8 @@ CMenuForm::CMenuForm(QWidget *parent, tgroup &data) :
 {
     ui->setupUi(this);
     m_group = data;
-    for(int i = 0; i < 5; i++){
-        for(int j = 0; j < 5; j++){
+    for(int j = 0; j < 5; j++){
+        for(int i = 0; i < 8; i++){
             label[i][j] = new CLargeImage(this);
             label[i][j]->resize(QSize(0, 0));
             label[i][j]->repaint();
@@ -22,8 +22,8 @@ CMenuForm::CMenuForm(QWidget *parent, tgroup &data) :
 
 CMenuForm::~CMenuForm()
 {
-    for(int i = 0; i < 5; i++){
-        for(int j = 0; j < 5; j++){
+    for(int j = 0; j < 5; j++){
+        for(int i = 0; i < 8; i++){
             delete label[i][j];
         }
     }
@@ -35,10 +35,10 @@ void CMenuForm::UpdateD(QRect r)
 {
     int width = r.width();
     int height = r.height();
-    int xOffset = width/5;
-    int yOffset = height/5;
+    int xOffset = 200; //width/5;
+    int yOffset = 187; //height/5;
     for(int j = 0; j < 5; j++){
-        for(int i = 0; i < 5; i++){
+        for(int i = 0; i < 8; i++){
             QRect r1 = QRect( xOffset* i, yOffset* j , xOffset * (i+1) , yOffset * (j + 1));
             label[i][j]->setGeometry(r1);
             label[i][j]->setWidth(xOffset);
@@ -53,17 +53,17 @@ void CMenuForm::createMenuByCategory(int id){
     QList<twebsite*> websitesList = currentCategory->websites;
     int webCount = websitesList.count();
     for(int j = 0; j < 5; j++){
-        for(int i = 0; i < 5; i++){
-            if (i*5+j < webCount){
-                if (websitesList.at(i*5+j)->iconImageCash != 0){
-                    label[i][j]->setImage(i, websitesList.at(i*5+j)->iconImage);
+        for(int i = 0; i < 8; i++){
+            if (j*5+i < webCount){
+                if (websitesList.at(j*5+i)->iconImageCash != 0){
+                    label[i][j]->setImage(i, websitesList.at(j*5+i)->iconImage);
                 }else{
-                    label[i][j]->setImagePathName(i, websitesList.at(i*5+j)->icon);
+                    label[i][j]->setImagePathName(i, websitesList.at(j*5+i)->icon);
                     websitesList.at(i*5+j)->iconImageCash = 1;
                     websitesList.at(i*5+j)->iconImage = label[i][j]->getImage();
                 }
-                label[i][j]->setUrl( websitesList.at(i*5+j)->url);
-                label[i][j]->setTitleIcon(websitesList.at(i*5+j)->name);
+                label[i][j]->setUrl( websitesList.at(j*5+i)->url);
+                label[i][j]->setTitleIcon(websitesList.at(j*5+i)->name);
             }else{
                 label[i][j]->setImagePathName(i, "");
 

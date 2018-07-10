@@ -28,7 +28,7 @@ public slots:
     void processClickForUrl(QString&);
 private:
     Ui::CMenuForm *ui;
-    CLargeImage *label[5][5];
+    CLargeImage *label[8][5];
     tgroup m_group;
 signals:
     void clickForUrl(QString&);
