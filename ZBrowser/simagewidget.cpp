@@ -27,12 +27,12 @@ void SImageWidget::paintEvent(QPaintEvent *event){
 
     if (!bmouseOver) {
         painter.setFont(QFont("Arial", 11, QFont::Normal));
-        painter.drawImage(QRect(20, 40, 60, 40), mImage);
-        painter.drawText(QRect(0,0,100,40), m_titleIcon, opt);
+        painter.drawImage(QRect(10, 30, 81, 72), mImage);
+//        painter.drawText(QRect(0,30,100,90), m_titleIcon, opt);
     }else{
-        painter.setFont(QFont("Arial", 13, QFont::Bold));
-        painter.drawImage(QRect(10, 40, 80, 60), mImage);
-        painter.drawText(QRect(0,0,100,40), m_titleIcon, opt);
+        painter.setFont(QFont("Arial", 11, QFont::Bold));
+        painter.drawImage(QRect(12, 7, 76, 67), mImage);
+        painter.drawText(QRect(0, 72, 100,35), m_titleIcon, opt);
     }
     painter.end();
 }

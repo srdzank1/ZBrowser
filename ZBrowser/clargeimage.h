@@ -38,6 +38,7 @@ private:
     QString m_url;
     int m_width;
     int m_height;
+    QBrush m_brush;
 };
 
 

@@ -7,6 +7,7 @@ CLargeImage::CLargeImage(QWidget *parent) : QWidget(parent)
 {
     setAttribute(Qt::WA_StaticContents);
     setMouseTracking(true);
+    m_brush.setColor(Qt::blue);
 }
 
 void CLargeImage::setImagePathName(int id, const QString& pathName){
@@ -28,15 +29,33 @@ void CLargeImage::paintEvent(QPaintEvent *event){
     QPainter painter(this);
     QTextOption opt;
     opt.setAlignment(Qt::AlignCenter);
+    QPainterPath path;
 
-    if (!bmouseOver) {
-        painter.setFont(QFont("Arial", 11, QFont::Normal));
-        painter.drawImage(QRect(20, 40, m_width-40, m_height-50), mImage);
-        painter.drawText(QRect(10, 0, m_width-10, 40), m_titleIcon, opt);
+    if (bmouseOver) {
+        path.addRoundedRect(QRectF(30, 40, m_width-60, m_height-65), 10, 10);
+        QPen pen(Qt::darkYellow, 10);
+        painter.setPen(pen);
+        painter.fillPath(path, Qt::white);
+        painter.drawPath(path);
+
+        pen.setColor(Qt::black);
+        painter.setPen(pen);
+
+        painter.setFont(QFont("Arial", 11, QFont::Bold));
+        painter.drawImage(QRect(30, 40, m_width-60, m_height-65), mImage);
+        painter.drawText(QRect(10, 10, m_width-10, 20), m_titleIcon, opt);
     }else{
-        painter.setFont(QFont("Arial", 13, QFont::Bold));
+        path.addRoundedRect(QRectF(10, 30, m_width-20, m_height-30), 10, 10);
+        QPen pen(Qt::darkYellow, 10);
+        painter.setPen(pen);
+        painter.fillPath(path, Qt::red);
+        painter.drawPath(path);
+
+        pen.setColor(Qt::black);
+        painter.setPen(pen);
+        painter.setFont(QFont("Arial", 11, QFont::Normal));
         painter.drawImage(QRect(10, 30, m_width-20, m_height-30), mImage);
-        painter.drawText(QRect(10, 0, m_width-10, 40), m_titleIcon, opt);
+        painter.drawText(QRect(10, 2, m_width-10, 20), m_titleIcon, opt);
     }
     painter.end();
 }

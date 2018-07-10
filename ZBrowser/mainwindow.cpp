@@ -90,9 +90,9 @@ void MainWindow::ProcClickForUrl(QString &url){
 
 void MainWindow::resizeEvent(QResizeEvent *event)
 {
-    view->setGeometry(0,0, width, height-120);
-    horizontalMenu->setGeometry(0, height-120, width, height);
-    horizontalMenu->UpdateD(QRect(0, 0, width, 120));
+    view->setGeometry(0,0, width, height-125);
+    horizontalMenu->setGeometry(0, height-125, width, height);
+    horizontalMenu->UpdateD(QRect(0, 0, width, 125));
 
     centralMenu->setGeometry(150, 50, width-300, height-170);
     centralMenu->UpdateD(QRect(150, 50, width-300, height-170));
