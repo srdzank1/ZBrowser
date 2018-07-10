@@ -16,6 +16,11 @@
 #include <QWebEngineSettings>
 #include "fullscreenwindow.h"
 #include <QWebEngineFullScreenRequest>
+#include <QFuture>
+#include <QtConcurrent>
+
+
+
 
 
 namespace Ui {
@@ -40,6 +45,7 @@ private:
     int height;
     int width;
     QScopedPointer<FullScreenWindow> m_fullScreenWindow;
+    CParserXML *parser;
 public slots:
     void processClick(int i);
     void ProcClickForUrl(QString &i);

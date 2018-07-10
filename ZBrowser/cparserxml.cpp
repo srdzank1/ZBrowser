@@ -87,6 +87,7 @@ bool CParserXML::loadThemeXmlFile(const QString &xmlFile)
                                                        websiteItem->url = xmlReader.readElementText();
                                                     }else if (xmlReader.name() == "icon"){
                                                        websiteItem->icon = xmlReader.readElementText();
+                                                       websiteItem->iconImageCash = 0;
 //                                                       QString iconPath = QDir::toNativeSeparators(QDir::currentPath() +"/"+ websiteItem->icon);
 //                                                       websiteItem->iconImage = QImage(iconPath);
                                                     }else if (xmlReader.name() == "type"){
@@ -137,14 +138,19 @@ bool CParserXML::loadThemeXmlFile(const QString &xmlFile)
 }
 
 
-void CParserXML::CreateCashImage(){
+int  CParserXML::CreateCashImage(){
     QImage * imgObj = new QImage();
     for(int i = 0; i < m_group.categories.count(); i++){
         tcategory *item = m_group.categories.at(i);
         for (int j = 0; j < item->websites.count(); j++){
             twebsite *webItem = item->websites.at(j);
-            webItem->iconImage = QImage(QDir::toNativeSeparators(QDir::currentPath() +"/"+ webItem->icon)).scaled(200, 200, Qt::IgnoreAspectRatio, Qt::FastTransformation);;
-
+            if (webItem->iconImageCash == 0){
+                webItem->iconImage = QImage(QDir::toNativeSeparators(QDir::currentPath() +"/"+ webItem->icon)).scaled(200, 200, Qt::IgnoreAspectRatio, Qt::FastTransformation);
+                webItem->iconImageCash = 1;
+            }
         }
     }
+    return 0;
 }
+
+

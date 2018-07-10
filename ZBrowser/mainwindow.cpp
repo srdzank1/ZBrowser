@@ -7,18 +7,11 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-
+    parser = 0;
     setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
     QRect rec = QApplication::desktop()->screenGeometry();
     height = rec.height()*0.95;
     width = rec.width();
-
-    CParserXML *parser = new CParserXML(this);
-    QString filePath = "://res/xml/menu.xml";
-    parser->loadThemeXmlFile(filePath);
-    parser->CreateCashImage();
-    tgroup xmlData = parser->getParsedData();
-    delete parser;
 
     view = new QWebEngineView(this);
     view->settings()->setAttribute(QWebEngineSettings::FullScreenSupportEnabled, true);
@@ -30,6 +23,18 @@ MainWindow::MainWindow(QWidget *parent) :
     view->setUrl(QUrl(""));
     view->setGeometry(0,0, width, height);
     view->show();
+
+    parser = new CParserXML(this);
+    QString filePath = "://res/xml/menu.xml";
+    parser->loadThemeXmlFile(filePath);
+//    parser->CreateCashImage();
+    // call 'void QImage::invertPixels(InvertMode mode)' in a separate thread
+
+    QFuture<int> future = QtConcurrent::run(parser, &CParserXML::CreateCashImage);
+
+
+    tgroup xmlData = parser->getParsedData();
+
 
     horizontalMenu = new QHorizontalMenu(this, xmlData);
 
@@ -63,10 +68,12 @@ MainWindow::~MainWindow()
     delete view;
     delete centralMenu;
     delete horizontalMenu;
+    delete parser;
     delete ui;
 }
 
 void MainWindow::processClick(int i){
+    centralMenu->close();
     centralMenu->createMenuByCategory(i);
     view->setUrl(QUrl(QStringLiteral("")));
     view->hide();

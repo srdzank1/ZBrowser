@@ -11,7 +11,7 @@ CLargeImage::CLargeImage(QWidget *parent) : QWidget(parent)
 
 void CLargeImage::setImagePathName(int id, const QString& pathName){
     m_pathName = pathName;
-    mImage = QImage(m_pathName);
+    mImage = QImage(pathName).scaled(100, 100, Qt::IgnoreAspectRatio, Qt::FastTransformation);;
     iItem = id;
 }
 

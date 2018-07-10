@@ -16,6 +16,7 @@ public:
     void setTitleIcon(const QString& name);
     void setUrl(const QString& url){m_url = url;}
     void setImage(int id, QImage & img );
+    QImage getImage(){return mImage;}
     void setWidth(int w){m_width = w;}
     void setHeight(int h){m_height = h;}
 protected:

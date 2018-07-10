@@ -55,7 +55,13 @@ void CMenuForm::createMenuByCategory(int id){
     for(int j = 0; j < 5; j++){
         for(int i = 0; i < 5; i++){
             if (i*5+j < webCount){
-                label[i][j]->setImage(i, websitesList.at(i*5+j)->iconImage);
+                if (websitesList.at(i*5+j)->iconImageCash != 0){
+                    label[i][j]->setImage(i, websitesList.at(i*5+j)->iconImage);
+                }else{
+                    label[i][j]->setImagePathName(i, websitesList.at(i*5+j)->icon);
+                    websitesList.at(i*5+j)->iconImageCash = 1;
+                    websitesList.at(i*5+j)->iconImage = label[i][j]->getImage();
+                }
                 label[i][j]->setUrl( websitesList.at(i*5+j)->url);
                 label[i][j]->setTitleIcon(websitesList.at(i*5+j)->name);
             }else{
