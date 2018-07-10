@@ -15,7 +15,6 @@ MainWindow::MainWindow(QWidget *parent) :
 
     view = new QWebEngineView(this);
     view->settings()->setAttribute(QWebEngineSettings::FullScreenSupportEnabled, true);
-//    view->setUrl(QUrl(QStringLiteral("https://youtu.be/qQKPFJ2y-_w")));
     connect(view->page(),
                 &QWebEnginePage::fullScreenRequested,
                 this,
@@ -27,11 +26,8 @@ MainWindow::MainWindow(QWidget *parent) :
     parser = new CParserXML(this);
     QString filePath = "://res/xml/menu.xml";
     parser->loadThemeXmlFile(filePath);
-//    parser->CreateCashImage();
-    // call 'void QImage::invertPixels(InvertMode mode)' in a separate thread
 
     QFuture<int> future = QtConcurrent::run(parser, &CParserXML::CreateCashImage);
-
 
     tgroup xmlData = parser->getParsedData();
 
@@ -41,10 +37,18 @@ MainWindow::MainWindow(QWidget *parent) :
     horizontalMenu->setGeometry(0,height-120, width, height);
     connect(horizontalMenu, SIGNAL(click(int)), this, SLOT(processClick(int)));
 
+
     centralMenu = new CMenuForm(this, xmlData);
     connect(centralMenu, SIGNAL(clickForUrl(QString&)), this, SLOT(ProcClickForUrl(QString&)));
-    centralMenu->setGeometry(20,20, width-20, height-150);
+    centralMenu->setGeometry(0,0, width, height);
     centralMenu->hide();
+
+    scroll = new QScrollArea(this);
+    scroll->setGeometry(QRect(30, 30, width-60, height-170));
+    scroll->verticalScrollBar()->setRange(0, height);
+    scroll->horizontalScrollBar()->setRange(0, width);
+    scroll->setWidget(centralMenu);
+//    scroll->show();
 }
 
 
@@ -74,15 +78,19 @@ MainWindow::~MainWindow()
 
 void MainWindow::processClick(int i){
     centralMenu->close();
+    scroll->hide();
     centralMenu->createMenuByCategory(i);
     view->setUrl(QUrl(QStringLiteral("")));
     view->hide();
     centralMenu->show();
+    scroll->show();
 }
 
 
 void MainWindow::ProcClickForUrl(QString &url){
+
     centralMenu->close();
+    scroll->hide();
     view->setUrl(QUrl(url));
     view->show();
 }
@@ -94,7 +102,7 @@ void MainWindow::resizeEvent(QResizeEvent *event)
     horizontalMenu->setGeometry(0, height-125, width, height);
     horizontalMenu->UpdateD(QRect(0, 0, width, 125));
 
-    centralMenu->setGeometry(150, 50, width-300, height-170);
-    centralMenu->UpdateD(QRect(150, 50, width-300, height-170));
+    centralMenu->setGeometry(0, 0, width*1.5, height*2);
+    centralMenu->UpdateD(QRect(0, 0, width*1.5, height*2));
     QWidget::resizeEvent(event);
 }

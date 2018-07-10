@@ -13,6 +13,7 @@
 #include "cmenuform.h"
 #include "cparserxml.h"
 #include <QScrollArea>
+#include <QScrollBar>
 #include <QWebEngineSettings>
 #include "fullscreenwindow.h"
 #include <QWebEngineFullScreenRequest>
@@ -46,6 +47,7 @@ private:
     int width;
     QScopedPointer<FullScreenWindow> m_fullScreenWindow;
     CParserXML *parser;
+    QScrollArea *scroll;
 public slots:
     void processClick(int i);
     void ProcClickForUrl(QString &i);
