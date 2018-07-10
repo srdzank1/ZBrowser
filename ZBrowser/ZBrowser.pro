@@ -30,7 +30,9 @@ SOURCES += \
     simagewidget.cpp \
     cmenuform.cpp \
     cparserxml.cpp \
-    clargeimage.cpp
+    clargeimage.cpp \
+    fullscreenwindow.cpp \
+    fullscreennotification.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -38,7 +40,9 @@ HEADERS += \
     simagewidget.h \
     cmenuform.h \
     cparserxml.h \
-    clargeimage.h
+    clargeimage.h \
+    fullscreenwindow.h \
+    fullscreennotification.h
 
 FORMS += \
         mainwindow.ui \

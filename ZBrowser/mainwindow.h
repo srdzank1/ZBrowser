@@ -13,7 +13,9 @@
 #include "cmenuform.h"
 #include "cparserxml.h"
 #include <QScrollArea>
-
+#include <QWebEngineSettings>
+#include "fullscreenwindow.h"
+#include <QWebEngineFullScreenRequest>
 
 
 namespace Ui {
@@ -37,9 +39,11 @@ private:
     QWebEngineView *view;
     int height;
     int width;
+    QScopedPointer<FullScreenWindow> m_fullScreenWindow;
 public slots:
     void processClick(int i);
     void ProcClickForUrl(QString &i);
+    void fullScreenRequested(QWebEngineFullScreenRequest request);
 
 
 };

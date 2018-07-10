@@ -21,7 +21,12 @@ MainWindow::MainWindow(QWidget *parent) :
     delete parser;
 
     view = new QWebEngineView(this);
+    view->settings()->setAttribute(QWebEngineSettings::FullScreenSupportEnabled, true);
 //    view->setUrl(QUrl(QStringLiteral("https://youtu.be/qQKPFJ2y-_w")));
+    connect(view->page(),
+                &QWebEnginePage::fullScreenRequested,
+                this,
+                &MainWindow::fullScreenRequested);
     view->setUrl(QUrl(""));
     view->setGeometry(0,0, width, height);
     view->show();
@@ -35,6 +40,22 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(centralMenu, SIGNAL(clickForUrl(QString&)), this, SLOT(ProcClickForUrl(QString&)));
     centralMenu->setGeometry(20,20, width-20, height-150);
     centralMenu->hide();
+}
+
+
+void MainWindow::fullScreenRequested(QWebEngineFullScreenRequest request)
+{
+    if (request.toggleOn()) {
+        if (m_fullScreenWindow)
+            return;
+        request.accept();
+        m_fullScreenWindow.reset(new FullScreenWindow(view));
+    } else {
+        if (!m_fullScreenWindow)
+            return;
+        request.accept();
+        m_fullScreenWindow.reset();
+    }
 }
 
 MainWindow::~MainWindow()
