@@ -12,6 +12,8 @@ class CLargeImage : public QWidget
     Q_OBJECT
 public:
     explicit CLargeImage(QWidget *parent = nullptr);
+    ~CLargeImage();
+
     void setImagePathName(int id, const QString& pathName);
     void setTitleIcon(const QString& name);
     void setUrl(const QString& url){m_url = url;}

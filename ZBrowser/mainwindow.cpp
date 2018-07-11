@@ -38,7 +38,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(horizontalMenu, SIGNAL(click(int)), this, SLOT(processClick(int)));
 
 
-    centralMenu = new CMenuForm(this, xmlData);
+    centralMenu = new CMenuForm(this, xmlData, width, height);
     connect(centralMenu, SIGNAL(clickForUrl(QString&)), this, SLOT(ProcClickForUrl(QString&)));
     centralMenu->setGeometry(0,0, width, height);
     centralMenu->hide();
@@ -46,7 +46,7 @@ MainWindow::MainWindow(QWidget *parent) :
     scroll = new QScrollArea(this);
     scroll->setStyleSheet("background-color:transparent; border: none;");
     scroll->setStyleSheet("QScrollArea {background-color:transparent;border: none;}");
-    scroll->setGeometry(QRect(30, 30, width-60, height-170));
+    scroll->setGeometry(QRect(70, 70, width-140, height-195));
     scroll->verticalScrollBar()->setRange(0, height);
     scroll->horizontalScrollBar()->setRange(0, width);
 
@@ -55,7 +55,7 @@ MainWindow::MainWindow(QWidget *parent) :
     scroll->setWidget(centralMenu);
     scroll->setFocus();
     scroll->hide();
-//    scroll->show();
+
 }
 
 

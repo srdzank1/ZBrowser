@@ -1,33 +1,28 @@
 #include "cmenuform.h"
 #include "ui_cmenuform.h"
 
-CMenuForm::CMenuForm(QWidget *parent, tgroup &data) :
+CMenuForm::CMenuForm(QWidget *parent, tgroup &data, int &width, int&height) :
     QWidget(parent),
     ui(new Ui::CMenuForm)
 {
     ui->setupUi(this);
+    pLargeImage =0;
     m_group = data;
-    for(int j = 0; j < 5; j++){
-        for(int i = 0; i < 8; i++){
-            label[i][j] = new CLargeImage(this);
-            label[i][j]->resize(QSize(0, 0));
-            label[i][j]->repaint();
-            connect(label[i][j], SIGNAL(click(int)), this, SLOT(processClick(int)));
-            connect(label[i][j], SIGNAL(clickForUrl(QString&)), this, SLOT(processClickForUrl(QString&)));
-        }
-    }
+    m_width = width;
+    m_height = height;
+    int xOffset = 200;
+    int yOffset = 187;
     update();
-
 }
 
 CMenuForm::~CMenuForm()
 {
-    for(int j = 0; j < 5; j++){
-        for(int i = 0; i < 8; i++){
-            delete label[i][j];
-        }
+    QList<CLargeImage*>::iterator it;
+    for (it =pListLargeImage.begin();it != pListLargeImage.end();it){
+         delete *it;
     }
-
+    pListLargeImage.clear();
+    CLargeImage * pLargeImage;
     delete ui;
 }
 
@@ -35,41 +30,60 @@ void CMenuForm::UpdateD(QRect r)
 {
     int width = r.width();
     int height = r.height();
-    int xOffset = 200; //width/5;
-    int yOffset = 187; //height/5;
-    for(int j = 0; j < 5; j++){
-        for(int i = 0; i < 8; i++){
-            QRect r1 = QRect( xOffset* i, yOffset* j , xOffset * (i+1) , yOffset * (j + 1));
-            label[i][j]->setGeometry(r1);
-            label[i][j]->setWidth(xOffset);
-            label[i][j]->setHeight(yOffset);
-        }
-    }
+    xOffset = 200; //width/5;
+    yOffset = 187; //height/5;
+
 }
 
 void CMenuForm::createMenuByCategory(int id){
+    setUpdatesEnabled(false);
 
+
+    for (int i = 0; i < pListLargeImage.count(); i++){
+            delete pListLargeImage.at(i);
+    }
+
+    pListLargeImage.clear();
     tcategory* currentCategory =  m_group.categories.at(id);
     QList<twebsite*> websitesList = currentCategory->websites;
     int webCount = websitesList.count();
-    for(int j = 0; j < 5; j++){
-        for(int i = 0; i < 8; i++){
-            if (j*5+i < webCount){
-                if (websitesList.at(j*5+i)->iconImageCash != 0){
-                    label[i][j]->setImage(i, websitesList.at(j*5+i)->iconImage);
-                }else{
-                    label[i][j]->setImagePathName(i, websitesList.at(j*5+i)->icon);
-                    websitesList.at(i*5+j)->iconImageCash = 1;
-                    websitesList.at(i*5+j)->iconImage = label[i][j]->getImage();
-                }
-                label[i][j]->setUrl( websitesList.at(j*5+i)->url);
-                label[i][j]->setTitleIcon(websitesList.at(j*5+i)->name);
-            }else{
-                label[i][j]->setImagePathName(i, "");
+    int iMax = (int)m_width / xOffset;
+    int jMax = webCount / iMax + 1;
+    for(int j = 0; j < jMax; j++){
+        for(int i = 0; i < iMax; i++){
+            if (j*jMax+i < webCount){
 
+                pLargeImage = new CLargeImage(this);
+                pLargeImage->resize(QSize(0, 0));
+                pLargeImage->repaint();
+                connect(pLargeImage, SIGNAL(click(int)), this, SLOT(processClick(int)));
+                connect(pLargeImage, SIGNAL(clickForUrl(QString&)), this, SLOT(processClickForUrl(QString&)));
+
+                QRect r1 = QRect( xOffset* i, yOffset* j , xOffset * (i+1) , yOffset * (j + 1));
+                pLargeImage->setGeometry(r1);
+                pLargeImage->setWidth(xOffset);
+                pLargeImage->setHeight(yOffset);
+
+
+                if (websitesList.at(j*5+i)->iconImageCash != 0){
+                    pLargeImage->setImage(i, websitesList.at(j*5+i)->iconImage);
+                }else{
+                    pLargeImage->setImagePathName(i, websitesList.at(j*5+i)->icon);
+                    websitesList.at(i*5+j)->iconImageCash = 1;
+                    websitesList.at(i*5+j)->iconImage = pLargeImage->getImage();
+                }
+                pLargeImage->setUrl( websitesList.at(j*5+i)->url);
+                pLargeImage->setTitleIcon(websitesList.at(j*5+i)->name);
+                pListLargeImage.push_back(pLargeImage);
+                pLargeImage = 0;
+
+            }else{
+                continue;
             }
         }
-         repaint();
+        setUpdatesEnabled(true);
+        setGeometry(0, 0, (iMax+1.5) * xOffset, (j+1.5) * yOffset);
+        repaint();
     }
 
 }

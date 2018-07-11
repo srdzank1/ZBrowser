@@ -10,6 +10,10 @@ CLargeImage::CLargeImage(QWidget *parent) : QWidget(parent)
     m_brush.setColor(Qt::blue);
 }
 
+CLargeImage::~CLargeImage()
+{
+
+}
 void CLargeImage::setImagePathName(int id, const QString& pathName){
     m_pathName = pathName;
     mImage = QImage(pathName).scaled(200, 187, Qt::KeepAspectRatio, Qt::FastTransformation);;

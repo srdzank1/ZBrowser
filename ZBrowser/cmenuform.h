@@ -17,7 +17,7 @@ class CMenuForm : public QWidget
     Q_OBJECT
 
 public:
-    explicit CMenuForm(QWidget *parent, tgroup &data );
+    explicit CMenuForm(QWidget *parent, tgroup &data, int &width, int&height );
     ~CMenuForm();
     void UpdateD(QRect r);
     void createMenuByCategory(int id);
@@ -28,8 +28,14 @@ public slots:
     void processClickForUrl(QString&);
 private:
     Ui::CMenuForm *ui;
-    CLargeImage *label[8][5];
     tgroup m_group;
+    int m_width;
+    int m_height;
+
+    int xOffset;
+    int yOffset;
+    QList<CLargeImage*> pListLargeImage;
+    CLargeImage * pLargeImage;
 signals:
     void clickForUrl(QString&);
 };
