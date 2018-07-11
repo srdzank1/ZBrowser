@@ -33,7 +33,8 @@ SOURCES += \
     clargeimage.cpp \
     fullscreenwindow.cpp \
     fullscreennotification.cpp \
-    ccentralbackgroundimage.cpp
+    ccentralbackgroundimage.cpp \
+    cheaderimageinfo.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -44,7 +45,8 @@ HEADERS += \
     clargeimage.h \
     fullscreenwindow.h \
     fullscreennotification.h \
-    ccentralbackgroundimage.h
+    ccentralbackgroundimage.h \
+    cheaderimageinfo.h
 
 FORMS += \
         mainwindow.ui \

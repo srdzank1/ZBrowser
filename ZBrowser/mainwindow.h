@@ -20,7 +20,7 @@
 #include <QFuture>
 #include <QtConcurrent>
 #include "ccentralbackgroundimage.h"
-
+#include "cheaderimageinfo.h"
 
 
 
@@ -50,6 +50,7 @@ private:
     CParserXML *parser;
     QScrollArea *scroll;
     CCentralBackgroundImage *backgroundImage;
+    CHeaderImageInfo *headerImageInfo;
 public slots:
     void processClick(int i);
     void ProcClickForUrl(QString &i);

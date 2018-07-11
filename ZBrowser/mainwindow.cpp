@@ -38,6 +38,15 @@ MainWindow::MainWindow(QWidget *parent) :
 
     tgroup xmlData = parser->getParsedData();
 
+    headerImageInfo = new CHeaderImageInfo(this);
+    headerImageInfo->setGeometry(5,5, width, 60);
+    headerImageInfo->setWidth(50);
+    headerImageInfo->setImage(0,QImage(QDir::toNativeSeparators(QDir::currentPath() +"/"+ xmlData.categories.at(0)->icon)));
+    headerImageInfo->setTitleIcon(xmlData.categories.at(0)->name);
+    headerImageInfo->setHeight(50);
+    headerImageInfo->show();
+
+
 
     horizontalMenu = new QHorizontalMenu(this, xmlData);
 
@@ -96,6 +105,11 @@ void MainWindow::processClick(int i){
     tgroup xmlData = parser->getParsedData();
     backgroundImage->setImage(0,QImage(QDir::toNativeSeparators(QDir::currentPath() +"/"+ xmlData.categories.at(i)->background)));
     backgroundImage->repaint();
+
+    headerImageInfo->setImage(0,QImage(QDir::toNativeSeparators(QDir::currentPath() +"/"+ xmlData.categories.at(i)->icon)));
+    headerImageInfo->setTitleIcon(xmlData.categories.at(i)->name);
+
+    headerImageInfo->repaint();
     centralMenu->createMenuByCategory(i);
     view->setUrl(QUrl(QStringLiteral("")));
     view->hide();
