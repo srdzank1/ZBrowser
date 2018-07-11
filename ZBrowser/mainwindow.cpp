@@ -44,10 +44,17 @@ MainWindow::MainWindow(QWidget *parent) :
     centralMenu->hide();
 
     scroll = new QScrollArea(this);
+    scroll->setStyleSheet("background-color:transparent; border: none;");
+    scroll->setStyleSheet("QScrollArea {background-color:transparent;border: none;}");
     scroll->setGeometry(QRect(30, 30, width-60, height-170));
     scroll->verticalScrollBar()->setRange(0, height);
     scroll->horizontalScrollBar()->setRange(0, width);
+
+    scroll->horizontalScrollBar()->setStyleSheet("QScrollBar {height:0px;}");
+    scroll->verticalScrollBar()->setStyleSheet("QScrollBar {width:0px;}");
     scroll->setWidget(centralMenu);
+    scroll->setFocus();
+    scroll->hide();
 //    scroll->show();
 }
 
@@ -84,6 +91,9 @@ void MainWindow::processClick(int i){
     view->hide();
     centralMenu->show();
     scroll->show();
+    scroll->setFocus();
+    scroll->verticalScrollBar()->setValue(0);
+    scroll->horizontalScrollBar()->setValue(0);
 }
 
 
@@ -93,6 +103,9 @@ void MainWindow::ProcClickForUrl(QString &url){
     scroll->hide();
     view->setUrl(QUrl(url));
     view->show();
+    scroll->setFocus();
+    scroll->verticalScrollBar()->setValue(0);
+    scroll->horizontalScrollBar()->setValue(0);
 }
 
 
