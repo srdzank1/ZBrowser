@@ -19,6 +19,7 @@
 #include <QWebEngineFullScreenRequest>
 #include <QFuture>
 #include <QtConcurrent>
+#include "ccentralbackgroundimage.h"
 
 
 
@@ -48,6 +49,7 @@ private:
     QScopedPointer<FullScreenWindow> m_fullScreenWindow;
     CParserXML *parser;
     QScrollArea *scroll;
+    CCentralBackgroundImage *backgroundImage;
 public slots:
     void processClick(int i);
     void ProcClickForUrl(QString &i);

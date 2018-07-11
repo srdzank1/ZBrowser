@@ -32,7 +32,8 @@ SOURCES += \
     cparserxml.cpp \
     clargeimage.cpp \
     fullscreenwindow.cpp \
-    fullscreennotification.cpp
+    fullscreennotification.cpp \
+    ccentralbackgroundimage.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -42,7 +43,8 @@ HEADERS += \
     cparserxml.h \
     clargeimage.h \
     fullscreenwindow.h \
-    fullscreennotification.h
+    fullscreennotification.h \
+    ccentralbackgroundimage.h
 
 FORMS += \
         mainwindow.ui \

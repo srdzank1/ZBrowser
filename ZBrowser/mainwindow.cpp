@@ -13,15 +13,22 @@ MainWindow::MainWindow(QWidget *parent) :
     height = rec.height()*0.95;
     width = rec.width();
 
+    backgroundImage = new CCentralBackgroundImage(this);
+    backgroundImage->setGeometry(0,0, width, height);
+    backgroundImage->setWidth(width);
+    backgroundImage->setImage(0,QImage(QDir::toNativeSeparators(QDir::currentPath() +"/"+ "images/0138dd49a38e8e64eb2a4738dba6dc4f_6478f.jpg")));
+    backgroundImage->setHeight(height);
+    backgroundImage->show();
+
     view = new QWebEngineView(this);
     view->settings()->setAttribute(QWebEngineSettings::FullScreenSupportEnabled, true);
     connect(view->page(),
                 &QWebEnginePage::fullScreenRequested,
                 this,
                 &MainWindow::fullScreenRequested);
-    view->setUrl(QUrl(""));
+    view->setUrl(QUrl("https://vimeo.com/182513271"));
     view->setGeometry(0,0, width, height);
-    view->show();
+    //view->show();
 
     parser = new CParserXML(this);
     QString filePath = "://res/xml/menu.xml";
@@ -86,6 +93,9 @@ MainWindow::~MainWindow()
 void MainWindow::processClick(int i){
     centralMenu->close();
     scroll->hide();
+    tgroup xmlData = parser->getParsedData();
+    backgroundImage->setImage(0,QImage(QDir::toNativeSeparators(QDir::currentPath() +"/"+ xmlData.categories.at(i)->background)));
+    backgroundImage->repaint();
     centralMenu->createMenuByCategory(i);
     view->setUrl(QUrl(QStringLiteral("")));
     view->hide();
@@ -111,11 +121,15 @@ void MainWindow::ProcClickForUrl(QString &url){
 
 void MainWindow::resizeEvent(QResizeEvent *event)
 {
-    view->setGeometry(0,0, width, height-125);
+//    view->setGeometry(0,0, width, height-125);
+    view->setGeometry(0,0, width, height);
+
     horizontalMenu->setGeometry(0, height-125, width, height);
     horizontalMenu->UpdateD(QRect(0, 0, width, 125));
 
     centralMenu->setGeometry(0, 0, width*1.5, height*2);
     centralMenu->UpdateD(QRect(0, 0, width*1.5, height*2));
+    view->hide();
+    centralMenu->hide();
     QWidget::resizeEvent(event);
 }

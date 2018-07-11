@@ -82,7 +82,7 @@ void CMenuForm::createMenuByCategory(int id){
             }
         }
         setUpdatesEnabled(true);
-        setGeometry(0, 0, (iMax+1.5) * xOffset, (j+1.5) * yOffset);
+        setGeometry(0, 0, (iMax+1.5) * xOffset, (j+5.5) * yOffset);
         repaint();
     }
 
