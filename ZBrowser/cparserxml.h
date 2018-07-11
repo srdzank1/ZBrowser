@@ -8,6 +8,7 @@
 #include <QDir>
 #include <QImage>
 #include <QImageReader>
+#include <QMutex>
 
 
 typedef struct {

@@ -65,15 +65,15 @@ void CMenuForm::createMenuByCategory(int id){
                 pLargeImage->setHeight(yOffset);
 
 
-                if (websitesList.at(j*5+i)->iconImageCash != 0){
-                    pLargeImage->setImage(i, websitesList.at(j*5+i)->iconImage);
+                if (websitesList.at(j*jMax+i)->iconImageCash != 0){
+                    pLargeImage->setImage(i, websitesList.at(j*jMax+i)->iconImage);
                 }else{
-                    pLargeImage->setImagePathName(i, websitesList.at(j*5+i)->icon);
-                    websitesList.at(i*5+j)->iconImageCash = 1;
-                    websitesList.at(i*5+j)->iconImage = pLargeImage->getImage();
+                    pLargeImage->setImagePathName(i, websitesList.at(j*jMax+i)->icon);
+                    websitesList.at(j*jMax+i)->iconImageCash = 1;
+                    websitesList.at(j*jMax+i)->iconImage = pLargeImage->getImage();
                 }
-                pLargeImage->setUrl( websitesList.at(j*5+i)->url);
-                pLargeImage->setTitleIcon(websitesList.at(j*5+i)->name);
+                pLargeImage->setUrl( websitesList.at(j*jMax+i)->url);
+                pLargeImage->setTitleIcon(websitesList.at(j*jMax+i)->name);
                 pListLargeImage.push_back(pLargeImage);
                 pLargeImage = 0;
 
