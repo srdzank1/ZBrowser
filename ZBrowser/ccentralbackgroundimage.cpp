@@ -38,10 +38,10 @@ void CCentralBackgroundImage::mouseMoveEvent(QMouseEvent *event)
 }
 
 void CCentralBackgroundImage::enterEvent(QEvent * event){
-     repaint();
+
 }
 void CCentralBackgroundImage::leaveEvent(QEvent * event){
-     repaint();
+
 }
 
 void CCentralBackgroundImage::mouseReleaseEvent(QMouseEvent * event){

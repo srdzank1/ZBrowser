@@ -26,7 +26,7 @@ MainWindow::MainWindow(QWidget *parent) :
                 &QWebEnginePage::fullScreenRequested,
                 this,
                 &MainWindow::fullScreenRequested);
-    view->setUrl(QUrl("https://vimeo.com/182513271"));
+    view->setUrl(QUrl(QString("")));
     view->setGeometry(0,0, width, height);
     //view->show();
 
@@ -100,36 +100,37 @@ MainWindow::~MainWindow()
 }
 
 void MainWindow::processClick(int i){
-    centralMenu->close();
+    centralMenu->hide();
     scroll->hide();
+    backgroundImage->hide();
+    view->hide();
+
     tgroup xmlData = parser->getParsedData();
     backgroundImage->setImage(0,QImage(QDir::toNativeSeparators(QDir::currentPath() +"/"+ xmlData.categories.at(i)->background)));
-    backgroundImage->repaint();
 
     headerImageInfo->setImage(0,QImage(QDir::toNativeSeparators(QDir::currentPath() +"/"+ xmlData.categories.at(i)->icon)));
     headerImageInfo->setTitleIcon(xmlData.categories.at(i)->name);
 
-    headerImageInfo->repaint();
     centralMenu->createMenuByCategory(i);
-    view->setUrl(QUrl(QStringLiteral("")));
-    view->hide();
+//    view->setUrl(QUrl(QStringLiteral("")));
+
+    backgroundImage->show();
     centralMenu->show();
     scroll->show();
     scroll->setFocus();
-    scroll->verticalScrollBar()->setValue(0);
-    scroll->horizontalScrollBar()->setValue(0);
 }
 
 
 void MainWindow::ProcClickForUrl(QString &url){
 
-    centralMenu->close();
+    centralMenu->hide();
     scroll->hide();
-    view->setUrl(QUrl(url));
+    backgroundImage->hide();
     view->show();
+    view->setUrl(QUrl(url));
     scroll->setFocus();
-    scroll->verticalScrollBar()->setValue(0);
-    scroll->horizontalScrollBar()->setValue(0);
+//    scroll->verticalScrollBar()->setValue(0);
+//    scroll->horizontalScrollBar()->setValue(0);
 }
 
 

@@ -36,7 +36,7 @@ void CMenuForm::UpdateD(QRect r)
 }
 
 void CMenuForm::createMenuByCategory(int id){
-    setUpdatesEnabled(false);
+ //   setUpdatesEnabled(false);
 
 
     for (int i = 0; i < pListLargeImage.count(); i++){
@@ -81,11 +81,10 @@ void CMenuForm::createMenuByCategory(int id){
                 continue;
             }
         }
-        setUpdatesEnabled(true);
-        setGeometry(0, 0, (iMax+1.5) * xOffset, (j+5.5) * yOffset);
-        repaint();
-    }
 
+        setGeometry(0, 0, (iMax+1.5) * xOffset, (j+5.5) * yOffset);
+    }
+//   setUpdatesEnabled(true);
 }
 
 bool CMenuForm::event(QEvent *event)

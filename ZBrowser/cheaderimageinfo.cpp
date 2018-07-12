@@ -53,10 +53,10 @@ void CHeaderImageInfo::mouseMoveEvent(QMouseEvent *event)
 }
 
 void CHeaderImageInfo::enterEvent(QEvent * event){
-     repaint();
+
 }
 void CHeaderImageInfo::leaveEvent(QEvent * event){
-     repaint();
+
 }
 
 void CHeaderImageInfo::mouseReleaseEvent(QMouseEvent * event){
