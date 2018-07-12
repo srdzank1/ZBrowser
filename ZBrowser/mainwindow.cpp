@@ -10,7 +10,7 @@ MainWindow::MainWindow(QWidget *parent) :
     parser = 0;
     setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
     QRect rec = QApplication::desktop()->screenGeometry();
-    height = rec.height()*0.95;
+    height = rec.height();
     width = rec.width();
 
     backgroundImage = new CCentralBackgroundImage(this);
@@ -147,3 +147,5 @@ void MainWindow::resizeEvent(QResizeEvent *event)
     centralMenu->hide();
     QWidget::resizeEvent(event);
 }
+
+
