@@ -30,6 +30,8 @@ private:
     int iItem;
     QString m_titleIcon;
     QImage mImage;
+    int m_x;
+    int m_y;
 };
 
 #endif // SIMAGEWIDGET_H

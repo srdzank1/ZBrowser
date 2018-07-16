@@ -16,7 +16,9 @@ MainWindow::MainWindow(QWidget *parent) :
     backgroundImage = new CCentralBackgroundImage(this);
     backgroundImage->setGeometry(0,0, width, height);
     backgroundImage->setWidth(width);
-    backgroundImage->setImage(0,QImage(QDir::toNativeSeparators(QDir::currentPath() +"/"+ "images/0138dd49a38e8e64eb2a4738dba6dc4f_6478f.jpg")));
+
+    QImage imgTmp = QImage(QDir::toNativeSeparators(QDir::currentPath() +"/"+ "images/0138dd49a38e8e64eb2a4738dba6dc4f_6478f.jpg"));
+    backgroundImage->setImage(0,imgTmp);
     backgroundImage->setHeight(height);
     backgroundImage->show();
 
@@ -41,7 +43,8 @@ MainWindow::MainWindow(QWidget *parent) :
     headerImageInfo = new CHeaderImageInfo(this);
     headerImageInfo->setGeometry(5,5, width, 60);
     headerImageInfo->setWidth(50);
-    headerImageInfo->setImage(0,QImage(QDir::toNativeSeparators(QDir::currentPath() +"/"+ xmlData.categories.at(0)->icon)));
+    imgTmp = QImage(QDir::toNativeSeparators(QDir::currentPath() +"/"+ xmlData.categories.at(0)->icon));
+    headerImageInfo->setImage(0, imgTmp);
     headerImageInfo->setTitleIcon(xmlData.categories.at(0)->name);
     headerImageInfo->setHeight(50);
     headerImageInfo->show();
@@ -106,9 +109,11 @@ void MainWindow::processClick(int i){
     view->hide();
 
     tgroup xmlData = parser->getParsedData();
-    backgroundImage->setImage(0,QImage(QDir::toNativeSeparators(QDir::currentPath() +"/"+ xmlData.categories.at(i)->background)));
+    QImage imgTmp = QImage(QDir::toNativeSeparators(QDir::currentPath() +"/"+ xmlData.categories.at(i)->background));
+    backgroundImage->setImage(0,imgTmp);
 
-    headerImageInfo->setImage(0,QImage(QDir::toNativeSeparators(QDir::currentPath() +"/"+ xmlData.categories.at(i)->icon)));
+    imgTmp = QImage(QDir::toNativeSeparators(QDir::currentPath() +"/"+ xmlData.categories.at(i)->icon));
+    headerImageInfo->setImage(0, imgTmp);
     headerImageInfo->setTitleIcon(xmlData.categories.at(i)->name);
 
     centralMenu->createMenuByCategory(i);
