@@ -39,7 +39,7 @@ void QHorizontalMenu::UpdateD(QRect r)
     for(int i = 0; i < catwegoryCount; i++){
         tcategory *item =  m_group.categories.at(i);
         int i1 = i +1;
-        QRect r1 = QRect(width/catwegoryCount * i1, 0,width/catwegoryCount * i1+ 125, 125);
+        QRect r1 = QRect(width/catwegoryCount * i1, 0,width/catwegoryCount * i1+ 100, 120);
         imageItem[i]->setGeometry(r1);
         QString iconPath = QDir::toNativeSeparators(QDir::currentPath() +"/"+ item->icon);
         imageItem[i]->setImagePathName(i, iconPath);

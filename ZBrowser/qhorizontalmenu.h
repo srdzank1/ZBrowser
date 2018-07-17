@@ -25,7 +25,7 @@ public:
 private:
     Ui::QHorizontalMenu *ui;
     QHBoxLayout *hlayout;
-    SImageWidget *imageItem[10];
+    SImageWidget *imageItem[20];
     tgroup m_group;
     int catwegoryCount;
 

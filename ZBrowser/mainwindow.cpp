@@ -144,8 +144,8 @@ void MainWindow::resizeEvent(QResizeEvent *event)
 //    view->setGeometry(0,0, width, height-125);
     view->setGeometry(0,0, width, height);
 
-    horizontalMenu->setGeometry(0, height-125, width, height);
-    horizontalMenu->UpdateD(QRect(0, 0, width, 125));
+    horizontalMenu->setGeometry(0, height-130, width, height);
+    horizontalMenu->UpdateD(QRect(0, 0, width, 130));
 
     centralMenu->setGeometry(0, 0, width*1.5, height*2);
     centralMenu->UpdateD(QRect(0, 0, width*1.5, height*2));

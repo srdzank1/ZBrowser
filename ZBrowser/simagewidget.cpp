@@ -7,7 +7,8 @@ SImageWidget::SImageWidget(QWidget *parent) : QWidget(parent)
 {
     setAttribute(Qt::WA_StaticContents);
     setMouseTracking(true);
-    setGeometry(0,0,0,0);
+//    setGeometry(0,0,0,0);
+
 }
 
 void SImageWidget::setImagePathName(int id, const QString& pathName){
@@ -23,49 +24,75 @@ void SImageWidget::setTitleIcon(const QString& name){
 void SImageWidget::paintEvent(QPaintEvent *event){
     QPainter painter(this);
     QTextOption opt;
-    opt.setAlignment(Qt::AlignCenter);
+    opt.setAlignment(Qt::AlignTop | Qt::AlignCenter);
     QPen pen;
     painter.setPen(pen);
-    if (!bmouseOver) {
-        painter.setFont(QFont("Arial", 11, QFont::Normal));
-//        painter.drawImage(QRect(10, 30, 81, 72), mImage);
-        painter.drawImage(QRect(10, 30, 76, 72), mImage);
-//        painter.drawText(QRect(0,30,100,90), m_titleIcon, opt);
-    }else{
-        painter.setFont(QFont("Arial", 12, QFont::Bold));
-        float scont = 0;
-        if ((m_x >= 0 )&&(m_x < 44)){
-            scont = (float)m_x/44;
-        }
-        else if ((m_x >= 44 )&&(m_x < 88)){
-            scont =(float)(88 - m_x)/44;
-        }
-        else if(m_x > 88){
-            scont = 0;
-        }
+//    float scont = 0;
+//    if ((m_x >= 0 )&&(m_x < 44)){
+//        scont = (float)m_x/44;
+//    }
+//    else if ((m_x >= 44 )&&(m_x < 88)){
+//        scont =(float)(88 - m_x)/44;
+//    }
+//    else if(m_x > 88){
+//        scont = 0;
+//    }
+
+//    float scont1 = 0;
+
+//    if ((m_y >= 0 )&&(m_y < 40)){
+//        scont1 = (float)m_y/40;
+//    } else if(m_y >= 40){
+//        scont1 = 1;
+//    }
 
 
-        float scont1 = 0;
-        if ((m_y >= 0 )&&(m_y < 12)){
-            scont1 = (float)m_y/12;
-        } else if(m_y >= 12){
-            scont1 = 1;
-        }
-
-
-        painter.drawImage(QRect(12, 42 -23*scont -12*scont1, 76, 67), mImage);
-
-//      painter.drawImage(QRect(12, 7, 76, 67), mImage);
-//      painter.drawImage(QRect(10, 30, 76, 72), mImage);
-        pen.setColor(Qt::black);
-        painter.setPen(pen);
-        painter.drawText(QRect(2, 70, 100,40), m_titleIcon, opt);
-        pen.setColor(Qt::white);
-        painter.setPen(pen);
-        painter.drawText(QRect(0, 72, 100,40), m_titleIcon, opt);
-
+    float scont = 0;
+    if ((m_x >= 0 )&&(m_x < 44)){
+        scont = (float)m_x/44;
     }
-    painter.end();
+    else if ((m_x >= 44 )&&(m_x < 88)){
+        scont =(float)(88 - m_x)/44;
+    }
+    else if(m_x > 88){
+        scont = 0;
+    }
+
+    float scont1 = 0;
+
+    if ((m_y >= 0 )&&(m_y < 44)){
+        scont1 = (float)m_y/44;
+    }
+    else if ((m_y >= 44 )&&(m_y < 88)){
+        scont1 =(float)(88 - m_y)/44;
+    }
+    else if(m_y > 88){
+        scont1 = 0;
+    }
+
+
+    QRect X9( 0, 0, 100, 100);
+
+        if (!bmouseOver) {
+            painter.setFont(QFont("Arial", 11, QFont::Normal));
+            painter.drawImage(QRect(10, 30, 70, 70), mImage);
+        }else{
+            if (X9.contains(m_x, m_y)){
+                painter.drawImage(QRect(10, 30 -10*scont -10*scont1, 70, 70), mImage);
+                if ((scont + scont1) > 0.2){
+                    painter.setFont(QFont("Arial", 12, QFont::Bold));
+                    pen.setColor(Qt::black);
+                    painter.setPen(pen);
+                    painter.drawText(QRect(2, 75, 100, 42), m_titleIcon, opt);
+                    pen.setColor(Qt::white);
+                    painter.setPen(pen);
+                    painter.drawText(QRect(0, 77, 100, 42), m_titleIcon, opt);
+                }
+            }else{
+                painter.drawImage(QRect(10, 30, 70, 70), mImage);
+            }
+        }
+   painter.end();
 }
 
 
