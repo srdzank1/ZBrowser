@@ -36,7 +36,7 @@ void CLargeImage::paintEvent(QPaintEvent *event){
     QPainterPath path;
 
     if (bmouseOver) {
-        path.addRoundedRect(QRectF(30, 40, m_width-60, m_height-65), 10, 10);
+        path.addRoundedRect(QRectF(30, 20, m_width-60, m_height-65), 10, 10);
         QPen pen(Qt::darkYellow, 10);
         painter.setPen(pen);
         painter.fillPath(path, Qt::white);
@@ -46,16 +46,16 @@ void CLargeImage::paintEvent(QPaintEvent *event){
         painter.setPen(pen);
 
         painter.setFont(QFont("Arial", 11, QFont::Bold));
-        painter.drawImage(QRect(30, 40, m_width-60, m_height-65), mImage);
+        painter.drawImage(QRect(30, 20, m_width-60, m_height-65), mImage);
         pen.setColor(Qt::black);
         painter.setPen(pen);
-        painter.drawText(QRect(10, 10, m_width-10, 20), m_titleIcon, opt);
+        painter.drawText(QRect(10, m_height-87, m_width-10, m_height-67), m_titleIcon, opt);
         pen.setColor(Qt::white);
         painter.setPen(pen);
-        painter.drawText(QRect(8, 8, m_width-10, 20), m_titleIcon, opt);
+        painter.drawText(QRect(8, m_height-85, m_width-10, m_height-65), m_titleIcon, opt);
 
     }else{
-        path.addRoundedRect(QRectF(10, 30, m_width-20, m_height-30), 10, 10);
+        path.addRoundedRect(QRectF(10, 10, m_width-20, m_height-30), 10, 10);
         QPen pen(Qt::darkYellow, 10);
         painter.setPen(pen);
         painter.fillPath(path, Qt::red);
@@ -64,14 +64,13 @@ void CLargeImage::paintEvent(QPaintEvent *event){
         pen.setColor(Qt::black);
         painter.setPen(pen);
         painter.setFont(QFont("Arial", 11, QFont::Normal));
-        painter.drawImage(QRect(10, 30, m_width-20, m_height-30), mImage);
+        painter.drawImage(QRect(10, 10, m_width-20, m_height-30), mImage);
         pen.setColor(Qt::black);
         painter.setPen(pen);
-        painter.drawText(QRect(10, 2, m_width-10, 20), m_titleIcon, opt);
+        painter.drawText(QRect(10, m_height-77, m_width-10, m_height-57), m_titleIcon, opt);
         pen.setColor(Qt::white);
         painter.setPen(pen);
-        painter.drawText(QRect(8, 0, m_width-10, 20), m_titleIcon, opt);
-
+        painter.drawText(QRect(8, m_height-75, m_width-10, m_height-55), m_titleIcon, opt);
     }
     painter.end();
 }

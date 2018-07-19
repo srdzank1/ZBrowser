@@ -59,7 +59,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     centralMenu = new CMenuForm(this, xmlData, width, height);
     connect(centralMenu, SIGNAL(clickForUrl(QString&)), this, SLOT(ProcClickForUrl(QString&)));
-    centralMenu->setGeometry(0,0, width, height);
+    centralMenu->setGeometry(QRect(70, 70, width-140, height-195));
     centralMenu->hide();
 
     scroll = new QScrollArea(this);
@@ -67,12 +67,26 @@ MainWindow::MainWindow(QWidget *parent) :
     scroll->setStyleSheet("QScrollArea {background-color:transparent;border: none;}");
     scroll->setGeometry(QRect(70, 70, width-140, height-195));
     scroll->verticalScrollBar()->setRange(0, height);
-    scroll->horizontalScrollBar()->setRange(0, width);
+//    scroll->horizontalScrollBar()->setRange(0, width-140);
+    scroll->horizontalScrollBar()->setRange(0, 0);
 
     scroll->horizontalScrollBar()->setStyleSheet("QScrollBar {height:0px;}");
     scroll->verticalScrollBar()->setStyleSheet("QScrollBar {width:0px;}");
     scroll->setWidget(centralMenu);
     scroll->setFocus();
+
+    upArrowWidget = new CBaseWidget(this);
+    upArrowWidget->setGeometry(width - 68, 70, 50, 50);
+    QImage upArrowTemp = QImage(QDir::toNativeSeparators(QDir::currentPath() +"/"+ "images/top.png"));
+    upArrowWidget->setImage(0, upArrowTemp);
+    upArrowWidget->show();
+
+    downArrowWidget = new CBaseWidget(this);
+    downArrowWidget->setGeometry(width - 68, height-175, 50, 50);
+    QImage downArrowTemp = QImage(QDir::toNativeSeparators(QDir::currentPath() +"/"+ "images/bottom.png"));
+    downArrowWidget->setImage(0, downArrowTemp);
+    downArrowWidget->show();
+
     scroll->hide();
 
 }
@@ -117,10 +131,13 @@ void MainWindow::processClick(int i){
     headerImageInfo->setTitleIcon(xmlData.categories.at(i)->name);
 
     centralMenu->createMenuByCategory(i);
-//    view->setUrl(QUrl(QStringLiteral("")));
+    view->setUrl(QUrl(QStringLiteral("https://player.vimeo.com/video/182513271?autoplay=1&loop=1&title=0&byline=0&portrait=0")));
+    view->show();
 
     backgroundImage->show();
     centralMenu->show();
+    scroll->verticalScrollBar()->setValue(0);
+    scroll->horizontalScrollBar()->setValue(0);
     scroll->show();
     scroll->setFocus();
 }
@@ -147,8 +164,8 @@ void MainWindow::resizeEvent(QResizeEvent *event)
     horizontalMenu->setGeometry(0, height-130, width, height);
     horizontalMenu->UpdateD(QRect(0, 0, width, 130));
 
-    centralMenu->setGeometry(0, 0, width*1.5, height*2);
-    centralMenu->UpdateD(QRect(0, 0, width*1.5, height*2));
+    centralMenu->setGeometry(QRect(70, 70, width-140, height-195));
+    centralMenu->UpdateD(QRect(70, 70, width-140, height-195));
     view->hide();
     centralMenu->hide();
     QWidget::resizeEvent(event);

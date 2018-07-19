@@ -21,6 +21,7 @@
 #include <QtConcurrent>
 #include "ccentralbackgroundimage.h"
 #include "cheaderimageinfo.h"
+#include "cbasewidget.h"
 
 
 
@@ -51,6 +52,9 @@ private:
     QScrollArea *scroll;
     CCentralBackgroundImage *backgroundImage;
     CHeaderImageInfo *headerImageInfo;
+    CBaseWidget * upArrowWidget;
+    CBaseWidget * downArrowWidget;
+
 public slots:
     void processClick(int i);
     void ProcClickForUrl(QString &i);

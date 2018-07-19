@@ -11,6 +11,8 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
     QtWebEngine::initialize();
     MainWindow w;
-    w.showFullScreen();
+//    w.showFullScreen();
+    w.showMaximized();
+
     return a.exec();
 }
