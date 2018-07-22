@@ -40,6 +40,8 @@ public:
 
 protected:
     void resizeEvent(QResizeEvent *event) override;
+    void keyReleaseEvent(QKeyEvent *);
+
 private:
     Ui::MainWindow *ui;
     QHorizontalMenu *horizontalMenu;

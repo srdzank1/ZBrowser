@@ -18,7 +18,7 @@ CMenuForm::CMenuForm(QWidget *parent, tgroup &data, int &width, int&height) :
 CMenuForm::~CMenuForm()
 {
     QList<CLargeImage*>::iterator it;
-    for (it =pListLargeImage.begin();it != pListLargeImage.end();it){
+    for (it =pListLargeImage.begin(); it != pListLargeImage.end(); it++){
          delete *it;
     }
     pListLargeImage.clear();

@@ -91,6 +91,11 @@ MainWindow::MainWindow(QWidget *parent) :
 
 }
 
+void MainWindow::keyReleaseEvent(QKeyEvent *event){
+    if((event->key() == Qt::Key_L)&&(event->modifiers() == Qt::CTRL)){
+        close();
+    }
+}
 
 void MainWindow::fullScreenRequested(QWebEngineFullScreenRequest request)
 {
@@ -131,7 +136,9 @@ void MainWindow::processClick(int i){
     headerImageInfo->setTitleIcon(xmlData.categories.at(i)->name);
 
     centralMenu->createMenuByCategory(i);
-    view->setUrl(QUrl(QStringLiteral("https://player.vimeo.com/video/182513271?autoplay=1&loop=1&title=0&byline=0&portrait=0")));
+//    view->setUrl(QUrl(QStringLiteral("https://player.vimeo.com/video/182513271?autoplay=1&loop=1&title=0&byline=0&portrait=0")));
+    view->setUrl(QUrl(QStringLiteral("https://player.vimeo.com/video/182513271?autoplay=1&loop=1")));
+
     view->show();
 
     backgroundImage->show();
