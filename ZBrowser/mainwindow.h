@@ -61,8 +61,7 @@ public slots:
     void processClick(int i);
     void ProcClickForUrl(QString &i);
     void fullScreenRequested(QWebEngineFullScreenRequest request);
-
-
+    void procLoadUrlFinished(int s);
 };
 
 #endif // MAINWINDOW_H
