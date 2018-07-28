@@ -23,13 +23,15 @@ MainWindow::MainWindow(QWidget *parent) :
     backgroundImage->show();
 
     view = new QWebEngineView(this);
-    view->setGeometry(0,0, width, height);
-    connect(view->page(), SIGNAL(loadProgress(int)),this, SLOT(procLoadUrlFinished(int)));
+    view->setGeometry(0,0,0,0);
+    connect(view->page(), SIGNAL(loadFinished(bool)),this, SLOT(procLoadUrlFinished(bool)));
     view->settings()->setAttribute(QWebEngineSettings::FullScreenSupportEnabled, true);
     connect(view->page(),
                 &QWebEnginePage::fullScreenRequested,
                 this,
                 &MainWindow::fullScreenRequested);
+
+    view->setUrl(QUrl(QStringLiteral("https://player.vimeo.com/video/182513271?autoplay=1&loop=1&title=0&byline=0&portrait=0")));
 
     parser = new CParserXML(this);
     QString filePath = "://res/xml/menu.xml";
@@ -39,8 +41,6 @@ MainWindow::MainWindow(QWidget *parent) :
 
     tgroup xmlData = parser->getParsedData();
 
-    view->setUrl(QUrl(QStringLiteral("https://player.vimeo.com/video/182513271?autoplay=1&loop=1&title=0&byline=0&portrait=0")));
-    view->show();
     headerImageInfo = new CHeaderImageInfo(this);
     headerImageInfo->setGeometry(5,5, width, 60);
     headerImageInfo->setWidth(50);
@@ -97,7 +97,10 @@ MainWindow::MainWindow(QWidget *parent) :
     scroll->show();
     scroll->setFocus();
 
-
+    backgroundImage->show();
+    view->setGeometry(0,0, width, height);
+    view->update();
+    view->show();
 }
 
 
@@ -114,11 +117,10 @@ inline void delay(int millisecondsWait)
     loop.exec();
 }
 
-void MainWindow::procLoadUrlFinished(int s){
-    if (s == 100){
-        backgroundImage->hide();
-
-    }
+void MainWindow::procLoadUrlFinished(bool s){
+//    delay(4000);
+    view->setGeometry(0,0, width, height);
+    view->update();
 }
 
 void MainWindow::keyReleaseEvent(QKeyEvent *event){
@@ -169,9 +171,15 @@ void MainWindow::processClick(int i){
 
 
     centralMenu->createMenuByCategory(i);
-    view->setUrl(QUrl(QStringLiteral("https://player.vimeo.com/video/182513271?autoplay=1&loop=1&title=0&byline=0&portrait=0")));
+    view->setGeometry(0,0, 0, 0);
+    view->update();
+    //view->setUrl(QUrl(QStringLiteral("https://player.vimeo.com/video/182513271?autoplay=1&loop=1&title=0&byline=0&portrait=0")));
+    QString bgvideo = xmlData.categories.at(i)->bgvideo;
+    bgvideo = bgvideo.trimmed();
+    bgvideo += "?autoplay=1&loop=1&title=0&byline=0&portrait=0";
+    view->setUrl(QUrl(bgvideo));
+
     view->show();
-    //    view->show();
 
     backgroundImage->show();
     centralMenu->show();
