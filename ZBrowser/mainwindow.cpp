@@ -23,15 +23,13 @@ MainWindow::MainWindow(QWidget *parent) :
     backgroundImage->show();
 
     view = new QWebEngineView(this);
+    view->setGeometry(0,0, width, height);
     connect(view->page(), SIGNAL(loadProgress(int)),this, SLOT(procLoadUrlFinished(int)));
     view->settings()->setAttribute(QWebEngineSettings::FullScreenSupportEnabled, true);
     connect(view->page(),
                 &QWebEnginePage::fullScreenRequested,
                 this,
                 &MainWindow::fullScreenRequested);
-    view->setUrl(QUrl(QStringLiteral("https://www.youtube.com/embed/R0xeO8QiknA?autoplay=1&loop=1&background=1")));
-    view->setGeometry(0,0, width, height);
-
 
     parser = new CParserXML(this);
     QString filePath = "://res/xml/menu.xml";
@@ -41,6 +39,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
     tgroup xmlData = parser->getParsedData();
 
+    view->setUrl(QUrl(QStringLiteral("https://player.vimeo.com/video/182513271?autoplay=1&loop=1&title=0&byline=0&portrait=0")));
+    view->show();
     headerImageInfo = new CHeaderImageInfo(this);
     headerImageInfo->setGeometry(5,5, width, 60);
     headerImageInfo->setWidth(50);
@@ -89,6 +89,19 @@ MainWindow::MainWindow(QWidget *parent) :
     downArrowWidget->show();
 
     scroll->hide();
+    //view->setUrl(QUrl(QStringLiteral("https://www.youtube.com/embed/yx65qrvkPFA?autoplay=1&loop=1&showinfo=0&controls=1&start=5")));
+    backgroundImage->show();
+    centralMenu->show();
+    scroll->verticalScrollBar()->setValue(0);
+    scroll->horizontalScrollBar()->setValue(0);
+    scroll->show();
+    scroll->setFocus();
+
+
+}
+
+
+void MainWindow::initVideo(){
 
 }
 
@@ -103,9 +116,8 @@ inline void delay(int millisecondsWait)
 
 void MainWindow::procLoadUrlFinished(int s){
     if (s == 100){
-        view->show();
-        delay(1000);
         backgroundImage->hide();
+
     }
 }
 
@@ -157,9 +169,9 @@ void MainWindow::processClick(int i){
 
 
     centralMenu->createMenuByCategory(i);
-//    view->setUrl(QUrl(QStringLiteral("https://player.vimeo.com/video/182513271?autoplay=1&loop=1&title=0&byline=0&portrait=0")));
-    view->setUrl(QUrl(QStringLiteral("https://www.youtube.com/embed/R0xeO8QiknA?autoplay=1&loop=1&background=1")));
-//    view->show();
+    view->setUrl(QUrl(QStringLiteral("https://player.vimeo.com/video/182513271?autoplay=1&loop=1&title=0&byline=0&portrait=0")));
+    view->show();
+    //    view->show();
 
     backgroundImage->show();
     centralMenu->show();
@@ -175,8 +187,9 @@ void MainWindow::ProcClickForUrl(QString &url){
     centralMenu->hide();
     scroll->hide();
     backgroundImage->hide();
-    view->show();
     view->setUrl(QUrl(url));
+    view->show();
+
     scroll->setFocus();
 //    scroll->verticalScrollBar()->setValue(0);
 //    scroll->horizontalScrollBar()->setValue(0);

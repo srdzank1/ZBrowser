@@ -6,6 +6,7 @@
 
 QT       += core gui webenginewidgets  webengine concurrent
 
+
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = ZBrowser
@@ -57,5 +58,7 @@ FORMS += \
 
 RESOURCES += \
     res.qrc
+
+
 
 

@@ -24,8 +24,7 @@
 #include "cbasewidget.h"
 
 
-
-
+class QWebView;
 namespace Ui {
 class MainWindow;
 }
@@ -37,7 +36,7 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
-
+    void initVideo();
 protected:
     void resizeEvent(QResizeEvent *event) override;
     void keyReleaseEvent(QKeyEvent *);
