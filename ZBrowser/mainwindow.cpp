@@ -16,23 +16,26 @@ MainWindow::MainWindow(QWidget *parent) :
     backgroundImage = new CCentralBackgroundImage(this);
     backgroundImage->setGeometry(0,0, width, height);
     backgroundImage->setWidth(width);
+    backgroundImage->show();
+
 
     QImage imgTmp = QImage(QDir::toNativeSeparators(QDir::currentPath() +"/"+ "images/0138dd49a38e8e64eb2a4738dba6dc4f_6478f.jpg"));
     backgroundImage->setImage(0,imgTmp);
     backgroundImage->setHeight(height);
-    backgroundImage->show();
 
     view = new QWebEngineView(this);
-    view->setGeometry(0,0,0,0);
-    connect(view->page(), SIGNAL(loadFinished(bool)),this, SLOT(procLoadUrlFinished(bool)));
+    view->setGeometry(0,0,width,height);
+    connect(view, SIGNAL(loadFinished(bool)),this, SLOT(procLoadUrlFinished(bool)));
     view->settings()->setAttribute(QWebEngineSettings::FullScreenSupportEnabled, true);
+    view->settings()->setAttribute(QWebEngineSettings::PluginsEnabled, true);
+
     connect(view->page(),
                 &QWebEnginePage::fullScreenRequested,
                 this,
                 &MainWindow::fullScreenRequested);
 
-    view->setUrl(QUrl(QStringLiteral("https://player.vimeo.com/video/182513271?autoplay=1&loop=1&title=0&byline=0&portrait=0")));
-
+    view->setUrl(QUrl(QStringLiteral("https://player.vimeo.com/video/182513271?background=1&muted=0")));
+    view->show();
     parser = new CParserXML(this);
     QString filePath = "://res/xml/menu.xml";
     parser->loadThemeXmlFile(filePath);
@@ -48,12 +51,11 @@ MainWindow::MainWindow(QWidget *parent) :
     headerImageInfo->setImage(0, imgTmp);
     headerImageInfo->setTitleIcon(xmlData.categories.at(0)->name);
     headerImageInfo->setHeight(50);
-    headerImageInfo->show();
+    headerImageInfo->hide();
 
 
 
     horizontalMenu = new QHorizontalMenu(this, xmlData);
-
     horizontalMenu->setGeometry(0,height-120, width, height);
     connect(horizontalMenu, SIGNAL(click(int)), this, SLOT(processClick(int)));
 
@@ -68,9 +70,7 @@ MainWindow::MainWindow(QWidget *parent) :
     scroll->setStyleSheet("QScrollArea {background-color:transparent;border: none;}");
     scroll->setGeometry(QRect(70, 70, width-140, height-195));
     scroll->verticalScrollBar()->setRange(0, height);
-//    scroll->horizontalScrollBar()->setRange(0, width-140);
     scroll->horizontalScrollBar()->setRange(0, 0);
-
     scroll->horizontalScrollBar()->setStyleSheet("QScrollBar {height:0px;}");
     scroll->verticalScrollBar()->setStyleSheet("QScrollBar {width:0px;}");
     scroll->setWidget(centralMenu);
@@ -89,23 +89,19 @@ MainWindow::MainWindow(QWidget *parent) :
     downArrowWidget->show();
 
     scroll->hide();
-    //view->setUrl(QUrl(QStringLiteral("https://www.youtube.com/embed/yx65qrvkPFA?autoplay=1&loop=1&showinfo=0&controls=1&start=5")));
-    backgroundImage->show();
-    centralMenu->show();
+    backgroundImage->hide();
+    centralMenu->hide();
+
     scroll->verticalScrollBar()->setValue(0);
     scroll->horizontalScrollBar()->setValue(0);
-    scroll->show();
+    scroll->hide();
     scroll->setFocus();
-
     backgroundImage->show();
-    view->setGeometry(0,0, width, height);
-    view->update();
-    view->show();
+
 }
 
 
 void MainWindow::initVideo(){
-
 }
 
 inline void delay(int millisecondsWait)
@@ -118,8 +114,9 @@ inline void delay(int millisecondsWait)
 }
 
 void MainWindow::procLoadUrlFinished(bool s){
-//    delay(4000);
+    delay(2000);
     view->setGeometry(0,0, width, height);
+    view->show();
     view->update();
 }
 
@@ -173,10 +170,11 @@ void MainWindow::processClick(int i){
     centralMenu->createMenuByCategory(i);
     view->setGeometry(0,0, 0, 0);
     view->update();
-    //view->setUrl(QUrl(QStringLiteral("https://player.vimeo.com/video/182513271?autoplay=1&loop=1&title=0&byline=0&portrait=0")));
+    //view->setUrl(QUrl(QStringLiteral("https://player.vimeo.com/video/182513271?background=1")));
     QString bgvideo = xmlData.categories.at(i)->bgvideo;
     bgvideo = bgvideo.trimmed();
-    bgvideo += "?autoplay=1&loop=1&title=0&byline=0&portrait=0";
+    bgvideo += "?background=1&muted=0";
+    //bgvideo += "?autoplay=1&loop=1&title=0&byline=0&portrait=0";
     view->setUrl(QUrl(bgvideo));
 
     view->show();
