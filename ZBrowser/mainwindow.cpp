@@ -59,16 +59,19 @@ MainWindow::MainWindow(QWidget *parent) :
     horizontalMenu->setGeometry(0,height-120, width, height);
     connect(horizontalMenu, SIGNAL(click(int)), this, SLOT(processClick(int)));
 
+    int tempNum = width/200;
+    int tempWidth = (tempNum-1)*200;
+    int tempMarg = (width-tempWidth)/2;
 
-    centralMenu = new CMenuForm(this, xmlData, width, height);
+    centralMenu = new CMenuForm(this, xmlData, tempWidth, height);
     connect(centralMenu, SIGNAL(clickForUrl(QString&)), this, SLOT(ProcClickForUrl(QString&)));
-    centralMenu->setGeometry(QRect(70, 70, width-140, height-195));
+    centralMenu->setGeometry(QRect(tempMarg, 70, width-2*tempMarg, height-195));
     centralMenu->hide();
 
     scroll = new QScrollArea(this);
     scroll->setStyleSheet("background-color:transparent; border: none;");
     scroll->setStyleSheet("QScrollArea {background-color:transparent;border: none;}");
-    scroll->setGeometry(QRect(70, 70, width-140, height-195));
+    scroll->setGeometry(QRect(tempMarg, 70, width-2*tempMarg, height-195));
     scroll->verticalScrollBar()->setRange(0, height);
     scroll->horizontalScrollBar()->setRange(0, 0);
     scroll->horizontalScrollBar()->setStyleSheet("QScrollBar {height:0px;}");
@@ -211,9 +214,12 @@ void MainWindow::resizeEvent(QResizeEvent *event)
 
     horizontalMenu->setGeometry(0, height-130, width, height);
     horizontalMenu->UpdateD(QRect(0, 0, width, 130));
+    int tempNum = width/200;
+    int tempWidth = (tempNum-1)*200;
+    int tempMarg = (width-tempWidth)/2;
 
-    centralMenu->setGeometry(QRect(70, 70, width-140, height-195));
-    centralMenu->UpdateD(QRect(70, 70, width-140, height-195));
+    centralMenu->setGeometry(QRect(tempMarg, 70, width-2*tempMarg, height-195));
+    centralMenu->UpdateD(QRect(tempMarg, 70, width-2*tempMarg, height-195));
     view->hide();
     centralMenu->hide();
     QWidget::resizeEvent(event);
