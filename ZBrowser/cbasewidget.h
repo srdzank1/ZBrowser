@@ -26,8 +26,10 @@ protected:
     void mouseMoveEvent(QMouseEvent *event);
     virtual void enterEvent(QEvent * event);
     virtual void leaveEvent(QEvent * event);
+
     virtual void mouseReleaseEvent(QMouseEvent * event);
 signals:
+    void buttonClick();
 public slots:
 private:
     QString m_pathName;
@@ -37,6 +39,7 @@ private:
     int m_height;
     QBrush m_brush;
     QString m_titleIcon;
+    bool bmouseOver;
 };
 
 #endif // CBASEWIDGET_H

@@ -80,16 +80,18 @@ MainWindow::MainWindow(QWidget *parent) :
     scroll->setFocus();
 
     upArrowWidget = new CBaseWidget(this);
+    connect(upArrowWidget, SIGNAL(buttonClick()), this, SLOT(ProcUpClick()));
     upArrowWidget->setGeometry(width - 68, 70, 50, 50);
     QImage upArrowTemp = QImage(QDir::toNativeSeparators(QDir::currentPath() +"/"+ "images/top.png"));
     upArrowWidget->setImage(0, upArrowTemp);
-    upArrowWidget->show();
+    upArrowWidget->hide();
 
     downArrowWidget = new CBaseWidget(this);
+    connect(downArrowWidget, SIGNAL(buttonClick()), this, SLOT(ProcDownClick()));
     downArrowWidget->setGeometry(width - 68, height-175, 50, 50);
     QImage downArrowTemp = QImage(QDir::toNativeSeparators(QDir::currentPath() +"/"+ "images/bottom.png"));
     downArrowWidget->setImage(0, downArrowTemp);
-    downArrowWidget->show();
+    downArrowWidget->hide();
 
     scroll->hide();
     backgroundImage->hide();
@@ -101,6 +103,15 @@ MainWindow::MainWindow(QWidget *parent) :
     scroll->setFocus();
     backgroundImage->show();
 
+}
+
+
+void MainWindow::ProcUpClick(){
+    scroll->verticalScrollBar()->setValue(scroll->verticalScrollBar()->value()-100);
+}
+
+void MainWindow::ProcDownClick(){
+    scroll->verticalScrollBar()->setValue(scroll->verticalScrollBar()->value()+100);
 }
 
 
@@ -169,6 +180,13 @@ void MainWindow::processClick(int i){
     downArrowWidget->show();
     upArrowWidget->show();
 
+    if(xmlData.categories.at(i)->websites.count()!=0){
+        downArrowWidget->show();
+        upArrowWidget->show();
+    }else{
+        downArrowWidget->hide();
+        upArrowWidget->hide();
+    }
 
     centralMenu->createMenuByCategory(i);
     view->setGeometry(0,0, 0, 0);
