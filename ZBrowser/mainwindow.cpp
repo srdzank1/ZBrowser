@@ -51,7 +51,7 @@ MainWindow::MainWindow(QWidget *parent) :
     headerImageInfo->setImage(0, imgTmp);
     headerImageInfo->setTitleIcon(xmlData.categories.at(0)->name);
     headerImageInfo->setHeight(50);
-    headerImageInfo->hide();
+    headerImageInfo->show();
 
 
 
@@ -177,6 +177,7 @@ void MainWindow::processClick(int i){
     imgTmp = QImage(QDir::toNativeSeparators(QDir::currentPath() +"/"+ xmlData.categories.at(i)->icon));
     headerImageInfo->setImage(0, imgTmp);
     headerImageInfo->setTitleIcon(xmlData.categories.at(i)->name);
+    headerImageInfo->show();
     downArrowWidget->show();
     upArrowWidget->show();
 
@@ -222,6 +223,7 @@ void MainWindow::ProcClickForUrl(QString &url){
 //    scroll->horizontalScrollBar()->setValue(0);
     downArrowWidget->hide();
     upArrowWidget->hide();
+    headerImageInfo->hide();
 }
 
 
