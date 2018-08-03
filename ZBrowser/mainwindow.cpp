@@ -202,9 +202,18 @@ void MainWindow::processClick(int i){
     view->update();
     //view->setUrl(QUrl(QStringLiteral("https://player.vimeo.com/video/182513271?background=1")));
     QString bgvideo = xmlData.categories.at(i)->bgvideo;
+    QString videoSound = xmlData.categories.at(i)->videosound;
+    QString bgvideoSound;
+    if (videoSound == "false"){
+       bgvideoSound = "1";
+    }else{
+        bgvideoSound = "0";
+    }
+
     bgvideo = bgvideo.trimmed();
     QString htmlCont= cont;
     htmlCont = htmlCont.replace("%url%",bgvideo);
+    htmlCont = htmlCont.replace("%muted%",bgvideoSound);
 
     view->setHtml(htmlCont);
 

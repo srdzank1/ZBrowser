@@ -57,6 +57,8 @@ private:
     CBaseWidget * upArrowWidget;
     CBaseWidget * downArrowWidget;
     QString cont;
+
+
 public slots:
     void processClick(int i);
     void ProcClickForUrl(QString &i);

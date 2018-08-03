@@ -4018,7 +4018,7 @@
 		<background>images/0138dd49a38e8e64eb2a4738dba6dc4f_a0fca.jpg</background>
 		<updatetime>2017-05-01 09:19:42</updatetime>
 		<isupdated>no</isupdated>
-		<bgvideo>https://www.youtube.com/watch?v=dKCdV20zLMs</bgvideo>
+                <bgvideo>https://www.youtube.com/embed/dKCdV20zLMs</bgvideo>
 		<videosound>true</videosound>
 		<videoopacity>0</videoopacity>
 		<textcolor></textcolor>
