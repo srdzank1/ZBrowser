@@ -40,6 +40,14 @@ MainWindow::MainWindow(QWidget *parent) :
     QString filePath = "://res/xml/menu.xml";
     parser->loadThemeXmlFile(filePath);
 
+    QString filePathHtml = ":/res/html/proc1.html";
+
+    QFile file(filePathHtml);
+    file.open(QIODevice::ReadOnly | QFile::Text);
+    QTextStream in(&file);
+    cont = in.readAll();
+
+
     QFuture<int> future = QtConcurrent::run(parser, &CParserXML::CreateCashImage);
 
     tgroup xmlData = parser->getParsedData();
@@ -195,9 +203,10 @@ void MainWindow::processClick(int i){
     //view->setUrl(QUrl(QStringLiteral("https://player.vimeo.com/video/182513271?background=1")));
     QString bgvideo = xmlData.categories.at(i)->bgvideo;
     bgvideo = bgvideo.trimmed();
-    bgvideo += "?background=1&muted=0";
-    //bgvideo += "?autoplay=1&loop=1&title=0&byline=0&portrait=0";
-    view->setUrl(QUrl(bgvideo));
+    QString htmlCont= cont;
+    htmlCont = htmlCont.replace("%url%",bgvideo);
+
+    view->setHtml(htmlCont);
 
     view->show();
 

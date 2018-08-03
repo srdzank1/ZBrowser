@@ -19,6 +19,7 @@
 #include <QWebEngineFullScreenRequest>
 #include <QFuture>
 #include <QtConcurrent>
+#include <QTextStream>
 #include "ccentralbackgroundimage.h"
 #include "cheaderimageinfo.h"
 #include "cbasewidget.h"
@@ -55,7 +56,7 @@ private:
     CHeaderImageInfo *headerImageInfo;
     CBaseWidget * upArrowWidget;
     CBaseWidget * downArrowWidget;
-
+    QString cont;
 public slots:
     void processClick(int i);
     void ProcClickForUrl(QString &i);
