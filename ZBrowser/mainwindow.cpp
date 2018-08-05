@@ -34,18 +34,37 @@ MainWindow::MainWindow(QWidget *parent) :
                 this,
                 &MainWindow::fullScreenRequested);
 
-    view->setUrl(QUrl(QStringLiteral("https://player.vimeo.com/video/182513271?background=1&muted=0")));
-    view->show();
-    parser = new CParserXML(this);
-    QString filePath = "://res/xml/menu.xml";
-    parser->loadThemeXmlFile(filePath);
+
 
     QString filePathHtml = ":/res/html/proc1.html";
-
     QFile file(filePathHtml);
     file.open(QIODevice::ReadOnly | QFile::Text);
     QTextStream in(&file);
     cont = in.readAll();
+
+
+    QString bgvideo = "https://player.vimeo.com/video/182513271";
+    QString videoSound = "true";
+    QString bgvideoSound;
+    if (videoSound == "false"){
+       bgvideoSound = "1";
+    }else{
+        bgvideoSound = "0";
+    }
+
+    bgvideo = bgvideo.trimmed();
+    QString htmlCont= cont;
+    htmlCont = htmlCont.replace("%url%",bgvideo);
+    htmlCont = htmlCont.replace("%muted%",bgvideoSound);
+
+    view->setHtml(htmlCont);
+    view->show();
+
+
+    parser = new CParserXML(this);
+    QString filePath = "://res/xml/menu.xml";
+    parser->loadThemeXmlFile(filePath);
+
 
 
     QFuture<int> future = QtConcurrent::run(parser, &CParserXML::CreateCashImage);
