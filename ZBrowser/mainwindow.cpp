@@ -7,11 +7,13 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    statusHistoryEnabled = false;
     parser = 0;
     setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
     QRect rec = QApplication::desktop()->screenGeometry();
     height = rec.height();
     width = rec.width();
+
 
     backgroundImage = new CCentralBackgroundImage(this);
     backgroundImage->setGeometry(0,0, width, height);
@@ -26,6 +28,8 @@ MainWindow::MainWindow(QWidget *parent) :
     view = new QWebEngineView(this);
     view->setGeometry(0,0,width,height);
     connect(view, SIGNAL(loadFinished(bool)),this, SLOT(procLoadUrlFinished(bool)));
+    connect(view, SIGNAL(urlChanged(const QUrl&)),this, SLOT(procLoadUrlChanged(const QUrl&)));
+
     view->settings()->setAttribute(QWebEngineSettings::FullScreenSupportEnabled, true);
     view->settings()->setAttribute(QWebEngineSettings::PluginsEnabled, true);
 
@@ -35,7 +39,7 @@ MainWindow::MainWindow(QWidget *parent) :
                 &MainWindow::fullScreenRequested);
 
 
-
+    view->pageAction(QWebEnginePage::Forward);
     QString filePathHtml = ":/res/html/proc1.html";
     QFile file(filePathHtml);
     file.open(QIODevice::ReadOnly | QFile::Text);
@@ -91,7 +95,7 @@ MainWindow::MainWindow(QWidget *parent) :
     int tempMarg = (width-tempWidth)/2;
 
     centralMenu = new CMenuForm(this, xmlData, tempWidth, height);
-    connect(centralMenu, SIGNAL(clickForUrl(QString&)), this, SLOT(ProcClickForUrl(QString&)));
+    connect(centralMenu, SIGNAL(clickForUrl(QString&, QString&)), this, SLOT(ProcClickForUrl(QString&, QString&)));
     centralMenu->setGeometry(QRect(tempMarg, 70, width-2*tempMarg, height-195));
     centralMenu->hide();
 
@@ -109,14 +113,18 @@ MainWindow::MainWindow(QWidget *parent) :
     upArrowWidget = new CBaseWidget(this);
     connect(upArrowWidget, SIGNAL(buttonClick()), this, SLOT(ProcUpClick()));
     upArrowWidget->setGeometry(width - 68, 70, 50, 50);
-    QImage upArrowTemp = QImage(QDir::toNativeSeparators(QDir::currentPath() +"/"+ "images/top.png"));
+//    QImage upArrowTemp = QImage(QDir::toNativeSeparators(QDir::currentPath() +"/"+ "images/top.png"));
+    QImage upArrowTemp = QImage((style()->standardPixmap(QStyle::SP_ArrowUp, 0, this)).toImage());
+
     upArrowWidget->setImage(0, upArrowTemp);
     upArrowWidget->hide();
 
     downArrowWidget = new CBaseWidget(this);
     connect(downArrowWidget, SIGNAL(buttonClick()), this, SLOT(ProcDownClick()));
     downArrowWidget->setGeometry(width - 68, height-175, 50, 50);
-    QImage downArrowTemp = QImage(QDir::toNativeSeparators(QDir::currentPath() +"/"+ "images/bottom.png"));
+//    QImage downArrowTemp = QImage(QDir::toNativeSeparators(QDir::currentPath() +"/"+ "images/bottom.png"));
+    QImage downArrowTemp = QImage((style()->standardPixmap(QStyle::SP_ArrowDown, 0, this)).toImage());
+
     downArrowWidget->setImage(0, downArrowTemp);
     downArrowWidget->hide();
 
@@ -130,6 +138,37 @@ MainWindow::MainWindow(QWidget *parent) :
     scroll->setFocus();
     backgroundImage->show();
 
+
+
+
+
+    backWidget = new CBaseWidget(this);
+    connect(backWidget, SIGNAL(buttonClick()), this, SLOT(ProcBackViewClick()));
+    backWidget->setGeometry(width - 175, 5, 50, 50);
+    QImage backWidgetTemp = QImage((style()->standardPixmap(QStyle::SP_ArrowBack, 0, this)).toImage());
+
+    backWidget->setImage(0, backWidgetTemp);
+    backWidget->hide();
+
+
+    homeWidget = new CBaseWidget(this);
+    connect(homeWidget, SIGNAL(buttonClick()), this, SLOT(ProcHomeClick()));
+    homeWidget->setGeometry(width - 120, 5, 50, 50);
+    QImage homeWidgetTemp = QImage((style()->standardPixmap(QStyle::SP_DesktopIcon, 0, this)).toImage());
+    homeWidget->setImage(0, homeWidgetTemp);
+    homeWidget->hide();
+
+    forwardWidget = new CBaseWidget(this);
+    connect(forwardWidget, SIGNAL(buttonClick()), this, SLOT(ProcForwardViewClick()));
+    forwardWidget->setGeometry(width - 65, 5, 50, 50);
+    QImage forwardWidgetTemp = QImage((style()->standardPixmap(QStyle::SP_ArrowForward, 0, this)).toImage());
+    forwardWidget->setImage(0, forwardWidgetTemp);
+    forwardWidget->hide();
+
+    hiddenWidget = new QHidden(this);
+    hiddenWidget->setGeometry(0,height-1, width, height);
+    hiddenWidget->hide();
+
 }
 
 
@@ -139,6 +178,54 @@ void MainWindow::ProcUpClick(){
 
 void MainWindow::ProcDownClick(){
     scroll->verticalScrollBar()->setValue(scroll->verticalScrollBar()->value()+100);
+}
+
+
+void MainWindow::ProcHomeClick(){
+
+    statusHistoryEnabled = false;
+    homeWidget->hide();
+    backWidget->hide();
+    forwardWidget->hide();
+    view->history()->clear();
+    processClick(0);
+}
+
+void MainWindow::procLoadUrlChanged(const QUrl&){
+    if (statusHistoryEnabled){
+        horizontalMenu->hide();
+        hiddenWidget->show();
+        int curIdx = view->history()->currentItemIndex();
+        int numHI = view->history()->count();
+        if (curIdx < numHI)
+        {
+            if(((numHI-curIdx) > 1)&&(curIdx >1)){
+                backWidget->show();
+                forwardWidget->show();
+            }else if(((numHI-curIdx) <= 1)&&(curIdx >1)){
+                backWidget->show();
+                forwardWidget->hide();
+            }else if(((numHI-curIdx) <= 1)&&(curIdx <=1)){
+                backWidget->hide();
+                forwardWidget->hide();
+            }else if(((numHI-curIdx) > 1)&&(curIdx <=1)){
+                backWidget->hide();
+                forwardWidget->show();
+            }
+
+        }else{
+            backWidget->hide();
+            forwardWidget->hide();
+        }
+    }
+}
+
+void MainWindow::ProcBackViewClick(){
+    view->page()->triggerAction(QWebEnginePage::Back);
+}
+
+void MainWindow::ProcForwardViewClick(){
+    view->page()->triggerAction(QWebEnginePage::Forward);
 }
 
 
@@ -192,6 +279,10 @@ MainWindow::~MainWindow()
 }
 
 void MainWindow::processClick(int i){
+    backWidget->hide();
+    forwardWidget->hide();
+    homeWidget->hide();
+    statusHistoryEnabled = false;
     centralMenu->hide();
     scroll->hide();
     backgroundImage->show();
@@ -239,6 +330,7 @@ void MainWindow::processClick(int i){
     view->show();
 
     backgroundImage->show();
+    horizontalMenu->show();
     centralMenu->show();
     scroll->verticalScrollBar()->setValue(0);
     scroll->horizontalScrollBar()->setValue(0);
@@ -247,8 +339,13 @@ void MainWindow::processClick(int i){
 }
 
 
-void MainWindow::ProcClickForUrl(QString &url){
+void MainWindow::ProcClickForUrl(QString &url, QString &title){
 
+    backWidget->hide();
+    forwardWidget->hide();
+    homeWidget->hide();
+
+    statusHistoryEnabled = true;
     centralMenu->hide();
     scroll->hide();
     backgroundImage->hide();
@@ -260,7 +357,16 @@ void MainWindow::ProcClickForUrl(QString &url){
 //    scroll->horizontalScrollBar()->setValue(0);
     downArrowWidget->hide();
     upArrowWidget->hide();
-    headerImageInfo->hide();
+
+    headerImageInfo->setTitleIcon(title);
+
+    headerImageInfo->show();
+    horizontalMenu->hide();
+    connect(hiddenWidget, SIGNAL(showStatus(bool)), this, SLOT(ProcShowHMenu(bool)));
+    hiddenWidget->show();
+    homeWidget->show();
+    view->history()->clear();
+
 }
 
 
@@ -282,4 +388,12 @@ void MainWindow::resizeEvent(QResizeEvent *event)
     QWidget::resizeEvent(event);
 }
 
+void MainWindow::ProcShowHMenu(bool s){
+    if (s){
+        horizontalMenu->show();
+        hiddenWidget->hide();
+
+    }
+
+}
 

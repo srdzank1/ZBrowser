@@ -23,7 +23,8 @@
 #include "ccentralbackgroundimage.h"
 #include "cheaderimageinfo.h"
 #include "cbasewidget.h"
-
+#include <QWebEngineHistory>
+#include "qhidden.h"
 
 class QWebView;
 namespace Ui {
@@ -38,10 +39,10 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
     void initVideo();
+
 protected:
     void resizeEvent(QResizeEvent *event) override;
     void keyReleaseEvent(QKeyEvent *);
-
 private:
     Ui::MainWindow *ui;
     QHorizontalMenu *horizontalMenu;
@@ -58,14 +59,25 @@ private:
     CBaseWidget * downArrowWidget;
     QString cont;
 
+    CBaseWidget * homeWidget;
+    CBaseWidget * backWidget;
+    CBaseWidget * forwardWidget;
+    QHidden *hiddenWidget;
+    bool statusHistoryEnabled;
 
 public slots:
     void processClick(int i);
-    void ProcClickForUrl(QString &i);
+    void ProcClickForUrl(QString &i, QString&t );
     void fullScreenRequested(QWebEngineFullScreenRequest request);
     void procLoadUrlFinished(bool s);
     void ProcUpClick();
     void ProcDownClick();
+    void ProcHomeClick();
+    void ProcBackViewClick();
+    void ProcForwardViewClick();
+    void procLoadUrlChanged(const QUrl&);
+    void ProcShowHMenu(bool s);
+
 };
 
 #endif // MAINWINDOW_H

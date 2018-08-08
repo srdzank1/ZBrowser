@@ -36,7 +36,8 @@ SOURCES += \
     fullscreennotification.cpp \
     ccentralbackgroundimage.cpp \
     cheaderimageinfo.cpp \
-    cbasewidget.cpp
+    cbasewidget.cpp \
+    qhidden.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -49,7 +50,8 @@ HEADERS += \
     fullscreennotification.h \
     ccentralbackgroundimage.h \
     cheaderimageinfo.h \
-    cbasewidget.h
+    cbasewidget.h \
+    qhidden.h
 
 FORMS += \
         mainwindow.ui \
