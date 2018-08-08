@@ -62,8 +62,10 @@ private:
     CBaseWidget * homeWidget;
     CBaseWidget * backWidget;
     CBaseWidget * forwardWidget;
+    CBaseWidget * closeOffWidget;
     QHidden *hiddenWidget;
     bool statusHistoryEnabled;
+    QString m_url;
 
 public slots:
     void processClick(int i);
@@ -74,10 +76,11 @@ public slots:
     void ProcDownClick();
     void ProcHomeClick();
     void ProcBackViewClick();
+    void ProcCloseOffClick();
     void ProcForwardViewClick();
     void procLoadUrlChanged(const QUrl&);
     void ProcShowHMenu(bool s);
-
+    void procSelectionChanged();
 };
 
 #endif // MAINWINDOW_H
