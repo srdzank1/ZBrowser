@@ -11,5 +11,6 @@
         <file>res/image/if_f-left_256_282467.png</file>
         <file>res/image/if_f-right_256_282463.png</file>
         <file>res/image/if_f-top_256_282460.png</file>
+        <file>res/html/proc2.html</file>
     </qresource>
 </RCC>

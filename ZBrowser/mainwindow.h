@@ -58,6 +58,7 @@ private:
     CBaseWidget * upArrowWidget;
     CBaseWidget * downArrowWidget;
     QString cont;
+    QString cont2;
 
     CBaseWidget * homeWidget;
     CBaseWidget * backWidget;

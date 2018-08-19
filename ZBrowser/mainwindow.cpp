@@ -14,16 +14,7 @@ MainWindow::MainWindow(QWidget *parent) :
     height = rec.height();
     width = rec.width();
 
-
-    backgroundImage = new CCentralBackgroundImage(this);
-    backgroundImage->setGeometry(0,0, width, height);
-    backgroundImage->setWidth(width);
-    backgroundImage->show();
-
-
     QImage imgTmp = QImage(QDir::toNativeSeparators(QDir::currentPath() +"/"+ "images/0138dd49a38e8e64eb2a4738dba6dc4f_6478f.jpg"));
-    backgroundImage->setImage(0,imgTmp);
-    backgroundImage->setHeight(height);
 
     view = new QWebEngineView(this);
     view->setGeometry(0,0,width,height);
@@ -48,6 +39,12 @@ MainWindow::MainWindow(QWidget *parent) :
     file.open(QIODevice::ReadOnly | QFile::Text);
     QTextStream in(&file);
     cont = in.readAll();
+
+    QString filePathHtml2 = ":/res/html/proc2.html";
+    QFile file2(filePathHtml2);
+    file2.open(QIODevice::ReadOnly | QFile::Text);
+    QTextStream in2(&file2);
+    cont2 = in2.readAll();
 
 
     QString bgvideo = "https://player.vimeo.com/video/182513271";
@@ -124,23 +121,18 @@ MainWindow::MainWindow(QWidget *parent) :
     downArrowWidget = new CBaseWidget(this);
     connect(downArrowWidget, SIGNAL(buttonClick()), this, SLOT(ProcDownClick()));
     downArrowWidget->setGeometry(width - 68, height-175, 50, 50);
-//    QImage downArrowTemp = QImage(QDir::toNativeSeparators(QDir::currentPath() +"/"+ "images/bottom.png"));
     QImage downArrowTemp = QImage(":/res/image/if_f-bottom_256_282477.png");
 
     downArrowWidget->setImage(0, downArrowTemp);
     downArrowWidget->hide();
 
     scroll->hide();
-    backgroundImage->hide();
     centralMenu->hide();
 
     scroll->verticalScrollBar()->setValue(0);
     scroll->horizontalScrollBar()->setValue(0);
     scroll->hide();
     scroll->setFocus();
-    backgroundImage->show();
-
-
 
     backWidget = new CBaseWidget(this);
     connect(backWidget, SIGNAL(buttonClick()), this, SLOT(ProcBackViewClick()));
@@ -190,12 +182,14 @@ void MainWindow::ProcDownClick(){
 void MainWindow::ProcCloseOffClick(){
 
     statusHistoryEnabled = false;
-    homeWidget->hide();
-    closeOffWidget->hide();
-    backWidget->hide();
-    forwardWidget->hide();
+    homeWidget->setVisible(false);
+    closeOffWidget->setVisible(false);
+    backWidget->setVisible(false);
+    forwardWidget->setVisible(false);
+
     view->history()->clear();
-    processClick(0);
+
+    emit horizontalMenu->click(1);
 }
 
 
@@ -260,9 +254,6 @@ inline void delay(int millisecondsWait)
 }
 
 void MainWindow::procLoadUrlFinished(bool s){
-    delay(2000);
-    view->setGeometry(0,0, width, height);
-    view->show();
     view->update();
 }
 
@@ -297,39 +288,39 @@ MainWindow::~MainWindow()
 }
 
 void MainWindow::processClick(int i){
-    backWidget->hide();
-    forwardWidget->hide();
-    homeWidget->hide();
-    closeOffWidget->hide();
     statusHistoryEnabled = false;
-    centralMenu->hide();
-    scroll->hide();
-    backgroundImage->show();
-    view->hide();
+
 
     tgroup xmlData = parser->getParsedData();
     QImage imgTmp = QImage(QDir::toNativeSeparators(QDir::currentPath() +"/"+ xmlData.categories.at(i)->background));
-    backgroundImage->setImage(0,imgTmp);
-
     imgTmp = QImage(QDir::toNativeSeparators(QDir::currentPath() +"/"+ xmlData.categories.at(i)->icon));
     headerImageInfo->setImage(0, imgTmp);
     headerImageInfo->setTitleIcon(xmlData.categories.at(i)->name);
-    headerImageInfo->show();
-    downArrowWidget->show();
-    upArrowWidget->show();
 
     if(xmlData.categories.at(i)->websites.count()!=0){
-        downArrowWidget->show();
-        upArrowWidget->show();
+        downArrowWidget->setVisible(true);
+        upArrowWidget->setVisible(true);
     }else{
-        downArrowWidget->hide();
-        upArrowWidget->hide();
+        downArrowWidget->setVisible(false);
+        upArrowWidget->setVisible(false);
     }
 
+    centralMenu->setVisible(false);
     centralMenu->createMenuByCategory(i);
-    view->setGeometry(0,0, 0, 0);
-    view->update();
-    //view->setUrl(QUrl(QStringLiteral("https://player.vimeo.com/video/182513271?background=1")));
+    centralMenu->setVisible(true);
+
+
+
+    horizontalMenu->setVisible(true);
+    scroll->verticalScrollBar()->setValue(0);
+    scroll->horizontalScrollBar()->setValue(0);
+    scroll->setFocus();
+    scroll->show();
+
+    headerImageInfo->setVisible(true);
+    downArrowWidget->setVisible(true);
+    upArrowWidget->setVisible(true);
+
     QString bgvideo = xmlData.categories.at(i)->bgvideo;
     QString videoSound = xmlData.categories.at(i)->videosound;
     QString bgvideoSound;
@@ -343,58 +334,45 @@ void MainWindow::processClick(int i){
     QString htmlCont= cont;
     htmlCont = htmlCont.replace("%url%",bgvideo);
     htmlCont = htmlCont.replace("%muted%",bgvideoSound);
-
     view->setHtml(htmlCont);
 
-    view->show();
-
-    backgroundImage->show();
-    horizontalMenu->show();
-    centralMenu->show();
-    scroll->verticalScrollBar()->setValue(0);
-    scroll->horizontalScrollBar()->setValue(0);
-    scroll->show();
-    scroll->setFocus();
 }
 
 
 void MainWindow::ProcClickForUrl(QString &url, QString &title){
-
-    backWidget->hide();
-    forwardWidget->hide();
-    homeWidget->hide();
-    closeOffWidget->hide();
+    backWidget->setVisible(false);
+    forwardWidget->setVisible(false);
+    homeWidget->setVisible(false);
+    closeOffWidget->setVisible(false);
 
     statusHistoryEnabled = true;
-    centralMenu->hide();
-    scroll->hide();
-    backgroundImage->hide();
-    view->setUrl(QUrl(url));
-    m_url = url;
-    view->show();
+    centralMenu->setVisible(false);
+//    centralMenu->hide();
+
+    scroll->setVisible(false);
 
     scroll->setFocus();
-//    scroll->verticalScrollBar()->setValue(0);
-//    scroll->horizontalScrollBar()->setValue(0);
-    downArrowWidget->hide();
-    upArrowWidget->hide();
+    downArrowWidget->setVisible(false);
+    upArrowWidget->setVisible(false);
 
     headerImageInfo->setTitleIcon(title);
 
-    headerImageInfo->show();
-    horizontalMenu->hide();
+    headerImageInfo->setVisible(true);
+    horizontalMenu->setVisible(false);
     connect(hiddenWidget, SIGNAL(showStatus(bool)), this, SLOT(ProcShowHMenu(bool)));
-    hiddenWidget->show();
-    homeWidget->show();
-    closeOffWidget->show();
-    view->history()->clear();
+    hiddenWidget->setVisible(true);
+    homeWidget->setVisible(true);
+    closeOffWidget->setVisible(true);
+
+    view->setUrl(QUrl(url));
+
+    m_url = url;
 
 }
 
 
 void MainWindow::resizeEvent(QResizeEvent *event)
 {
-//    view->setGeometry(0,0, width, height-125);
     view->setGeometry(0,0, width, height);
 
     horizontalMenu->setGeometry(0, height-130, width, height);
@@ -405,7 +383,6 @@ void MainWindow::resizeEvent(QResizeEvent *event)
 
     centralMenu->setGeometry(QRect(tempMarg, 70, width-2*tempMarg, height-195));
     centralMenu->UpdateD(QRect(tempMarg, 70, width-2*tempMarg, height-195));
-    view->hide();
     centralMenu->hide();
     QWidget::resizeEvent(event);
 }
@@ -414,8 +391,6 @@ void MainWindow::ProcShowHMenu(bool s){
     if (s){
         horizontalMenu->show();
         hiddenWidget->hide();
-
     }
-
 }
 
