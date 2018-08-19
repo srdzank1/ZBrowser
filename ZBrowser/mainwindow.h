@@ -67,12 +67,16 @@ private:
     QHidden *hiddenWidget;
     bool statusHistoryEnabled;
     QString m_url;
+    int resizeCount;
+    int catIndx;
 
 public slots:
     void processClick(int i);
-    void ProcClickForUrl(QString &i, QString&t );
+    void ProcClickForUrl(QString &i, QString&t, QImage& image );
     void fullScreenRequested(QWebEngineFullScreenRequest request);
     void procLoadUrlFinished(bool s);
+    void procStartedUrlFinished();
+
     void ProcUpClick();
     void ProcDownClick();
     void ProcHomeClick();

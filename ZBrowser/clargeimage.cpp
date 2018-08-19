@@ -16,7 +16,8 @@ CLargeImage::~CLargeImage()
 }
 void CLargeImage::setImagePathName(int id, const QString& pathName){
     m_pathName = pathName;
-    mImage = QImage(pathName).scaled(200, 187, Qt::KeepAspectRatio, Qt::FastTransformation);;
+    mImage = QImage(pathName).scaled(200, 187, Qt::KeepAspectRatio, Qt::FastTransformation);
+    m_Icon = QImage(pathName).scaled(50, 50, Qt::KeepAspectRatio, Qt::FastTransformation);
     iItem = id;
 }
 
@@ -93,5 +94,5 @@ void CLargeImage::leaveEvent(QEvent * event){
 
 void CLargeImage::mouseReleaseEvent(QMouseEvent * event){
 //    emit click(iItem);
-    emit clickForUrl(m_url, m_titleIcon);
+    emit clickForUrl(m_url, m_titleIcon, mImage);
 }

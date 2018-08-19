@@ -25,7 +25,7 @@ protected:
     virtual bool event(QEvent *event);
 public slots:
     void processClick(int i);
-    void processClickForUrl(QString&, QString&);
+    void processClickForUrl(QString&, QString&, QImage&);
 private:
     Ui::CMenuForm *ui;
     tgroup m_group;
@@ -37,7 +37,7 @@ private:
     QList<CLargeImage*> pListLargeImage;
     CLargeImage * pLargeImage;
 signals:
-    void clickForUrl(QString&, QString&);
+    void clickForUrl(QString&, QString&, QImage&);
 };
 
 #endif // CMENUFORM_H

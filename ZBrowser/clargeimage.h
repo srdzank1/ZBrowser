@@ -29,7 +29,7 @@ protected:
     virtual void mouseReleaseEvent(QMouseEvent * event);
 signals:
     void click(int);
-    void clickForUrl(QString&,QString&);
+    void clickForUrl(QString&,QString&, QImage&);
 public slots:
 private:
     bool bmouseOver;
@@ -38,6 +38,7 @@ private:
     QString m_titleIcon;
     QImage mImage;
     QString m_url;
+    QImage m_Icon;
 
     int m_width;
     int m_height;

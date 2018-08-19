@@ -2,6 +2,16 @@
 #include "ui_mainwindow.h"
 
 
+inline void delay(int millisecondsWait)
+{
+    QEventLoop loop;
+    QTimer t;
+    t.connect(&t, &QTimer::timeout, &loop, &QEventLoop::quit);
+    t.start(millisecondsWait);
+    loop.exec();
+}
+
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -9,6 +19,9 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->setupUi(this);
     statusHistoryEnabled = false;
     parser = 0;
+    catIndx = 0;
+    resizeCount = 0;
+
     setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
     QRect rec = QApplication::desktop()->screenGeometry();
     height = rec.height();
@@ -19,6 +32,7 @@ MainWindow::MainWindow(QWidget *parent) :
     view = new QWebEngineView(this);
     view->setGeometry(0,0,width,height);
     connect(view, SIGNAL(loadFinished(bool)),this, SLOT(procLoadUrlFinished(bool)));
+    connect(view, SIGNAL(loadStarted()),this, SLOT(procStartedUrlFinished()));
     connect(view, SIGNAL(urlChanged(const QUrl&)),this, SLOT(procLoadUrlChanged(const QUrl&)));
     connect(view->page(), SIGNAL(selectionChanged()),this, SLOT(procSelectionChanged()));
 
@@ -95,7 +109,7 @@ MainWindow::MainWindow(QWidget *parent) :
     int tempMarg = (width-tempWidth)/2;
 
     centralMenu = new CMenuForm(this, xmlData, tempWidth, height);
-    connect(centralMenu, SIGNAL(clickForUrl(QString&, QString&)), this, SLOT(ProcClickForUrl(QString&, QString&)));
+    connect(centralMenu, SIGNAL(clickForUrl(QString&, QString&, QImage &)), this, SLOT(ProcClickForUrl(QString&, QString&, QImage &)));
     centralMenu->setGeometry(QRect(tempMarg, 70, width-2*tempMarg, height-195));
     centralMenu->hide();
 
@@ -131,8 +145,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
     scroll->verticalScrollBar()->setValue(0);
     scroll->horizontalScrollBar()->setValue(0);
-    scroll->hide();
     scroll->setFocus();
+    scroll->hide();
 
     backWidget = new CBaseWidget(this);
     connect(backWidget, SIGNAL(buttonClick()), this, SLOT(ProcBackViewClick()));
@@ -163,9 +177,7 @@ MainWindow::MainWindow(QWidget *parent) :
     closeOffWidget->setImage(0, closeOffWidgetTemp);
     closeOffWidget->hide();
 
-    hiddenWidget = new QHidden(this);
-    hiddenWidget->setGeometry(0,height-1, width, height);
-    hiddenWidget->hide();
+
 
 }
 
@@ -179,6 +191,11 @@ void MainWindow::ProcDownClick(){
 }
 
 
+void MainWindow::procStartedUrlFinished(){
+}
+void MainWindow::procLoadUrlFinished(bool s){
+}
+
 void MainWindow::ProcCloseOffClick(){
 
     statusHistoryEnabled = false;
@@ -186,10 +203,11 @@ void MainWindow::ProcCloseOffClick(){
     closeOffWidget->setVisible(false);
     backWidget->setVisible(false);
     forwardWidget->setVisible(false);
-
+    view->setUpdatesEnabled(false);
     view->history()->clear();
+    view->setUpdatesEnabled(true);
+    emit horizontalMenu->click(catIndx);
 
-    emit horizontalMenu->click(1);
 }
 
 
@@ -198,15 +216,16 @@ void MainWindow::ProcHomeClick(){
 }
 
 void MainWindow::procSelectionChanged(){
-    horizontalMenu->hide();
-    hiddenWidget->show();
+//    horizontalMenu->hide();
+//    hiddenWidget->show();
 }
 
 
 void MainWindow::procLoadUrlChanged(const QUrl&){
+
     if (statusHistoryEnabled){
         horizontalMenu->hide();
-        hiddenWidget->show();
+//        hiddenWidget->show();
         int curIdx = view->history()->currentItemIndex();
         int numHI = view->history()->count();
         if (curIdx < numHI)
@@ -230,6 +249,7 @@ void MainWindow::procLoadUrlChanged(const QUrl&){
             forwardWidget->hide();
         }
     }
+
 }
 
 void MainWindow::ProcBackViewClick(){
@@ -244,18 +264,7 @@ void MainWindow::ProcForwardViewClick(){
 void MainWindow::initVideo(){
 }
 
-inline void delay(int millisecondsWait)
-{
-    QEventLoop loop;
-    QTimer t;
-    t.connect(&t, &QTimer::timeout, &loop, &QEventLoop::quit);
-    t.start(millisecondsWait);
-    loop.exec();
-}
 
-void MainWindow::procLoadUrlFinished(bool s){
-    view->update();
-}
 
 void MainWindow::keyReleaseEvent(QKeyEvent *event){
     if((event->key() == Qt::Key_L)&&(event->modifiers() == Qt::CTRL)){
@@ -289,7 +298,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::processClick(int i){
     statusHistoryEnabled = false;
-
+    catIndx = i;
 
     tgroup xmlData = parser->getParsedData();
     QImage imgTmp = QImage(QDir::toNativeSeparators(QDir::currentPath() +"/"+ xmlData.categories.at(i)->background));
@@ -298,11 +307,11 @@ void MainWindow::processClick(int i){
     headerImageInfo->setTitleIcon(xmlData.categories.at(i)->name);
 
     if(xmlData.categories.at(i)->websites.count()!=0){
-        downArrowWidget->setVisible(true);
-        upArrowWidget->setVisible(true);
+        downArrowWidget->show();
+        upArrowWidget->show();
     }else{
-        downArrowWidget->setVisible(false);
-        upArrowWidget->setVisible(false);
+        downArrowWidget->hide();
+        upArrowWidget->hide();
     }
 
     centralMenu->setVisible(false);
@@ -318,9 +327,8 @@ void MainWindow::processClick(int i){
     scroll->show();
 
     headerImageInfo->setVisible(true);
-    downArrowWidget->setVisible(true);
-    upArrowWidget->setVisible(true);
 
+    // background video
     QString bgvideo = xmlData.categories.at(i)->bgvideo;
     QString videoSound = xmlData.categories.at(i)->videosound;
     QString bgvideoSound;
@@ -339,7 +347,7 @@ void MainWindow::processClick(int i){
 }
 
 
-void MainWindow::ProcClickForUrl(QString &url, QString &title){
+void MainWindow::ProcClickForUrl(QString &url, QString &title, QImage& imgTmp){
     backWidget->setVisible(false);
     forwardWidget->setVisible(false);
     homeWidget->setVisible(false);
@@ -355,17 +363,20 @@ void MainWindow::ProcClickForUrl(QString &url, QString &title){
     downArrowWidget->setVisible(false);
     upArrowWidget->setVisible(false);
 
+    headerImageInfo->setImage(0, imgTmp);
+
     headerImageInfo->setTitleIcon(title);
 
     headerImageInfo->setVisible(true);
     horizontalMenu->setVisible(false);
-    connect(hiddenWidget, SIGNAL(showStatus(bool)), this, SLOT(ProcShowHMenu(bool)));
-    hiddenWidget->setVisible(true);
     homeWidget->setVisible(true);
     closeOffWidget->setVisible(true);
-
-    view->setUrl(QUrl(url));
-
+    view->history()->clear();
+//    view->setUrl(QUrl(url));
+    QString htmlCont= cont;
+    htmlCont = htmlCont.replace("%url%",url);
+    htmlCont = htmlCont.replace("%muted%",QString("0"));
+    view->setHtml(htmlCont);
     m_url = url;
 
 }
@@ -373,6 +384,7 @@ void MainWindow::ProcClickForUrl(QString &url, QString &title){
 
 void MainWindow::resizeEvent(QResizeEvent *event)
 {
+    if (resizeCount == 0){
     view->setGeometry(0,0, width, height);
 
     horizontalMenu->setGeometry(0, height-130, width, height);
@@ -385,12 +397,15 @@ void MainWindow::resizeEvent(QResizeEvent *event)
     centralMenu->UpdateD(QRect(tempMarg, 70, width-2*tempMarg, height-195));
     centralMenu->hide();
     QWidget::resizeEvent(event);
+    resizeCount ++;
+    }
+
 }
 
 void MainWindow::ProcShowHMenu(bool s){
     if (s){
         horizontalMenu->show();
-        hiddenWidget->hide();
+//        hiddenWidget->hide();
     }
 }
 
