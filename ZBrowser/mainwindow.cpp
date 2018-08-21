@@ -137,7 +137,7 @@ MainWindow::MainWindow(QWidget *parent) :
     downArrowWidget->setGeometry(width - 68, height-175, 50, 50);
     QImage downArrowTemp = QImage(":/res/image/if_f-bottom_256_282477.png");
 
-    downArrowWidget->setImage(0, downArrowTemp,upArrowTemp,upArrowTemp);
+    downArrowWidget->setImage(0, downArrowTemp,downArrowTemp,downArrowTemp);
     downArrowWidget->hide();
 
     scroll->hide();
