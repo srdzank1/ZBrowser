@@ -12,5 +12,20 @@
         <file>res/image/if_f-right_256_282463.png</file>
         <file>res/image/if_f-top_256_282460.png</file>
         <file>res/html/proc2.html</file>
+        <file>res/image/admin_click.png</file>
+        <file>res/image/admin_hover.png</file>
+        <file>res/image/admin_normal.png</file>
+        <file>res/image/close_click.png</file>
+        <file>res/image/close_hover.png</file>
+        <file>res/image/close_normal.png</file>
+        <file>res/image/home_click.png</file>
+        <file>res/image/home_hover.png</file>
+        <file>res/image/home_normal.png</file>
+        <file>res/image/next_click.png</file>
+        <file>res/image/next_hover.png</file>
+        <file>res/image/next_normal.png</file>
+        <file>res/image/previous_click.png</file>
+        <file>res/image/previous_hover.png</file>
+        <file>res/image/previous_normal.png</file>
     </qresource>
 </RCC>

@@ -13,7 +13,7 @@ public:
     ~CBaseWidget();
 
     void setImagePathName(int id, const QString& pathName);
-    void setImage(int id, QImage & img );
+    void setImage(int id, QImage & img , QImage & img_roll , QImage & img_click );
     QImage getImage(){return mImage;}
     void setWidth(int w){m_width = w;}
     void setHeight(int h){m_height = h;}
@@ -35,11 +35,14 @@ private:
     QString m_pathName;
     int iItem;
     QImage mImage;
+    QImage mImage_rollover;
+    QImage mImage_click;
     int m_width;
     int m_height;
     QBrush m_brush;
     QString m_titleIcon;
     bool bmouseOver;
+    bool bmouseClick;
 };
 
 #endif // CBASEWIDGET_H

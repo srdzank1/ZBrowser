@@ -4,6 +4,7 @@
 CBaseWidget::CBaseWidget(QWidget *parent) : QWidget(parent)
   ,iItem(0)
   ,bmouseOver(false)
+  ,bmouseClick(false)
 {
     setAttribute(Qt::WA_StaticContents);
     setMouseTracking(true);
@@ -22,8 +23,11 @@ void CBaseWidget::setImagePathName(int id, const QString& pathName){
 }
 
 
-void CBaseWidget::setImage(int id, QImage & img ){
+void CBaseWidget::setImage(int id, QImage & img, QImage & img_roll, QImage & img_click ){
     mImage = img;
+    mImage_rollover = img_roll;
+    mImage_click = img_click;
+
     iItem = id;
 }
 
@@ -35,18 +39,16 @@ void CBaseWidget::paintEvent(QPaintEvent *event){
     QPainterPath path;
 
     if (bmouseOver){
-        QPainter painter(this);
-        QBrush brush(Qt::white);
-        painter.setBrush(brush);
-        painter.drawEllipse(QPointF(25,25), 25, 25);
-
-        QPen pen(Qt::darkYellow, 10);
-        painter.setPen(pen);
-        painter.fillPath(path, Qt::white);
-        painter.drawPath(path);
-
-        painter.drawImage(QRect(5, 5, 40, 40), mImage);
-        painter.end();
+        if (bmouseClick){
+            QPainter painter(this);
+            painter.drawImage(QRect(0, 0, 50, 50), mImage_click);
+            painter.end();
+            bmouseClick = false;
+        }else{
+            QPainter painter(this);
+            painter.drawImage(QRect(0, 0, 50, 50), mImage_rollover);
+            painter.end();
+        }
     }else{
         QPainter painter(this);
         painter.drawImage(QRect(0, 0, 50, 50), mImage);
@@ -72,6 +74,8 @@ void CBaseWidget::leaveEvent(QEvent * event){
 }
 
 void CBaseWidget::mouseReleaseEvent(QMouseEvent * event){
+    bmouseClick = true;
+    repaint();
     emit buttonClick();
 }
 
