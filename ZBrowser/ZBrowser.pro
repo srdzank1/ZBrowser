@@ -37,7 +37,8 @@ SOURCES += \
     ccentralbackgroundimage.cpp \
     cheaderimageinfo.cpp \
     cbasewidget.cpp \
-    qhidden.cpp
+    qhidden.cpp \
+    cloaderwidget.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -51,7 +52,8 @@ HEADERS += \
     ccentralbackgroundimage.h \
     cheaderimageinfo.h \
     cbasewidget.h \
-    qhidden.h
+    qhidden.h \
+    cloaderwidget.h
 
 FORMS += \
         mainwindow.ui \

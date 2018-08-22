@@ -74,8 +74,11 @@ void CBaseWidget::leaveEvent(QEvent * event){
 }
 
 void CBaseWidget::mouseReleaseEvent(QMouseEvent * event){
-    bmouseClick = true;
-    repaint();
+
     emit buttonClick();
 }
 
+void CBaseWidget::mousePressEvent(QMouseEvent * event){
+    bmouseClick = true;
+    repaint();
+}

@@ -25,6 +25,7 @@
 #include "cbasewidget.h"
 #include <QWebEngineHistory>
 #include "qhidden.h"
+#include "cloaderwidget.h"
 
 class QWebView;
 namespace Ui {
@@ -69,6 +70,7 @@ private:
     QString m_url;
     int resizeCount;
     int catIndx;
+    CLoaderWidget *loader;
 
 public slots:
     void processClick(int i);
@@ -76,6 +78,7 @@ public slots:
     void fullScreenRequested(QWebEngineFullScreenRequest request);
     void procLoadUrlFinished(bool s);
     void procStartedUrlFinished();
+    void procLoadProgress(int);
 
     void ProcUpClick();
     void ProcDownClick();

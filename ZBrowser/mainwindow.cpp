@@ -29,9 +29,16 @@ MainWindow::MainWindow(QWidget *parent) :
 
     QImage imgTmp = QImage(QDir::toNativeSeparators(QDir::currentPath() +"/"+ "images/0138dd49a38e8e64eb2a4738dba6dc4f_6478f.jpg"));
 
+
+
     view = new QWebEngineView(this);
     view->setGeometry(0,0,width,height);
+
+    loader = new CLoaderWidget(this);
+    loader->setGeometry(0,4, width, 10);
+
     connect(view, SIGNAL(loadFinished(bool)),this, SLOT(procLoadUrlFinished(bool)));
+    connect(view, SIGNAL(loadProgress(int )),this, SLOT(procLoadProgress(int)));
     connect(view, SIGNAL(loadStarted()),this, SLOT(procStartedUrlFinished()));
     connect(view, SIGNAL(urlChanged(const QUrl&)),this, SLOT(procLoadUrlChanged(const QUrl&)));
     connect(view->page(), SIGNAL(selectionChanged()),this, SLOT(procSelectionChanged()));
@@ -152,7 +159,10 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(backWidget, SIGNAL(buttonClick()), this, SLOT(ProcBackViewClick()));
     backWidget->setGeometry(width - 225, 5, 50, 50);
     QImage backWidgetTemp = QImage(":/res/image/previous_normal.png");
-    backWidget->setImage(0, backWidgetTemp, backWidgetTemp,backWidgetTemp);
+    QImage backWidgetTemp_hover = QImage(":/res/image/previous_hover.png");
+    QImage backWidgetTemp_click = QImage(":/res/image/previous_click.png");
+
+    backWidget->setImage(0, backWidgetTemp, backWidgetTemp_hover,backWidgetTemp_click);
     backWidget->hide();
 
 
@@ -181,9 +191,10 @@ MainWindow::MainWindow(QWidget *parent) :
     QImage closeOffWidgetTemp = QImage(":/res/image/close_normal.png");
     QImage closeOffWidgetTemp_hover = QImage(":/res/image/close_hover.png");
     QImage closeOffWidgetTemp_click = QImage(":/res/image/close_click.png");
-    closeOffWidget->setImage(0, closeOffWidgetTemp, closeOffWidgetTemp_hover, closeOffWidgetTemp_hover);
+    closeOffWidget->setImage(0, closeOffWidgetTemp, closeOffWidgetTemp_hover, closeOffWidgetTemp_click);
     closeOffWidget->hide();
 
+    view->show();
 
 
 }
@@ -199,11 +210,19 @@ void MainWindow::ProcDownClick(){
 
 
 void MainWindow::procStartedUrlFinished(){
+    loader->show();
+    loader->setValue(0);
 }
 void MainWindow::procLoadUrlFinished(bool s){
+    loader->setValue(100);
+    loader->hide();
 }
 
-void MainWindow::ProcCloseOffClick(){
+void MainWindow::procLoadProgress(int s){
+    loader->setValue(s);
+}
+
+    void MainWindow::ProcCloseOffClick(){
 
     statusHistoryEnabled = false;
     homeWidget->setVisible(false);
