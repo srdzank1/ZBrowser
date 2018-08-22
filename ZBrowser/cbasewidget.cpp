@@ -74,8 +74,16 @@ void CBaseWidget::leaveEvent(QEvent * event){
 }
 
 void CBaseWidget::mouseReleaseEvent(QMouseEvent * event){
-    bmouseClick = true;
-    repaint();
     emit buttonClick();
 }
 
+void CBaseWidget::mousePressEvent(QMouseEvent * event){
+    bmouseClick = true;
+    //QSound::play(QDir::toNativeSeparators(QDir::currentPath() +"/"+ "images/click.wav"));
+    QMediaPlayer *player = new QMediaPlayer;
+    player->setMedia(QUrl::fromLocalFile(QDir::toNativeSeparators(QDir::currentPath() +"/"+ "images/click.wav")));
+    player->setVolume(50);
+    player->play();
+    delete player;
+    repaint();
+}

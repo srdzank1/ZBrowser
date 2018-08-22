@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui webenginewidgets  webengine concurrent
+QT       += core gui webenginewidgets  webengine concurrent multimedia
 
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets

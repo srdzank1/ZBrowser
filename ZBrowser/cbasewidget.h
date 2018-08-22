@@ -4,6 +4,8 @@
 #include <QWidget>
 #include <QPainter>
 #include <QMouseEvent>
+#include <QtMultimedia/QMediaPlayer>
+#include <QDir>
 
 class CBaseWidget : public QWidget
 {
@@ -28,6 +30,7 @@ protected:
     virtual void leaveEvent(QEvent * event);
 
     virtual void mouseReleaseEvent(QMouseEvent * event);
+    void mousePressEvent(QMouseEvent * event);
 signals:
     void buttonClick();
 public slots:

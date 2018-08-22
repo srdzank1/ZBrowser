@@ -27,5 +27,12 @@
         <file>res/image/previous_click.png</file>
         <file>res/image/previous_hover.png</file>
         <file>res/image/previous_normal.png</file>
+        <file>res/image/arrowdown_click.png</file>
+        <file>res/image/arrowdown_hover.png</file>
+        <file>res/image/arrowdown_normal.png</file>
+        <file>res/image/arrowup_click.png</file>
+        <file>res/image/arrowup_hover.png</file>
+        <file>res/image/arrowup_normal.png</file>
+        <file>res/sound/click.wav</file>
     </qresource>
 </RCC>
