@@ -4,6 +4,8 @@
 #include <QWidget>
 #include <QPainter>
 #include <QMouseEvent>
+#include <QSound>
+#include <QDir>
 
 class CBaseWidget : public QWidget
 {
@@ -29,8 +31,8 @@ protected:
     virtual void leaveEvent(QEvent * event);
 
     virtual void mouseReleaseEvent(QMouseEvent * event);
-    virtual void mousePressEvent(QMouseEvent * event);
 
+    void mousePressEvent(QMouseEvent * event);
 signals:
     void buttonClick();
 public slots:
@@ -46,6 +48,7 @@ private:
     QString m_titleIcon;
     bool bmouseOver;
     bool bmouseClick;
+
 };
 
 #endif // CBASEWIDGET_H

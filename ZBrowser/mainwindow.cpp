@@ -35,7 +35,7 @@ MainWindow::MainWindow(QWidget *parent) :
     view->setGeometry(0,0,width,height);
 
     loader = new CLoaderWidget(this);
-    loader->setGeometry(0,4, width, 10);
+    loader->setGeometry(0,0, width, 6);
 
     connect(view, SIGNAL(loadFinished(bool)),this, SLOT(procLoadUrlFinished(bool)));
     connect(view, SIGNAL(loadProgress(int )),this, SLOT(procLoadProgress(int)));
@@ -134,17 +134,21 @@ MainWindow::MainWindow(QWidget *parent) :
     upArrowWidget = new CBaseWidget(this);
     connect(upArrowWidget, SIGNAL(buttonClick()), this, SLOT(ProcUpClick()));
     upArrowWidget->setGeometry(width - 68, 70, 50, 50);
-    QImage upArrowTemp = QImage(":/res/image/if_f-top_256_282460.png");
 
-    upArrowWidget->setImage(0, upArrowTemp, upArrowTemp,upArrowTemp);
+    QImage upArrowTemp = QImage(":/res/image/arrowup_normal.png");
+    QImage upArrowTemp_hover = QImage(":/res/image/arrowup_hover.png");
+    QImage upArrowTemp_click = QImage(":/res/image/arrowup_click.png");
+    upArrowWidget->setImage(0, upArrowTemp, upArrowTemp_hover,upArrowTemp_click);
     upArrowWidget->hide();
 
     downArrowWidget = new CBaseWidget(this);
     connect(downArrowWidget, SIGNAL(buttonClick()), this, SLOT(ProcDownClick()));
     downArrowWidget->setGeometry(width - 68, height-175, 50, 50);
-    QImage downArrowTemp = QImage(":/res/image/if_f-bottom_256_282477.png");
 
-    downArrowWidget->setImage(0, downArrowTemp,downArrowTemp,downArrowTemp);
+    QImage downArrowTemp = QImage(":/res/image/arrowdown_normal.png");
+    QImage downArrowTemp_hover = QImage(":/res/image/arrowdown_hover.png");
+    QImage downArrowTemp_click = QImage(":/res/image/arrowdown_click.png");
+    downArrowWidget->setImage(0, downArrowTemp,downArrowTemp_hover,downArrowTemp_click);
     downArrowWidget->hide();
 
     scroll->hide();
@@ -157,7 +161,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     backWidget = new CBaseWidget(this);
     connect(backWidget, SIGNAL(buttonClick()), this, SLOT(ProcBackViewClick()));
-    backWidget->setGeometry(width - 225, 5, 50, 50);
+    backWidget->setGeometry(width - 280, 5, 50, 50);
     QImage backWidgetTemp = QImage(":/res/image/previous_normal.png");
     QImage backWidgetTemp_hover = QImage(":/res/image/previous_hover.png");
     QImage backWidgetTemp_click = QImage(":/res/image/previous_click.png");
@@ -168,7 +172,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     forwardWidget = new CBaseWidget(this);
     connect(forwardWidget, SIGNAL(buttonClick()), this, SLOT(ProcForwardViewClick()));
-    forwardWidget->setGeometry(width - 170, 5, 50, 50);
+    forwardWidget->setGeometry(width - 225, 5, 50, 50);
     QImage forwardWidgetTemp = QImage(":/res/image/next_normal.png");
     QImage forwardWidgetTemp_hover = QImage(":/res/image/next_hover.png");
     QImage forwardWidgetTemp_click = QImage(":/res/image/next_click.png");
@@ -177,7 +181,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     homeWidget = new CBaseWidget(this);
     connect(homeWidget, SIGNAL(buttonClick()), this, SLOT(ProcHomeClick()));
-    homeWidget->setGeometry(width - 115, 5, 50, 50);
+    homeWidget->setGeometry(width - 170, 5, 50, 50);
     QImage homeWidgetTemp = QImage(":/res/image/home_normal.png");
     QImage homeWidgetTemp_hover = QImage(":/res/image/home_hover.png");
     QImage homeWidgetTemp_click = QImage(":/res/image/home_click.png");
@@ -187,7 +191,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     closeOffWidget = new CBaseWidget(this);
     connect(closeOffWidget, SIGNAL(buttonClick()), this, SLOT(ProcCloseOffClick()));
-    closeOffWidget->setGeometry(width - 60, 5, 50, 50);
+    closeOffWidget->setGeometry(width - 115, 5, 50, 50);
     QImage closeOffWidgetTemp = QImage(":/res/image/close_normal.png");
     QImage closeOffWidgetTemp_hover = QImage(":/res/image/close_hover.png");
     QImage closeOffWidgetTemp_click = QImage(":/res/image/close_click.png");
@@ -195,6 +199,16 @@ MainWindow::MainWindow(QWidget *parent) :
     closeOffWidget->hide();
 
     view->show();
+
+    adminWidget = new CBaseWidget(this);
+    connect(closeOffWidget, SIGNAL(buttonClick()), this, SLOT(ProcAdminOffClick()));
+    adminWidget->setGeometry(width - 60, 5, 50, 50);
+    QImage adminWidgetTemp = QImage(":/res/image/admin_normal.png");
+    QImage adminWidgetTemp_hover = QImage(":/res/image/admin_hover.png");
+    QImage adminWidgetTemp_click = QImage(":/res/image/admin_click.png");
+    adminWidget->setImage(0, adminWidgetTemp, adminWidgetTemp_hover, adminWidgetTemp_click);
+    adminWidget->hide();
+
 
 
 }
@@ -229,13 +243,16 @@ void MainWindow::procLoadProgress(int s){
     closeOffWidget->setVisible(false);
     backWidget->setVisible(false);
     forwardWidget->setVisible(false);
+    adminWidget->setVisible(false);
     view->setUpdatesEnabled(false);
     view->history()->clear();
     view->setUpdatesEnabled(true);
     emit horizontalMenu->click(catIndx);
 
 }
+void MainWindow::ProcAdminOffClick(){
 
+}
 
 void MainWindow::ProcHomeClick(){
     view->load(m_url);
@@ -378,6 +395,7 @@ void MainWindow::ProcClickForUrl(QString &url, QString &title, QImage& imgTmp){
     forwardWidget->setVisible(false);
     homeWidget->setVisible(false);
     closeOffWidget->setVisible(false);
+    adminWidget->setVisible(false);
 
     statusHistoryEnabled = true;
     centralMenu->setVisible(false);
@@ -397,6 +415,7 @@ void MainWindow::ProcClickForUrl(QString &url, QString &title, QImage& imgTmp){
     horizontalMenu->setVisible(false);
     homeWidget->setVisible(true);
     closeOffWidget->setVisible(true);
+    adminWidget->setVisible(true);
     view->history()->clear();
     view->setUrl(QUrl(url));
 //    QString htmlCont= cont;

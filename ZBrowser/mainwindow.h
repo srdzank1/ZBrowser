@@ -26,6 +26,7 @@
 #include <QWebEngineHistory>
 #include "qhidden.h"
 #include "cloaderwidget.h"
+#include <QSound>
 
 class QWebView;
 namespace Ui {
@@ -65,6 +66,7 @@ private:
     CBaseWidget * backWidget;
     CBaseWidget * forwardWidget;
     CBaseWidget * closeOffWidget;
+    CBaseWidget * adminWidget;
     QHidden *hiddenWidget;
     bool statusHistoryEnabled;
     QString m_url;
@@ -89,6 +91,7 @@ public slots:
     void procLoadUrlChanged(const QUrl&);
     void ProcShowHMenu(bool s);
     void procSelectionChanged();
+    void ProcAdminOffClick();
 };
 
 #endif // MAINWINDOW_H

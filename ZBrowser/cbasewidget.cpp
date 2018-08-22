@@ -9,6 +9,7 @@ CBaseWidget::CBaseWidget(QWidget *parent) : QWidget(parent)
     setAttribute(Qt::WA_StaticContents);
     setMouseTracking(true);
     m_brush.setColor(Qt::blue);
+
 }
 
 CBaseWidget::~CBaseWidget()
@@ -64,21 +65,21 @@ void CBaseWidget::mouseMoveEvent(QMouseEvent *event)
 
 void CBaseWidget::enterEvent(QEvent * event){
     bmouseOver = true;
-//     QSound::play(":sound/click.wav");
+     QSound::play(":sound/click.wav");
     repaint();
 }
 void CBaseWidget::leaveEvent(QEvent * event){
     bmouseOver = false;
-//     QSound::play(":sound/click.wav");
+     QSound::play(":sound/click.wav");
     repaint();
 }
 
 void CBaseWidget::mouseReleaseEvent(QMouseEvent * event){
-
     emit buttonClick();
 }
 
 void CBaseWidget::mousePressEvent(QMouseEvent * event){
     bmouseClick = true;
+    QSound::play(":sound/click.wav");
     repaint();
 }
