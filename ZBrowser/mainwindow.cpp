@@ -156,7 +156,9 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(backWidget, SIGNAL(buttonClick()), this, SLOT(ProcBackViewClick()));
     backWidget->setGeometry(width - 280, 5, 50, 50);
     QImage backWidgetTemp = QImage(":/res/image/previous_normal.png");
-    backWidget->setImage(0, backWidgetTemp, backWidgetTemp,backWidgetTemp);
+    QImage backWidgetTemp_hover = QImage(":/res/image/previous_hover.png");
+    QImage backWidgetTemp_click = QImage(":/res/image/previous_click.png");
+    backWidget->setImage(0, backWidgetTemp, backWidgetTemp_hover,backWidgetTemp_click);
     backWidget->hide();
 
 

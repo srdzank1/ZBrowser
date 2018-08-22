@@ -9,11 +9,15 @@ CBaseWidget::CBaseWidget(QWidget *parent) : QWidget(parent)
     setAttribute(Qt::WA_StaticContents);
     setMouseTracking(true);
     m_brush.setColor(Qt::blue);
+    player = new QMediaPlayer;
+    player->setMedia(QUrl::fromLocalFile(":/res/sound/AppleMouseClick_S08TE.18.mp3"));
+    player->setVolume(100);
+
 }
 
 CBaseWidget::~CBaseWidget()
 {
-
+    delete player;
 }
 
 void CBaseWidget::setImagePathName(int id, const QString& pathName){
@@ -80,10 +84,6 @@ void CBaseWidget::mouseReleaseEvent(QMouseEvent * event){
 void CBaseWidget::mousePressEvent(QMouseEvent * event){
     bmouseClick = true;
     //QSound::play(QDir::toNativeSeparators(QDir::currentPath() +"/"+ "images/click.wav"));
-    QMediaPlayer *player = new QMediaPlayer;
-    player->setMedia(QUrl::fromLocalFile(QDir::toNativeSeparators(QDir::currentPath() +"/"+ "images/click.wav")));
-    player->setVolume(50);
     player->play();
-    delete player;
     repaint();
 }

@@ -46,6 +46,7 @@ private:
     QString m_titleIcon;
     bool bmouseOver;
     bool bmouseClick;
+    QMediaPlayer *player;
 };
 
 #endif // CBASEWIDGET_H
