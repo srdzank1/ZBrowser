@@ -68,6 +68,9 @@ MainWindow::MainWindow(QWidget *parent) :
     cont2 = in2.readAll();
 
 
+
+
+
     QString bgvideo = "https://player.vimeo.com/video/182513271";
     QString videoSound = "true";
     QString bgvideoSound;
@@ -83,7 +86,9 @@ MainWindow::MainWindow(QWidget *parent) :
     htmlCont = htmlCont.replace("%muted%",bgvideoSound);
 
     view->setHtml(htmlCont);
-    view->show();
+    if (view->isHidden()){
+        view->show();
+    }
 
 
     parser = new CParserXML(this);
@@ -198,7 +203,9 @@ MainWindow::MainWindow(QWidget *parent) :
     closeOffWidget->setImage(0, closeOffWidgetTemp, closeOffWidgetTemp_hover, closeOffWidgetTemp_click);
     closeOffWidget->hide();
 
-    view->show();
+    if (view->isHidden()){
+        view->show();
+    }
 
     adminWidget = new CBaseWidget(this);
     connect(closeOffWidget, SIGNAL(buttonClick()), this, SLOT(ProcAdminOffClick()));
@@ -230,6 +237,9 @@ void MainWindow::procStartedUrlFinished(){
 void MainWindow::procLoadUrlFinished(bool s){
     loader->setValue(100);
     loader->hide();
+    if (view->isHidden()){
+        view->show();
+    }
 }
 
 void MainWindow::procLoadProgress(int s){
@@ -391,6 +401,9 @@ void MainWindow::processClick(int i){
 
 
 void MainWindow::ProcClickForUrl(QString &url, QString &title, QImage& imgTmp){
+    if (!view->isHidden()){
+        view->hide();
+    }
     backWidget->setVisible(false);
     forwardWidget->setVisible(false);
     homeWidget->setVisible(false);
