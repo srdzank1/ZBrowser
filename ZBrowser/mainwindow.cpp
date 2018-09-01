@@ -68,9 +68,13 @@ MainWindow::MainWindow(QWidget *parent) :
     cont2 = in2.readAll();
 
 
+    QByteArray byteArray;
+    QBuffer buffer(&byteArray);
+    imgTmp.save(&buffer, "JPEG"); // writes the image in PNG format inside the buffer
+    QString iconBase64 = QString::fromLatin1(byteArray.toBase64().data());
 
 
-
+    QString bgImage = "data:image/jpg;base64,"+iconBase64;
     QString bgvideo = "https://player.vimeo.com/video/182513271";
     QString videoSound = "true";
     QString bgvideoSound;
@@ -84,6 +88,8 @@ MainWindow::MainWindow(QWidget *parent) :
     QString htmlCont= cont;
     htmlCont = htmlCont.replace("%url%",bgvideo);
     htmlCont = htmlCont.replace("%muted%",bgvideoSound);
+    htmlCont = htmlCont.replace("%bkgimage%",bgImage);
+
 
     view->setHtml(htmlCont);
     if (view->isHidden()){
@@ -354,8 +360,8 @@ void MainWindow::processClick(int i){
     catIndx = i;
 
     tgroup xmlData = parser->getParsedData();
-    QImage imgTmp = QImage(QDir::toNativeSeparators(QDir::currentPath() +"/"+ xmlData.categories.at(i)->background));
-    imgTmp = QImage(QDir::toNativeSeparators(QDir::currentPath() +"/"+ xmlData.categories.at(i)->icon));
+    QImage imgTmpBkg = QImage(QDir::toNativeSeparators(QDir::currentPath() +"/"+ xmlData.categories.at(i)->background));
+    QImage imgTmp = QImage(QDir::toNativeSeparators(QDir::currentPath() +"/"+ xmlData.categories.at(i)->icon));
     headerImageInfo->setImage(0, imgTmp);
     headerImageInfo->setTitleIcon(xmlData.categories.at(i)->name);
 
@@ -393,6 +399,15 @@ void MainWindow::processClick(int i){
 
     bgvideo = bgvideo.trimmed();
     QString htmlCont= cont;
+
+    QByteArray byteArray;
+    QBuffer buffer(&byteArray);
+    imgTmpBkg.save(&buffer, "JPEG"); // writes the image in PNG format inside the buffer
+    QString iconBase64 = QString::fromLatin1(byteArray.toBase64().data());
+
+    QString bgImage = "data:image/jpg;base64,"+iconBase64;
+
+    htmlCont = htmlCont.replace("%bkgimage%",bgImage);
     htmlCont = htmlCont.replace("%url%",bgvideo);
     htmlCont = htmlCont.replace("%muted%",bgvideoSound);
     view->setHtml(htmlCont);
