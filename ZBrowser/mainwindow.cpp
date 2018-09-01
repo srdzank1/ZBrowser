@@ -385,7 +385,8 @@ void MainWindow::processClick(int i){
     scroll->setFocus();
     scroll->show();
 
-    headerImageInfo->setVisible(true);
+    headerImageInfo->show();
+
 
     // background video
     QString bgvideo = xmlData.categories.at(i)->bgvideo;
@@ -411,7 +412,7 @@ void MainWindow::processClick(int i){
     htmlCont = htmlCont.replace("%url%",bgvideo);
     htmlCont = htmlCont.replace("%muted%",bgvideoSound);
     view->setHtml(htmlCont);
-
+    repaint();
 }
 
 
