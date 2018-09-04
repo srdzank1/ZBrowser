@@ -18,6 +18,7 @@ public:
     void setWidth(int w){m_width = w;}
     void setHeight(int h){m_height = h;}
     void setTitleIcon(const QString& name);
+    void setAnimate(bool stat ){mAnimate = stat;}
 
 
 
@@ -28,7 +29,9 @@ protected:
     virtual void leaveEvent(QEvent * event);
     virtual void mouseReleaseEvent(QMouseEvent * event);
 signals:
+    void buttonClick();
 public slots:
+
 private:
     QString m_pathName;
     int iItem;
@@ -37,6 +40,8 @@ private:
     int m_height;
     QBrush m_brush;
     QString m_titleIcon;
+    bool mAnimate;
+    bool onEnter;
 };
 
 #endif // CHEADERIMAGEINFO_H

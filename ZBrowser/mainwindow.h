@@ -27,6 +27,8 @@
 #include "qhidden.h"
 #include "cloaderwidget.h"
 #include <QSound>
+#include "ctopbarwidget.h"
+
 
 class QWebView;
 namespace Ui {
@@ -57,6 +59,8 @@ private:
     QScrollArea *scroll;
     CCentralBackgroundImage *backgroundImage;
     CHeaderImageInfo *headerImageInfo;
+    CHeaderImageInfo *headerImageInfoCategory;
+
     CBaseWidget * upArrowWidget;
     CBaseWidget * downArrowWidget;
     QString cont;
@@ -73,6 +77,7 @@ private:
     int resizeCount;
     int catIndx;
     CLoaderWidget *loader;
+    CTopBarWidget *topBarWidget;
 
 public slots:
     void processClick(int i);

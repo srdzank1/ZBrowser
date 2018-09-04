@@ -26,6 +26,7 @@ protected:
 public slots:
     void processClick(int i);
     void processClickForUrl(QString&, QString&, QImage&);
+    int getRowMax(){return mRowCount;}
 private:
     Ui::CMenuForm *ui;
     tgroup m_group;
@@ -34,6 +35,7 @@ private:
 
     int xOffset;
     int yOffset;
+    int mRowCount;
     QList<CLargeImage*> pListLargeImage;
     CLargeImage * pLargeImage;
 signals:

@@ -38,7 +38,8 @@ SOURCES += \
     cheaderimageinfo.cpp \
     cbasewidget.cpp \
     qhidden.cpp \
-    cloaderwidget.cpp
+    cloaderwidget.cpp \
+    ctopbarwidget.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -53,7 +54,8 @@ HEADERS += \
     cheaderimageinfo.h \
     cbasewidget.h \
     qhidden.h \
-    cloaderwidget.h
+    cloaderwidget.h \
+    ctopbarwidget.h
 
 FORMS += \
         mainwindow.ui \

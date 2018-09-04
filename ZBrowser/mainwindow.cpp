@@ -107,13 +107,18 @@ MainWindow::MainWindow(QWidget *parent) :
 
     tgroup xmlData = parser->getParsedData();
 
+    topBarWidget = new CTopBarWidget(this);
+    topBarWidget->setGeometry(0, 0, width, 60);
+    topBarWidget->hide();
+
+
     headerImageInfo = new CHeaderImageInfo(this);
-    headerImageInfo->setGeometry(5,5, width, 60);
-    headerImageInfo->setWidth(50);
+    headerImageInfo->setGeometry(5,1, width, 49);
+    headerImageInfo->setWidth(48);
     imgTmp = QImage(QDir::toNativeSeparators(QDir::currentPath() +"/"+ xmlData.categories.at(0)->icon));
     headerImageInfo->setImage(0, imgTmp);
     headerImageInfo->setTitleIcon(xmlData.categories.at(0)->name);
-    headerImageInfo->setHeight(50);
+    headerImageInfo->setHeight(48);
     headerImageInfo->show();
 
 
@@ -144,7 +149,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     upArrowWidget = new CBaseWidget(this);
     connect(upArrowWidget, SIGNAL(buttonClick()), this, SLOT(ProcUpClick()));
-    upArrowWidget->setGeometry(width - 68, 70, 50, 50);
+    upArrowWidget->setGeometry(width - 68, 70, 48, 48);
 
     QImage upArrowTemp = QImage(":/res/image/arrowup_normal.png");
     QImage upArrowTemp_hover = QImage(":/res/image/arrowup_hover.png");
@@ -154,7 +159,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     downArrowWidget = new CBaseWidget(this);
     connect(downArrowWidget, SIGNAL(buttonClick()), this, SLOT(ProcDownClick()));
-    downArrowWidget->setGeometry(width - 68, height-175, 50, 50);
+    downArrowWidget->setGeometry(width - 68, height-175, 48, 48);
 
     QImage downArrowTemp = QImage(":/res/image/arrowdown_normal.png");
     QImage downArrowTemp_hover = QImage(":/res/image/arrowdown_hover.png");
@@ -170,9 +175,11 @@ MainWindow::MainWindow(QWidget *parent) :
     scroll->setFocus();
     scroll->hide();
 
+
+
     backWidget = new CBaseWidget(this);
     connect(backWidget, SIGNAL(buttonClick()), this, SLOT(ProcBackViewClick()));
-    backWidget->setGeometry(width - 280, 5, 50, 50);
+    backWidget->setGeometry(width/2 - 50, 1, 48, 48);
     QImage backWidgetTemp = QImage(":/res/image/previous_normal.png");
     QImage backWidgetTemp_hover = QImage(":/res/image/previous_hover.png");
     QImage backWidgetTemp_click = QImage(":/res/image/previous_click.png");
@@ -183,7 +190,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     forwardWidget = new CBaseWidget(this);
     connect(forwardWidget, SIGNAL(buttonClick()), this, SLOT(ProcForwardViewClick()));
-    forwardWidget->setGeometry(width - 225, 5, 50, 50);
+    forwardWidget->setGeometry(width/2 +50, 1, 48, 48);
     QImage forwardWidgetTemp = QImage(":/res/image/next_normal.png");
     QImage forwardWidgetTemp_hover = QImage(":/res/image/next_hover.png");
     QImage forwardWidgetTemp_click = QImage(":/res/image/next_click.png");
@@ -192,7 +199,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     homeWidget = new CBaseWidget(this);
     connect(homeWidget, SIGNAL(buttonClick()), this, SLOT(ProcHomeClick()));
-    homeWidget->setGeometry(width - 170, 5, 50, 50);
+    homeWidget->setGeometry(width/2 , 1, 48, 48);
     QImage homeWidgetTemp = QImage(":/res/image/home_normal.png");
     QImage homeWidgetTemp_hover = QImage(":/res/image/home_hover.png");
     QImage homeWidgetTemp_click = QImage(":/res/image/home_click.png");
@@ -202,7 +209,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     closeOffWidget = new CBaseWidget(this);
     connect(closeOffWidget, SIGNAL(buttonClick()), this, SLOT(ProcCloseOffClick()));
-    closeOffWidget->setGeometry(width - 115, 5, 50, 50);
+    closeOffWidget->setGeometry(width - 115, 1, 48, 48);
     QImage closeOffWidgetTemp = QImage(":/res/image/close_normal.png");
     QImage closeOffWidgetTemp_hover = QImage(":/res/image/close_hover.png");
     QImage closeOffWidgetTemp_click = QImage(":/res/image/close_click.png");
@@ -215,14 +222,25 @@ MainWindow::MainWindow(QWidget *parent) :
 
     adminWidget = new CBaseWidget(this);
     connect(closeOffWidget, SIGNAL(buttonClick()), this, SLOT(ProcAdminOffClick()));
-    adminWidget->setGeometry(width - 60, 5, 50, 50);
+    adminWidget->setGeometry(width - 60, 1, 50, 50);
     QImage adminWidgetTemp = QImage(":/res/image/admin_normal.png");
     QImage adminWidgetTemp_hover = QImage(":/res/image/admin_hover.png");
     QImage adminWidgetTemp_click = QImage(":/res/image/admin_click.png");
     adminWidget->setImage(0, adminWidgetTemp, adminWidgetTemp_hover, adminWidgetTemp_click);
     adminWidget->hide();
 
+    headerImageInfoCategory = new CHeaderImageInfo(this);
+    headerImageInfoCategory->setAnimate(true);
+    headerImageInfoCategory->setGeometry(width -50 , 1, width, 49);
+    headerImageInfoCategory->setWidth(48);
+    QImage imgTmpCat = QImage(QDir::toNativeSeparators(QDir::currentPath() +"/"+ xmlData.categories.at(0)->icon));
+    headerImageInfoCategory->setImage(0, imgTmpCat);
+    headerImageInfoCategory->setTitleIcon("");
+    headerImageInfoCategory->setHeight(48);
+    connect(headerImageInfoCategory, SIGNAL(buttonClick()), this, SLOT(ProcCloseOffClick()));
 
+    headerImageInfoCategory->hide();
+    scroll->setFocus();
 
 }
 
@@ -260,9 +278,12 @@ void MainWindow::procLoadProgress(int s){
     backWidget->setVisible(false);
     forwardWidget->setVisible(false);
     adminWidget->setVisible(false);
+    view->setGeometry(QRect(0,0,width,height));
     view->setUpdatesEnabled(false);
     view->history()->clear();
     view->setUpdatesEnabled(true);
+    topBarWidget->hide();
+    headerImageInfoCategory->hide();
     emit horizontalMenu->click(catIndx);
 
 }
@@ -365,18 +386,24 @@ void MainWindow::processClick(int i){
     headerImageInfo->setImage(0, imgTmp);
     headerImageInfo->setTitleIcon(xmlData.categories.at(i)->name);
 
-    if(xmlData.categories.at(i)->websites.count()!=0){
-        downArrowWidget->show();
-        upArrowWidget->show();
-    }else{
-        downArrowWidget->hide();
-        upArrowWidget->hide();
-    }
 
     centralMenu->setVisible(false);
     centralMenu->createMenuByCategory(i);
     centralMenu->setVisible(true);
 
+    if(xmlData.categories.at(i)->websites.count()!=0){
+        if (centralMenu->getRowMax()*200 > scroll->height()){
+            downArrowWidget->show();
+            upArrowWidget->show();
+        }else{
+            downArrowWidget->hide();
+            upArrowWidget->hide();
+
+        }
+    }else{
+        downArrowWidget->hide();
+        upArrowWidget->hide();
+    }
 
 
     horizontalMenu->setVisible(true);
@@ -411,6 +438,8 @@ void MainWindow::processClick(int i){
     htmlCont = htmlCont.replace("%url%",bgvideo);
     htmlCont = htmlCont.replace("%muted%",bgvideoSound);
     view->setHtml(htmlCont);
+    scroll->setFocus();
+    repaint();
 
 }
 
@@ -432,6 +461,7 @@ void MainWindow::ProcClickForUrl(QString &url, QString &title, QImage& imgTmp){
     scroll->setVisible(false);
 
     scroll->setFocus();
+
     downArrowWidget->setVisible(false);
     upArrowWidget->setVisible(false);
 
@@ -442,9 +472,17 @@ void MainWindow::ProcClickForUrl(QString &url, QString &title, QImage& imgTmp){
     headerImageInfo->setVisible(true);
     horizontalMenu->setVisible(false);
     homeWidget->setVisible(true);
-    closeOffWidget->setVisible(true);
-    adminWidget->setVisible(true);
+    closeOffWidget->setVisible(false);
+    adminWidget->setVisible(false);
+    topBarWidget->show();
+    tgroup xmlData = parser->getParsedData();
+
+    QImage imgTmpCat = QImage(QDir::toNativeSeparators(QDir::currentPath() +"/"+ xmlData.categories.at(catIndx)->icon));
+    headerImageInfoCategory->setImage(0, imgTmpCat);
+    headerImageInfoCategory->show();
+
     view->history()->clear();
+    view->setGeometry(QRect(0, 50, width, height-50));
     view->setUrl(QUrl(url));
 //    QString htmlCont= cont;
 //    htmlCont = htmlCont.replace("%url%",url);
