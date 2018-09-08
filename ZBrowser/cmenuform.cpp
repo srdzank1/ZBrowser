@@ -60,7 +60,8 @@ void CMenuForm::createMenuByCategory(int id){
                 connect(pLargeImage, SIGNAL(click(int)), this, SLOT(processClick(int)));
                 connect(pLargeImage, SIGNAL(clickForUrl(QString&, QString&, QImage&)), this, SLOT(processClickForUrl(QString&, QString&, QImage&)));
 
-                QRect r1 = QRect( xOffset* i, yOffset* j , xOffset * (i+1) , yOffset * (j + 1));
+                QRect r1 = QRect( xOffset* i, yOffset* j , xOffset , yOffset);
+
                 pLargeImage->setGeometry(r1);
                 pLargeImage->setWidth(xOffset);
                 pLargeImage->setHeight(yOffset);

@@ -21,6 +21,7 @@ MainWindow::MainWindow(QWidget *parent) :
     parser = 0;
     catIndx = 0;
     resizeCount = 0;
+    admin = 0;
 
     setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
     QRect rec = QApplication::desktop()->screenGeometry();
@@ -221,13 +222,13 @@ MainWindow::MainWindow(QWidget *parent) :
     }
 
     adminWidget = new CBaseWidget(this);
-    connect(closeOffWidget, SIGNAL(buttonClick()), this, SLOT(ProcAdminOffClick()));
+    connect(adminWidget, SIGNAL(buttonClick()), this, SLOT(ProcAdminClick()));
     adminWidget->setGeometry(width - 60, 1, 50, 50);
     QImage adminWidgetTemp = QImage(":/res/image/admin_normal.png");
     QImage adminWidgetTemp_hover = QImage(":/res/image/admin_hover.png");
     QImage adminWidgetTemp_click = QImage(":/res/image/admin_click.png");
     adminWidget->setImage(0, adminWidgetTemp, adminWidgetTemp_hover, adminWidgetTemp_click);
-    adminWidget->hide();
+    adminWidget->show();
 
     headerImageInfoCategory = new CHeaderImageInfo(this);
     headerImageInfoCategory->setAnimate(true);
@@ -284,11 +285,27 @@ void MainWindow::procLoadProgress(int s){
     view->setUpdatesEnabled(true);
     topBarWidget->hide();
     headerImageInfoCategory->hide();
+    if (catIndx == 0){
+        adminWidget->show();
+    }else{
+        adminWidget->hide();
+    }
+
     emit horizontalMenu->click(catIndx);
 
 }
-void MainWindow::ProcAdminOffClick(){
+void MainWindow::ProcAdminClick(){
 
+    if (admin == 0){
+        admin = new CAdminSettingsWidget(this);
+        admin->setGeometry(width - 402, 60, 385, 600);
+        admin->show();
+    }else{
+        delete admin;
+        admin = 0;
+    }
+
+    // add admin Dialog here
 }
 
 void MainWindow::ProcHomeClick(){
@@ -380,6 +397,12 @@ void MainWindow::processClick(int i){
     statusHistoryEnabled = false;
     catIndx = i;
 
+    if (catIndx == 0){
+        adminWidget->show();
+    }else{
+        adminWidget->hide();
+    }
+
     tgroup xmlData = parser->getParsedData();
     QImage imgTmpBkg = QImage(QDir::toNativeSeparators(QDir::currentPath() +"/"+ xmlData.categories.at(i)->background));
     QImage imgTmp = QImage(QDir::toNativeSeparators(QDir::currentPath() +"/"+ xmlData.categories.at(i)->icon));
@@ -449,6 +472,7 @@ void MainWindow::ProcClickForUrl(QString &url, QString &title, QImage& imgTmp){
     if (!view->isHidden()){
         view->hide();
     }
+    adminWidget->hide();
     backWidget->setVisible(false);
     forwardWidget->setVisible(false);
     homeWidget->setVisible(false);

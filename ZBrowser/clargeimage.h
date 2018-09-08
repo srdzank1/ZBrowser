@@ -43,6 +43,7 @@ private:
     int m_width;
     int m_height;
     QBrush m_brush;
+    bool statRepaint;
 };
 
 

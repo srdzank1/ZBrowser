@@ -28,6 +28,7 @@
 #include "cloaderwidget.h"
 #include <QSound>
 #include "ctopbarwidget.h"
+#include "cadminsettingswidget.h"
 
 
 class QWebView;
@@ -78,6 +79,7 @@ private:
     int catIndx;
     CLoaderWidget *loader;
     CTopBarWidget *topBarWidget;
+    CAdminSettingsWidget * admin;
 
 public slots:
     void processClick(int i);
@@ -96,7 +98,7 @@ public slots:
     void procLoadUrlChanged(const QUrl&);
     void ProcShowHMenu(bool s);
     void procSelectionChanged();
-    void ProcAdminOffClick();
+    void ProcAdminClick();
 };
 
 #endif // MAINWINDOW_H

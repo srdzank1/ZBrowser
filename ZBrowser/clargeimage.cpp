@@ -8,6 +8,7 @@ CLargeImage::CLargeImage(QWidget *parent) : QWidget(parent)
     setAttribute(Qt::WA_StaticContents);
     setMouseTracking(true);
     m_brush.setColor(Qt::blue);
+    setGeometry(0, 0, 200, 200);
 }
 
 CLargeImage::~CLargeImage()
@@ -79,16 +80,15 @@ void CLargeImage::paintEvent(QPaintEvent *event){
 
 void CLargeImage::mouseMoveEvent(QMouseEvent *event)
 {
-
 }
 
 void CLargeImage::enterEvent(QEvent * event){
-     bmouseOver = true;
+    bmouseOver = true;
 //     QSound::play(":sound/click.wav");
      repaint();
 }
 void CLargeImage::leaveEvent(QEvent * event){
-     bmouseOver = false;
+    bmouseOver = false;
      repaint();
 }
 

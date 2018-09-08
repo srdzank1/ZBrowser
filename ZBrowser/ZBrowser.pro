@@ -39,7 +39,9 @@ SOURCES += \
     cbasewidget.cpp \
     qhidden.cpp \
     cloaderwidget.cpp \
-    ctopbarwidget.cpp
+    ctopbarwidget.cpp \
+    cadminsettingswidget.cpp \
+    cswitch.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -55,7 +57,9 @@ HEADERS += \
     cbasewidget.h \
     qhidden.h \
     cloaderwidget.h \
-    ctopbarwidget.h
+    ctopbarwidget.h \
+    cadminsettingswidget.h \
+    cswitch.h
 
 FORMS += \
         mainwindow.ui \
