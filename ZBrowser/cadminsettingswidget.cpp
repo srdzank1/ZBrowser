@@ -32,15 +32,15 @@ void CAdminSettingsWidget::menuGlobalSettings(){
     securitySettings = new QLabel(this);
     securitySettings->setGeometry(20,15, 300, 30);
     QFont cFont;
-    cFont.setPointSize(16);
+    cFont.setPointSize(14);
     cFont.setBold(true);
     securitySettings->setFont(cFont);
     securitySettings->setText(QStringLiteral("Security / Settings"));
 
     //------------------------------------------------
     labelshowCloseButton = new QLabel(this);
-    labelshowCloseButton->setGeometry(30, 100, 200, 30);
-    cFont.setPointSize(14);
+    labelshowCloseButton->setGeometry(20, 100, 200, 30);
+    cFont.setPointSize(12);
     cFont.setBold(false);
     labelshowCloseButton->setFont(cFont);
     labelshowCloseButton->setText(QStringLiteral("Show close button"));
@@ -51,8 +51,8 @@ void CAdminSettingsWidget::menuGlobalSettings(){
 
     //------------------------------------------------
     labelalwaysInFront = new QLabel(this);
-    labelalwaysInFront->setGeometry(30, 140, 200, 30);
-    cFont.setPointSize(14);
+    labelalwaysInFront->setGeometry(20, 140, 200, 30);
+    cFont.setPointSize(12);
     cFont.setBold(false);
     labelalwaysInFront->setFont(cFont);
     labelalwaysInFront->setText(QStringLiteral("Always in front"));
@@ -63,8 +63,8 @@ void CAdminSettingsWidget::menuGlobalSettings(){
 
     //------------------------------------------------
     labelexitKeyboardShortcut = new QLabel(this);
-    labelexitKeyboardShortcut->setGeometry(30, 180, 240, 30);
-    cFont.setPointSize(14);
+    labelexitKeyboardShortcut->setGeometry(20, 180, 240, 30);
+    cFont.setPointSize(12);
     cFont.setBold(false);
     labelexitKeyboardShortcut->setFont(cFont);
     labelexitKeyboardShortcut->setText(QStringLiteral("Exit with keyboard shortcut"));
@@ -75,8 +75,8 @@ void CAdminSettingsWidget::menuGlobalSettings(){
 
     //------------------------------------------------
     labelenableRestriction = new QLabel(this);
-    labelenableRestriction->setGeometry(30, 220, 240, 30);
-    cFont.setPointSize(14);
+    labelenableRestriction->setGeometry(20, 220, 240, 30);
+    cFont.setPointSize(12);
     cFont.setBold(false);
     labelenableRestriction->setFont(cFont);
     labelenableRestriction->setText(QStringLiteral("Enable restrictions"));
@@ -87,15 +87,15 @@ void CAdminSettingsWidget::menuGlobalSettings(){
 
     //------------------------------------------------
     labelkeyboardShortcut = new QLabel(this);
-    labelkeyboardShortcut->setGeometry(30, 260, 240, 30);
-    cFont.setPointSize(14);
+    labelkeyboardShortcut->setGeometry(20, 260, 240, 30);
+    cFont.setPointSize(12);
     labelkeyboardShortcut->setFont(cFont);
     labelkeyboardShortcut->setText(QStringLiteral("Keyboard shortcut CTRL+"));
 
 
     keyboardShortcut = new QLineEdit(this);
     keyboardShortcut->setGeometry(270, 260, 100, 30);
-    cFont.setPointSize(14);
+    cFont.setPointSize(12);
     keyboardShortcut->setMaxLength(1);
     keyboardShortcut->setFont(cFont);
     keyboardShortcut->setText(QStringLiteral("L"));
@@ -103,8 +103,8 @@ void CAdminSettingsWidget::menuGlobalSettings(){
     //------------------------------------------------
 
     labelenableSchedule = new QLabel(this);
-    labelenableSchedule->setGeometry(30, 300, 240, 30);
-    cFont.setPointSize(14);
+    labelenableSchedule->setGeometry(20, 300, 240, 30);
+    cFont.setPointSize(12);
     cFont.setBold(false);
     labelenableSchedule->setFont(cFont);
     labelenableSchedule->setText(QStringLiteral("Enable schedule"));
@@ -119,7 +119,7 @@ void CAdminSettingsWidget::menuGlobalSettings(){
     buttontWebSites = new QPushButton(this);
     buttontWebSites->setGeometry( QRect(10 , 360, 360 ,55));
     connect(buttontWebSites, SIGNAL(clicked(bool)), this, SLOT(procForEditWebsitesMain(bool)));
-    cFont.setPointSize(14);
+    cFont.setPointSize(12);
     cFont.setBold(true);
     buttontWebSites->setFont(cFont);
     buttontWebSites->setText(QStringLiteral("Edit web sites"));
@@ -128,8 +128,7 @@ void CAdminSettingsWidget::menuGlobalSettings(){
     buttonSchedule = new QPushButton(this);
     buttonSchedule->setGeometry( QRect(10 , 420, 360 ,55));
     connect(buttonSchedule, SIGNAL(clicked(bool)), this, SLOT(procForScheduleMain(bool)));
-
-    cFont.setPointSize(14);
+    cFont.setPointSize(12);
     cFont.setBold(true);
     buttonSchedule->setFont(cFont);
     buttonSchedule->setText(QStringLiteral("Open schedule..."));
@@ -137,7 +136,7 @@ void CAdminSettingsWidget::menuGlobalSettings(){
 
     buttonCloseNow = new QPushButton(this);
     buttonCloseNow->setGeometry( QRect(10 , 480, 360 ,55));
-    cFont.setPointSize(14);
+    cFont.setPointSize(12);
     cFont.setBold(true);
     buttonCloseNow->setFont(cFont);
     buttonCloseNow->setText(QStringLiteral("Close now!"));
@@ -146,7 +145,7 @@ void CAdminSettingsWidget::menuGlobalSettings(){
 
     buttonCloseMenu = new QPushButton(this);
     buttonCloseMenu->setGeometry( QRect(10 , 540, 360 ,55));
-    cFont.setPointSize(14);
+    cFont.setPointSize(12);
     cFont.setBold(true);
     buttonCloseMenu->setFont(cFont);
     buttonCloseMenu->setText(QStringLiteral("Close menu"));
