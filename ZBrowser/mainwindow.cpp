@@ -22,6 +22,8 @@ MainWindow::MainWindow(QWidget *parent) :
     catIndx = 0;
     resizeCount = 0;
     admin = 0;
+    editWebSites = 0;
+    editSchedule = 0;
 
     setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
     QRect rec = QApplication::desktop()->screenGeometry();
@@ -298,14 +300,62 @@ void MainWindow::ProcAdminClick(){
 
     if (admin == 0){
         admin = new CAdminSettingsWidget(this);
+        connect(admin, SIGNAL(clickForEditWebsitesMain()),this,SLOT(procEditWebsites()));
+        connect(admin, SIGNAL(clickForScheduleMain()),this,SLOT(procEditSchedule()));
         admin->setGeometry(width - 402, 60, 385, 600);
         admin->show();
     }else{
         delete admin;
         admin = 0;
     }
+    if (editWebSites != 0){
+        delete editWebSites;
+        editWebSites = 0;
+    }
+    if (editSchedule != 0){
+        delete editSchedule;
+        editSchedule = 0;
+    }
 
-    // add admin Dialog here
+ }
+
+void MainWindow::procEditWebsites(){
+
+    if (admin != 0){
+        delete admin;
+        admin = 0;
+    }
+
+    if (editWebSites == 0){
+        tgroup data = parser->getParsedData();
+        editWebSites = new CEditWebSites(data, this);
+        editWebSites->setGeometry(60, 120, width - 120, height- 240);
+        editWebSites->menuGlobalSettings();
+        editWebSites->show();
+    }else{
+        delete editWebSites;
+        editWebSites = 0;
+    }
+
+}
+
+void MainWindow::procEditSchedule(){
+
+    if (admin != 0){
+        delete admin;
+        admin = 0;
+    }
+    if (editSchedule == 0){
+        tgroup data = parser->getParsedData();
+        editSchedule = new CSchedule(data, this);
+        editSchedule->setGeometry(60, 120, width - 120, height- 240);
+        editSchedule->menuGlobalSettings();
+        editSchedule->show();
+    }else{
+        delete editSchedule;
+        editSchedule = 0;
+    }
+
 }
 
 void MainWindow::ProcHomeClick(){

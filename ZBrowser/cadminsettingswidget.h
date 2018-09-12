@@ -20,8 +20,12 @@ protected:
     void paintEvent(QPaintEvent *event);
 
 signals:
+    void clickForEditWebsitesMain();
+    void clickForScheduleMain();
 
 public slots:
+    void procForEditWebsitesMain(bool);
+    void procForScheduleMain(bool);
 private:
     bool statOn;
    QLabel *securitySettings;

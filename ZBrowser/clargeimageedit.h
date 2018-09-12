@@ -1,5 +1,5 @@
-#ifndef CLARGEIMAGE_H
-#define CLARGEIMAGE_H
+#ifndef CLARGEIMAGEEDIT_H
+#define CLARGEIMAGEEDIT_H
 
 #include <QWidget>
 #include <QPainter>
@@ -7,12 +7,12 @@
 //#include <QSound>
 
 
-class CLargeImage : public QWidget
+class CLargeImageEdit : public QWidget
 {
     Q_OBJECT
 public:
-    explicit CLargeImage(QWidget *parent = nullptr);
-    ~CLargeImage();
+    explicit CLargeImageEdit(QWidget *parent = nullptr);
+    ~CLargeImageEdit();
 
     void setImagePathName(int id, const QString& pathName);
     void setTitleIcon(const QString& name);
@@ -41,11 +41,15 @@ private:
     QString m_url;
     QImage m_Icon;
 
+    QImage m_imagePlus;
+    QImage m_imageMinus;
+
     int m_width;
     int m_height;
     QBrush m_brush;
     bool statRepaint;
+    bool m_clickedStatus;
 };
 
 
-#endif // CLARGEIMAGE_H
+#endif // CLARGEIMAGEEDIT_H

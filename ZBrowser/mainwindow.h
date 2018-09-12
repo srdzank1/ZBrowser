@@ -29,6 +29,8 @@
 #include <QSound>
 #include "ctopbarwidget.h"
 #include "cadminsettingswidget.h"
+#include "ceditwebsites.h"
+#include "cschedule.h"
 
 
 class QWebView;
@@ -80,6 +82,8 @@ private:
     CLoaderWidget *loader;
     CTopBarWidget *topBarWidget;
     CAdminSettingsWidget * admin;
+    CEditWebSites *editWebSites;
+    CSchedule * editSchedule;
 
 public slots:
     void processClick(int i);
@@ -99,6 +103,9 @@ public slots:
     void ProcShowHMenu(bool s);
     void procSelectionChanged();
     void ProcAdminClick();
+    void procEditWebsites();
+    void procEditSchedule();
+
 };
 
 #endif // MAINWINDOW_H

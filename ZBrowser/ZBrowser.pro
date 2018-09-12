@@ -41,7 +41,12 @@ SOURCES += \
     cloaderwidget.cpp \
     ctopbarwidget.cpp \
     cadminsettingswidget.cpp \
-    cswitch.cpp
+    cswitch.cpp \
+    ceditwebsites.cpp \
+    ccategorylist.cpp \
+    ccategorylistitems.cpp \
+    cschedule.cpp \
+    clargeimageedit.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -59,7 +64,12 @@ HEADERS += \
     cloaderwidget.h \
     ctopbarwidget.h \
     cadminsettingswidget.h \
-    cswitch.h
+    cswitch.h \
+    ceditwebsites.h \
+    ccategorylist.h \
+    ccategorylistitems.h \
+    cschedule.h \
+    clargeimageedit.h
 
 FORMS += \
         mainwindow.ui \

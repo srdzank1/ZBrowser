@@ -118,6 +118,7 @@ void CAdminSettingsWidget::menuGlobalSettings(){
 
     buttontWebSites = new QPushButton(this);
     buttontWebSites->setGeometry( QRect(10 , 360, 360 ,55));
+    connect(buttontWebSites, SIGNAL(clicked(bool)), this, SLOT(procForEditWebsitesMain(bool)));
     cFont.setPointSize(14);
     cFont.setBold(true);
     buttontWebSites->setFont(cFont);
@@ -126,6 +127,8 @@ void CAdminSettingsWidget::menuGlobalSettings(){
 
     buttonSchedule = new QPushButton(this);
     buttonSchedule->setGeometry( QRect(10 , 420, 360 ,55));
+    connect(buttonSchedule, SIGNAL(clicked(bool)), this, SLOT(procForScheduleMain(bool)));
+
     cFont.setPointSize(14);
     cFont.setBold(true);
     buttonSchedule->setFont(cFont);
@@ -149,5 +152,13 @@ void CAdminSettingsWidget::menuGlobalSettings(){
     buttonCloseMenu->setText(QStringLiteral("Close menu"));
     buttonCloseMenu->show();
 
+}
+
+void CAdminSettingsWidget::procForEditWebsitesMain(bool){
+    emit clickForEditWebsitesMain();
+}
+
+void CAdminSettingsWidget::procForScheduleMain(bool){
+    emit clickForScheduleMain();
 }
 
