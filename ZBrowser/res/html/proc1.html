@@ -1,76 +1,92 @@
-<html>
-<head>
-<style>
-@keyframes fadein {
-    from {
-        opacity:0;
-    }
-    to {
-        opacity:1;
-    }
-}
-@-moz-keyframes fadein { /* Firefox */
-    from {
-        opacity:0;
-    }
-    to {
-        opacity:1;
-    }
-}
-@-webkit-keyframes fadein { /* Safari and Chrome */
-    from {
-        opacity:0;
-    }
-    to {
-        opacity:1;
-    }
-}
-@-o-keyframes fadein { /* Opera */
-    from {
-        opacity:0;
-    }
-    to {
-        opacity: 1;
-    }
-}
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <style type="text/css">
 
-body  {
-    background-image: url("%bkgimage%");
-    background-color: #ccffcc;
-}
-
-#myVideo {
-    position: absolute;
-    top: 0;
-    left: 0;
-    min-width: 100%;
-    min-height: 100%;
-    width: 100%;
-    height: 100%;
-    z-index: -100;
-    background-size: cover;
-    animation: fadein 12s;
-    -moz-animation: fadein 12s; /* Firefox */
-    -webkit-animation: fadein 12s; /* Safari and Chrome */
-    -o-animation: fadein 12s; /* Opera */
-}
-</style>
-</head>
-<body>
-
-<iframe id= "myVideo" src="%url%?background=1&muted=%muted%&quality=1080p&autoplay=1&controls=0&showinfo=0&autohide=1"  frameborder="0" webkitallowfullscreen="true" mozallowfullscreen="true" allowfullscreen="true" ></iframe>
+            @-webkit-keyframes fadein { /* Safari and Chrome */
+                from {
+                    opacity:0;
+                }
+                to {
+                    opacity:1;
+                }
+            }
+            @-webkit-keyframes fadeout { /* Safari and Chrome */
+                from {
+                    opacity:1;
+                }
+                to {
+                    opacity:0;
+                }
+            }
 
 
-</body>
+            #ytplayer {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-size: cover;
+                animation: fadein 4s;
+                -moz-animation: fadein 4s; /* Firefox */
+                -webkit-animation: fadein 4s; /* Safari and Chrome */
+                -o-animation: fadein 4s; /* Opera */
+
+}
+            * { box-sizing: border-box; }
+            .video-background {
+              background: #000;
+              position: fixed;
+              top: 0; right: 0; bottom: 0; left: 0;
+              z-index: -99;
+            }
+            .video-foreground,
+            .video-background iframe {
+              position: absolute;
+              top: 0;
+              left: 0;
+              width: 100%;
+              height: 100%;
+              pointer-events: auto;
+              background-image: url("%bkgimage%");
+
+            }
+
+            @media (min-aspect-ratio: 16/9) {
+              .video-foreground { height: 300%; top: -100%; }
+            }
+            @media (max-aspect-ratio: 16/9) {
+              .video-foreground { width: 300%; left: -100%; }
+            }
+            @media all and (max-width: 600px) {
+            .vid-info { width: 50%; padding: .5rem; }
+            .vid-info h1 { margin-bottom: .2rem; }
+            }
+            @media all and (max-width: 500px) {
+            .vid-info .acronym { display: none; }
+            }
+
+        </style>
+    </head>
+    <body>
+
+        <div class="video-background">
+            <div class="video-foreground">
+               <iframe
+                    id="ytplayer"
+                    allowfullscreen
+                    src="%url%?background=1&muted=%muted%&quality=1080p&autoplay=1&controls=0&showinfo=0&autohide=1"
+                    frameborder="0"
+                    webkitallowfullscreen="true"
+                    mozallowfullscreen="true"
+                    allowfullscreen="true" >
+                </iframe>
+            </div>
+          </div>
+    </body>
 </html>
-<!DOCTYPE RCC>
-<RCC version="1.0"/>
-
-
-
-
-
-
 
 
 
