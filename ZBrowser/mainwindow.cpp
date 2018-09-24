@@ -30,7 +30,9 @@ MainWindow::MainWindow(QWidget *parent) :
     height = rec.height();
     width = rec.width();
 
-    QImage imgTmp = QImage(QDir::toNativeSeparators(QDir::currentPath() +"/"+ "images/0138dd49a38e8e64eb2a4738dba6dc4f_6478f.jpg"));
+//    QImage imgTmp = QImage(QDir::toNativeSeparators(QDir::currentPath() +"/"+ "images/0138dd49a38e8e64eb2a4738dba6dc4f_6478f.jpg"));
+    QImage imgTmp = QImage(QDir::toNativeSeparators(QDir::currentPath() +"/"+ "images/zac_zite_120.png"));
+
 
 
 
@@ -39,23 +41,6 @@ MainWindow::MainWindow(QWidget *parent) :
 
     loader = new CLoaderWidget(this);
     loader->setGeometry(0,0, width, 6);
-
-    connect(view, SIGNAL(loadFinished(bool)),this, SLOT(procLoadUrlFinished(bool)));
-    connect(view, SIGNAL(loadProgress(int )),this, SLOT(procLoadProgress(int)));
-    connect(view, SIGNAL(loadStarted()),this, SLOT(procStartedUrlFinished()));
-    connect(view, SIGNAL(urlChanged(const QUrl&)),this, SLOT(procLoadUrlChanged(const QUrl&)));
-    connect(view->page(), SIGNAL(selectionChanged()),this, SLOT(procSelectionChanged()));
-
-
-
-    view->settings()->setAttribute(QWebEngineSettings::FullScreenSupportEnabled, true);
-    view->settings()->setAttribute(QWebEngineSettings::PluginsEnabled, true);
-
-    connect(view->page(),
-                &QWebEnginePage::fullScreenRequested,
-                this,
-                &MainWindow::fullScreenRequested);
-
 
     view->pageAction(QWebEnginePage::Forward);
     QString filePathHtml = ":/res/html/proc1.html";
@@ -78,7 +63,10 @@ MainWindow::MainWindow(QWidget *parent) :
 
 
     QString bgImage = "data:image/jpg;base64,"+iconBase64;
-    QString bgvideo = "https://player.vimeo.com/video/182513271";
+//    QString bgvideo = "https://player.vimeo.com/video/182513271"; //273431568
+    QString bgvideo = "https://player.vimeo.com/video/273431568"; //
+
+
     QString videoSound = "true";
     QString bgvideoSound;
     if (videoSound == "false"){
@@ -122,7 +110,7 @@ MainWindow::MainWindow(QWidget *parent) :
     headerImageInfo->setImage(0, imgTmp);
     headerImageInfo->setTitleIcon(xmlData.categories.at(0)->name);
     headerImageInfo->setHeight(48);
-    headerImageInfo->show();
+    headerImageInfo->hide();
 
 
 
@@ -230,7 +218,7 @@ MainWindow::MainWindow(QWidget *parent) :
     QImage adminWidgetTemp_hover = QImage(":/res/image/admin_hover.png");
     QImage adminWidgetTemp_click = QImage(":/res/image/admin_click.png");
     adminWidget->setImage(0, adminWidgetTemp, adminWidgetTemp_hover, adminWidgetTemp_click);
-    adminWidget->show();
+    adminWidget->hide();
 
     headerImageInfoCategory = new CHeaderImageInfo(this);
     headerImageInfoCategory->setAnimate(true);
@@ -264,9 +252,9 @@ void MainWindow::procStartedUrlFinished(){
 void MainWindow::procLoadUrlFinished(bool s){
     loader->setValue(100);
     loader->hide();
-    if (view->isHidden()){
-        view->show();
-    }
+//    if (view->isHidden()){
+//        view->show();
+//    }
 }
 
 void MainWindow::procLoadProgress(int s){
@@ -282,10 +270,16 @@ void MainWindow::procLoadProgress(int s){
     forwardWidget->setVisible(false);
     adminWidget->setVisible(false);
     view->setGeometry(QRect(0,0,width,height));
-    view->setUpdatesEnabled(false);
-    view->history()->clear();
-    view->setUpdatesEnabled(true);
+    viewUrl->history()->clear();
     topBarWidget->hide();
+    disconnect(view->page(),
+                &QWebEnginePage::fullScreenRequested,
+                this,
+                &MainWindow::fullScreenRequested);
+
+
+    delete viewUrl;
+    viewUrl = 0;
     headerImageInfoCategory->hide();
     if (catIndx == 0){
         adminWidget->show();
@@ -359,7 +353,7 @@ void MainWindow::procEditSchedule(){
 }
 
 void MainWindow::ProcHomeClick(){
-    view->load(m_url);
+    viewUrl->load(m_url);
 }
 
 void MainWindow::procSelectionChanged(){
@@ -373,14 +367,14 @@ void MainWindow::procLoadUrlChanged(const QUrl&){
     if (statusHistoryEnabled){
         horizontalMenu->hide();
 //        hiddenWidget->show();
-        int curIdx = view->history()->currentItemIndex();
-        int numHI = view->history()->count();
+        int curIdx = viewUrl->history()->currentItemIndex();
+        int numHI = viewUrl->history()->count();
         if (curIdx < numHI)
         {
-            if(((numHI-curIdx) > 1)&&(curIdx >1)){
+            if(((numHI-curIdx) > 1)&&(curIdx >0)){
                 backWidget->show();
                 forwardWidget->show();
-            }else if(((numHI-curIdx) <= 1)&&(curIdx >1)){
+            }else if(((numHI-curIdx) <= 1)&&(curIdx >0)){
                 backWidget->show();
                 forwardWidget->hide();
             }else if(((numHI-curIdx) <= 1)&&(curIdx <=1)){
@@ -400,11 +394,11 @@ void MainWindow::procLoadUrlChanged(const QUrl&){
 }
 
 void MainWindow::ProcBackViewClick(){
-    view->page()->triggerAction(QWebEnginePage::Back);
+    viewUrl->page()->triggerAction(QWebEnginePage::Back);
 }
 
 void MainWindow::ProcForwardViewClick(){
-    view->page()->triggerAction(QWebEnginePage::Forward);
+    viewUrl->page()->triggerAction(QWebEnginePage::Forward);
 }
 
 
@@ -425,7 +419,7 @@ void MainWindow::fullScreenRequested(QWebEngineFullScreenRequest request)
         if (m_fullScreenWindow)
             return;
         request.accept();
-        m_fullScreenWindow.reset(new FullScreenWindow(view));
+        m_fullScreenWindow.reset(new FullScreenWindow(viewUrl));
     } else {
         if (!m_fullScreenWindow)
             return;
@@ -452,6 +446,22 @@ void MainWindow::processClick(int i){
     }else{
         adminWidget->hide();
     }
+
+    if (catIndx != 0){
+        if (admin != 0){
+            delete admin;
+            admin = 0;
+        }
+        if (editWebSites != 0){
+            delete editWebSites;
+            editWebSites = 0;
+        }
+        if (editSchedule != 0){
+            delete editSchedule;
+            editSchedule = 0;
+        }
+    }
+
 
     tgroup xmlData = parser->getParsedData();
     QImage imgTmpBkg = QImage(QDir::toNativeSeparators(QDir::currentPath() +"/"+ xmlData.categories.at(i)->background));
@@ -519,9 +529,30 @@ void MainWindow::processClick(int i){
 
 
 void MainWindow::ProcClickForUrl(QString &url, QString &title, QImage& imgTmp){
-    if (!view->isHidden()){
-        view->hide();
-    }
+//    if (!view->isHidden()){
+//        view->hide();
+//    }
+
+    viewUrl = new QWebEngineView(this);
+    viewUrl->setGeometry(0,0,width,height);
+    connect(viewUrl, SIGNAL(loadFinished(bool)),this, SLOT(procLoadUrlFinished(bool)));
+    connect(viewUrl, SIGNAL(loadProgress(int )),this, SLOT(procLoadProgress(int)));
+    connect(viewUrl, SIGNAL(loadStarted()),this, SLOT(procStartedUrlFinished()));
+    connect(viewUrl, SIGNAL(urlChanged(const QUrl&)),this, SLOT(procLoadUrlChanged(const QUrl&)));
+    connect(viewUrl->page(), SIGNAL(selectionChanged()),this, SLOT(procSelectionChanged()));
+
+    viewUrl->settings()->setAttribute(QWebEngineSettings::FullScreenSupportEnabled, true);
+    viewUrl->settings()->setAttribute(QWebEngineSettings::PluginsEnabled, true);
+    viewUrl->history()->clear();
+
+    connect(viewUrl->page(),
+                &QWebEnginePage::fullScreenRequested,
+                this,
+                &MainWindow::fullScreenRequested);
+
+    viewUrl->settings()->setAttribute(QWebEngineSettings::FullScreenSupportEnabled, true);
+    viewUrl->settings()->setAttribute(QWebEngineSettings::PluginsEnabled, true);
+
     adminWidget->hide();
     backWidget->setVisible(false);
     forwardWidget->setVisible(false);
@@ -556,14 +587,14 @@ void MainWindow::ProcClickForUrl(QString &url, QString &title, QImage& imgTmp){
     headerImageInfoCategory->setImage(0, imgTmpCat);
     headerImageInfoCategory->show();
 
-    view->history()->clear();
-    view->setGeometry(QRect(0, 50, width, height-50));
-    view->setUrl(QUrl(url));
+    viewUrl->setGeometry(QRect(0, 50, width, height-50));
+    viewUrl->setUrl(QUrl(url));
 //    QString htmlCont= cont;
 //    htmlCont = htmlCont.replace("%url%",url);
 //    htmlCont = htmlCont.replace("%muted%",QString("0"));
 //    view->setHtml(htmlCont);
     m_url = url;
+    viewUrl->show();
 
 }
 

@@ -39,5 +39,6 @@
         <file>res/image/on-sliders.png</file>
         <file>res/image/if_minus_1645995.png</file>
         <file>res/image/if_plus_1646001.png</file>
+        <file>res/video/index.html</file>
     </qresource>
 </RCC>

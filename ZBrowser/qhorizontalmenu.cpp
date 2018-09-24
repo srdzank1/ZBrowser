@@ -33,13 +33,17 @@ QHorizontalMenu::~QHorizontalMenu()
 
 void QHorizontalMenu::UpdateD(QRect r)
 {
-    int width = r.width();
+    int width = r.width()-200;
+    int cellWidth = width / catwegoryCount;
+
     int catwegoryCount = m_group.categories.count();
 
     for(int i = 0; i < catwegoryCount; i++){
         tcategory *item =  m_group.categories.at(i);
-        int i1 = i +1;
-        QRect r1 = QRect(width/catwegoryCount * i1, 0,width/catwegoryCount * i1+ 100, 120);
+//        int i1 = i +1;
+//        QRect r1 = QRect(width/catwegoryCount * i1, 0,width/catwegoryCount * i1+ 100, 120);
+        QRect r1 = QRect(100 + cellWidth * i, 0, cellWidth, 120);
+
         imageItem[i]->setGeometry(r1);
         QString iconPath = QDir::toNativeSeparators(QDir::currentPath() +"/"+ item->icon);
         imageItem[i]->setImagePathName(i, iconPath);

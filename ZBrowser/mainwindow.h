@@ -31,7 +31,10 @@
 #include "cadminsettingswidget.h"
 #include "ceditwebsites.h"
 #include "cschedule.h"
-
+#include <QDesktopServices>
+#include <QMediaPlayer>
+#include <QMediaPlaylist>
+#include <QVideoWidget>
 
 class QWebView;
 namespace Ui {
@@ -55,6 +58,8 @@ private:
     QHorizontalMenu *horizontalMenu;
     CMenuForm *centralMenu;
     QWebEngineView *view;
+    QWebEngineView *viewUrl;
+
     int height;
     int width;
     QScopedPointer<FullScreenWindow> m_fullScreenWindow;
@@ -84,6 +89,10 @@ private:
     CAdminSettingsWidget * admin;
     CEditWebSites *editWebSites;
     CSchedule * editSchedule;
+
+    QMediaPlaylist *playlist;
+    QMediaPlayer *player;
+    QVideoWidget *videoWidget;
 
 public slots:
     void processClick(int i);
