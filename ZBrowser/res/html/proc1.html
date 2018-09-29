@@ -33,6 +33,10 @@
                 -moz-animation: fadein 4s; /* Firefox */
                 -webkit-animation: fadein 4s; /* Safari and Chrome */
                 -o-animation: fadein 4s; /* Opera */
+                animation: fadeout 4s;
+                -moz-animation: fadeout 4s; /* Firefox */
+                -webkit-animation: fadeout 4s; /* Safari and Chrome */
+                -o-animation: fadeout 4s; /* Opera */
 
 }
             * { box-sizing: border-box; }
@@ -51,7 +55,7 @@
               height: 100%;
               pointer-events: auto;
               background-image: url("%bkgimage%");
-
+              transition: opacity 0.3s;
             }
 
             @media (min-aspect-ratio: 16/9) {

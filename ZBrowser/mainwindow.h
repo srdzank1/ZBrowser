@@ -59,6 +59,8 @@ private:
     CMenuForm *centralMenu;
     QWebEngineView *view;
     QWebEngineView *viewUrl;
+    QWebEngineView *viewInit;
+
 
     int height;
     int width;
@@ -93,6 +95,7 @@ private:
     QMediaPlaylist *playlist;
     QMediaPlayer *player;
     QVideoWidget *videoWidget;
+    QTimer *t;
 
 public slots:
     void processClick(int i);
@@ -101,6 +104,7 @@ public slots:
     void procLoadUrlFinished(bool s);
     void procStartedUrlFinished();
     void procLoadProgress(int);
+    void TimerFinish();
 
     void ProcUpClick();
     void ProcDownClick();

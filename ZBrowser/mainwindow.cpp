@@ -24,6 +24,9 @@ MainWindow::MainWindow(QWidget *parent) :
     admin = 0;
     editWebSites = 0;
     editSchedule = 0;
+    t = new QTimer;
+    connect(t, SIGNAL(timeout()), this, SLOT(TimerFinish()));
+    t->start(16000);
 
     setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
     QRect rec = QApplication::desktop()->screenGeometry();
@@ -34,14 +37,23 @@ MainWindow::MainWindow(QWidget *parent) :
     QImage imgTmp = QImage(QDir::toNativeSeparators(QDir::currentPath() +"/"+ "images/zac_zite_120.png"));
 
 
-
-
     view = new QWebEngineView(this);
     view->setGeometry(0,0,width,height);
+    view->hide();
+
+    viewInit = new QWebEngineView(this);
+    viewInit->setGeometry(0,0,width,height);
+    QString pathTmp = ("file:///" +QDir::currentPath() +"/"+ "test1.html");
+
+    viewInit->load(QUrl(pathTmp));
+    viewInit->show();
+
+
+
 
     loader = new CLoaderWidget(this);
     loader->setGeometry(0,0, width, 6);
-
+    loader->hide();
     view->pageAction(QWebEnginePage::Forward);
     QString filePathHtml = ":/res/html/proc1.html";
     QFile file(filePathHtml);
@@ -62,7 +74,7 @@ MainWindow::MainWindow(QWidget *parent) :
     QString iconBase64 = QString::fromLatin1(byteArray.toBase64().data());
 
 
-    QString bgImage = "data:image/jpg;base64,"+iconBase64;
+    QString bgImage = "";     //"data:image/jpg;base64,"+iconBase64;
 //    QString bgvideo = "https://player.vimeo.com/video/182513271"; //273431568
     QString bgvideo = "https://player.vimeo.com/video/273431568"; //
 
@@ -82,11 +94,11 @@ MainWindow::MainWindow(QWidget *parent) :
     htmlCont = htmlCont.replace("%bkgimage%",bgImage);
 
 
-    view->setHtml(htmlCont);
-    if (view->isHidden()){
-        view->show();
-    }
-
+//    view->setHtml(htmlCont);
+//    if (view->isHidden()){
+//        view->show();
+//    }
+//    view->hide();
 
     parser = new CParserXML(this);
     QString filePath = "://res/xml/menu.xml";
@@ -95,6 +107,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
 
     QFuture<int> future = QtConcurrent::run(parser, &CParserXML::CreateCashImage);
+
 
     tgroup xmlData = parser->getParsedData();
 
@@ -117,7 +130,7 @@ MainWindow::MainWindow(QWidget *parent) :
     horizontalMenu = new QHorizontalMenu(this, xmlData);
     horizontalMenu->setGeometry(0,height-120, width, height);
     connect(horizontalMenu, SIGNAL(click(int)), this, SLOT(processClick(int)));
-
+    horizontalMenu->hide();
     int tempNum = width/200;
     int tempWidth = (tempNum-1)*200;
     int tempMarg = (width-tempWidth)/2;
@@ -235,6 +248,16 @@ MainWindow::MainWindow(QWidget *parent) :
 
 }
 
+void MainWindow::TimerFinish(){
+//    horizontalMenu->show();
+    setUpdatesEnabled(false);
+    delete viewInit;
+    setUpdatesEnabled(true);
+
+    processClick(0);
+
+    delete t;
+}
 
 void MainWindow::ProcUpClick(){
     scroll->verticalScrollBar()->setValue(scroll->verticalScrollBar()->value()-100);
@@ -256,6 +279,8 @@ void MainWindow::procLoadUrlFinished(bool s){
 //        view->show();
 //    }
 }
+
+
 
 void MainWindow::procLoadProgress(int s){
     loader->setValue(s);

@@ -138,7 +138,7 @@ bool CParserXML::loadThemeXmlFile(const QString &xmlFile)
 }
 
 
-int  CParserXML::CreateCashImage(){
+int CParserXML::CreateCashImage(){
     QImage * imgObj = new QImage();
     for(int i = 0; i < m_group.categories.count(); i++){
         tcategory *item = m_group.categories.at(i);
@@ -152,5 +152,7 @@ int  CParserXML::CreateCashImage(){
     }
     return 0;
 }
+
+
 
 
