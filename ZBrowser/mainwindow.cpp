@@ -613,7 +613,9 @@ void MainWindow::ProcClickForUrl(QString &url, QString &title, QImage& imgTmp){
     headerImageInfoCategory->show();
 
     viewUrl->setGeometry(QRect(0, 50, width, height-50));
-    viewUrl->setUrl(QUrl(url));
+//    viewUrl->setUrl(QUrl(url));
+    viewUrl->load(QUrl(url));
+
 //    QString htmlCont= cont;
 //    htmlCont = htmlCont.replace("%url%",url);
 //    htmlCont = htmlCont.replace("%muted%",QString("0"));
