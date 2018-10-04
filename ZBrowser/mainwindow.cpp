@@ -41,6 +41,29 @@ MainWindow::MainWindow(QWidget *parent) :
     view->setGeometry(0,0,width,height);
     view->hide();
 
+    connect(view, SIGNAL(loadFinished(bool)),this, SLOT(procLoadUrlFinished(bool)));
+    connect(view, SIGNAL(loadProgress(int )),this, SLOT(procLoadProgress(int)));
+    connect(view, SIGNAL(loadStarted()),this, SLOT(procStartedUrlFinished()));
+    connect(view, SIGNAL(urlChanged(const QUrl&)),this, SLOT(procLoadUrlChanged(const QUrl&)));
+    connect(view->page(), SIGNAL(selectionChanged()),this, SLOT(procSelectionChanged()));
+
+    view->settings()->setAttribute(QWebEngineSettings::FullScreenSupportEnabled, true);
+    view->settings()->setAttribute(QWebEngineSettings::PluginsEnabled, true);
+    view->history()->clear();
+
+    connect(view->page(),
+                &QWebEnginePage::fullScreenRequested,
+                this,
+                &MainWindow::fullScreenRequested);
+
+    view->settings()->setAttribute(QWebEngineSettings::FullScreenSupportEnabled, true);
+    view->settings()->setAttribute(QWebEngineSettings::PluginsEnabled, true);
+
+
+
+
+
+
     viewInit = new QWebEngineView(this);
     viewInit->setGeometry(0,0,width,height);
     QString pathTmp = ("file:///" +QDir::currentPath() +"/"+ "test1.html");
@@ -295,7 +318,7 @@ void MainWindow::procLoadProgress(int s){
     forwardWidget->setVisible(false);
     adminWidget->setVisible(false);
     view->setGeometry(QRect(0,0,width,height));
-    viewUrl->history()->clear();
+    view->history()->clear();
     topBarWidget->hide();
     disconnect(view->page(),
                 &QWebEnginePage::fullScreenRequested,
@@ -303,8 +326,8 @@ void MainWindow::procLoadProgress(int s){
                 &MainWindow::fullScreenRequested);
 
 
-    delete viewUrl;
-    viewUrl = 0;
+//    delete viewUrl;
+//    viewUrl = 0;
     headerImageInfoCategory->hide();
     if (catIndx == 0){
         adminWidget->show();
@@ -378,7 +401,10 @@ void MainWindow::procEditSchedule(){
 }
 
 void MainWindow::ProcHomeClick(){
-    viewUrl->load(m_url);
+    QString htmlCont= cont2;
+    htmlCont = htmlCont.replace("%url%",m_url);
+    view->setHtml(htmlCont);
+
 }
 
 void MainWindow::procSelectionChanged(){
@@ -392,8 +418,8 @@ void MainWindow::procLoadUrlChanged(const QUrl&){
     if (statusHistoryEnabled){
         horizontalMenu->hide();
 //        hiddenWidget->show();
-        int curIdx = viewUrl->history()->currentItemIndex();
-        int numHI = viewUrl->history()->count();
+        int curIdx = view->history()->currentItemIndex();
+        int numHI = view->history()->count();
         if (curIdx < numHI)
         {
             if(((numHI-curIdx) > 1)&&(curIdx >0)){
@@ -444,7 +470,7 @@ void MainWindow::fullScreenRequested(QWebEngineFullScreenRequest request)
         if (m_fullScreenWindow)
             return;
         request.accept();
-        m_fullScreenWindow.reset(new FullScreenWindow(viewUrl));
+        m_fullScreenWindow.reset(new FullScreenWindow(view));
     } else {
         if (!m_fullScreenWindow)
             return;
@@ -554,29 +580,6 @@ void MainWindow::processClick(int i){
 
 
 void MainWindow::ProcClickForUrl(QString &url, QString &title, QImage& imgTmp){
-//    if (!view->isHidden()){
-//        view->hide();
-//    }
-
-    viewUrl = new QWebEngineView(this);
-    viewUrl->setGeometry(0,0,width,height);
-    connect(viewUrl, SIGNAL(loadFinished(bool)),this, SLOT(procLoadUrlFinished(bool)));
-    connect(viewUrl, SIGNAL(loadProgress(int )),this, SLOT(procLoadProgress(int)));
-    connect(viewUrl, SIGNAL(loadStarted()),this, SLOT(procStartedUrlFinished()));
-    connect(viewUrl, SIGNAL(urlChanged(const QUrl&)),this, SLOT(procLoadUrlChanged(const QUrl&)));
-    connect(viewUrl->page(), SIGNAL(selectionChanged()),this, SLOT(procSelectionChanged()));
-
-    viewUrl->settings()->setAttribute(QWebEngineSettings::FullScreenSupportEnabled, true);
-    viewUrl->settings()->setAttribute(QWebEngineSettings::PluginsEnabled, true);
-    viewUrl->history()->clear();
-
-    connect(viewUrl->page(),
-                &QWebEnginePage::fullScreenRequested,
-                this,
-                &MainWindow::fullScreenRequested);
-
-    viewUrl->settings()->setAttribute(QWebEngineSettings::FullScreenSupportEnabled, true);
-    viewUrl->settings()->setAttribute(QWebEngineSettings::PluginsEnabled, true);
 
     adminWidget->hide();
     backWidget->setVisible(false);
@@ -587,7 +590,6 @@ void MainWindow::ProcClickForUrl(QString &url, QString &title, QImage& imgTmp){
 
     statusHistoryEnabled = true;
     centralMenu->setVisible(false);
-//    centralMenu->hide();
 
     scroll->setVisible(false);
 
@@ -612,16 +614,12 @@ void MainWindow::ProcClickForUrl(QString &url, QString &title, QImage& imgTmp){
     headerImageInfoCategory->setImage(0, imgTmpCat);
     headerImageInfoCategory->show();
 
-    viewUrl->setGeometry(QRect(0, 50, width, height-50));
-//    viewUrl->setUrl(QUrl(url));
-    viewUrl->load(QUrl(url));
+    view->setGeometry(QRect(0, 50, width, height-50));
 
-//    QString htmlCont= cont;
-//    htmlCont = htmlCont.replace("%url%",url);
-//    htmlCont = htmlCont.replace("%muted%",QString("0"));
-//    view->setHtml(htmlCont);
+    QString htmlCont= cont2;
+    htmlCont = htmlCont.replace("%url%",url);
+    view->setHtml(htmlCont);
     m_url = url;
-    viewUrl->show();
 
 }
 
