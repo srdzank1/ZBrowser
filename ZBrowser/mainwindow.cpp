@@ -24,9 +24,7 @@ MainWindow::MainWindow(QWidget *parent) :
     admin = 0;
     editWebSites = 0;
     editSchedule = 0;
-    t = new QTimer;
-    connect(t, SIGNAL(timeout()), this, SLOT(TimerFinish()));
-    t->start(16000);
+
 
     setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
     QRect rec = QApplication::desktop()->screenGeometry();
@@ -43,7 +41,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     connect(view, SIGNAL(loadFinished(bool)),this, SLOT(procLoadUrlFinished(bool)));
     connect(view, SIGNAL(loadProgress(int )),this, SLOT(procLoadProgress(int)));
-    connect(view, SIGNAL(loadStarted()),this, SLOT(procStartedUrlFinished()));
+//    connect(view, SIGNAL(loadStarted()),this, SLOT(procStartedUrlFinished()));
     connect(view, SIGNAL(urlChanged(const QUrl&)),this, SLOT(procLoadUrlChanged(const QUrl&)));
     connect(view->page(), SIGNAL(selectionChanged()),this, SLOT(procSelectionChanged()));
 
@@ -60,19 +58,25 @@ MainWindow::MainWindow(QWidget *parent) :
     view->settings()->setAttribute(QWebEngineSettings::PluginsEnabled, true);
 
 
-
-
-
-
     viewInit = new QWebEngineView(this);
     viewInit->setGeometry(0,0,width,height);
     QString pathTmp = ("file:///" +QDir::currentPath() +"/"+ "test1.html");
 
     viewInit->load(QUrl(pathTmp));
-    viewInit->show();
+    viewInit->hide();
+
+    t5 = new QTimer;
+    connect(t5, SIGNAL(timeout()), this, SLOT(TimerFinish5()));
+    t5->start(100);
 
 
+    t = new QTimer;
+    connect(t, SIGNAL(timeout()), this, SLOT(TimerFinish()));
+    t->start(15000);
 
+    t2 = new QTimer;
+    connect(t2, SIGNAL(timeout()), this, SLOT(TimerFinish2()));
+    t2->start(12000);
 
     loader = new CLoaderWidget(this);
     loader->setGeometry(0,0, width, 6);
@@ -272,16 +276,25 @@ MainWindow::MainWindow(QWidget *parent) :
 }
 
 void MainWindow::TimerFinish(){
-//    horizontalMenu->show();
-    setUpdatesEnabled(false);
-    delete viewInit;
-    setUpdatesEnabled(true);
+    viewInit->hide();
+    connect(view, SIGNAL(loadStarted()),this, SLOT(procStartedUrlFinished()));
 
-    processClick(0);
-
+//    delete viewInit;
     delete t;
 }
 
+void MainWindow::TimerFinish2(){
+
+    processClick(0);
+
+    delete t2;
+}
+
+void MainWindow::TimerFinish5(){
+
+   viewInit->show();
+    delete t5;
+}
 void MainWindow::ProcUpClick(){
     scroll->verticalScrollBar()->setValue(scroll->verticalScrollBar()->value()-100);
 }
@@ -320,14 +333,6 @@ void MainWindow::procLoadProgress(int s){
     view->setGeometry(QRect(0,0,width,height));
     view->history()->clear();
     topBarWidget->hide();
-    disconnect(view->page(),
-                &QWebEnginePage::fullScreenRequested,
-                this,
-                &MainWindow::fullScreenRequested);
-
-
-//    delete viewUrl;
-//    viewUrl = 0;
     headerImageInfoCategory->hide();
     if (catIndx == 0){
         adminWidget->show();
@@ -422,10 +427,10 @@ void MainWindow::procLoadUrlChanged(const QUrl&){
         int numHI = view->history()->count();
         if (curIdx < numHI)
         {
-            if(((numHI-curIdx) > 1)&&(curIdx >0)){
+            if(((numHI-curIdx) > 1)&&(curIdx >1)){
                 backWidget->show();
                 forwardWidget->show();
-            }else if(((numHI-curIdx) <= 1)&&(curIdx >0)){
+            }else if(((numHI-curIdx) <= 1)&&(curIdx >1)){
                 backWidget->show();
                 forwardWidget->hide();
             }else if(((numHI-curIdx) <= 1)&&(curIdx <=1)){
@@ -445,11 +450,11 @@ void MainWindow::procLoadUrlChanged(const QUrl&){
 }
 
 void MainWindow::ProcBackViewClick(){
-    viewUrl->page()->triggerAction(QWebEnginePage::Back);
+    view->page()->triggerAction(QWebEnginePage::Back);
 }
 
 void MainWindow::ProcForwardViewClick(){
-    viewUrl->page()->triggerAction(QWebEnginePage::Forward);
+    view->page()->triggerAction(QWebEnginePage::Forward);
 }
 
 
@@ -485,6 +490,7 @@ MainWindow::~MainWindow()
     delete centralMenu;
     delete horizontalMenu;
     delete parser;
+    delete viewInit;
     delete ui;
 }
 
@@ -620,7 +626,7 @@ void MainWindow::ProcClickForUrl(QString &url, QString &title, QImage& imgTmp){
     htmlCont = htmlCont.replace("%url%",url);
     view->setHtml(htmlCont);
     m_url = url;
-
+    view->history()->clear();
 }
 
 

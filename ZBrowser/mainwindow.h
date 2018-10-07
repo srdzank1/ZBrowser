@@ -96,6 +96,8 @@ private:
     QMediaPlayer *player;
     QVideoWidget *videoWidget;
     QTimer *t;
+    QTimer *t2;
+    QTimer *t5;
 
 public slots:
     void processClick(int i);
@@ -105,7 +107,8 @@ public slots:
     void procStartedUrlFinished();
     void procLoadProgress(int);
     void TimerFinish();
-
+    void TimerFinish2();
+    void TimerFinish5();
     void ProcUpClick();
     void ProcDownClick();
     void ProcHomeClick();
