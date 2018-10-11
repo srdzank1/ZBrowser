@@ -4,6 +4,7 @@
 #include <QWidget>
 #include <QPainter>
 #include <QMouseEvent>
+#include <QRegion>
 //#include <QSound>
 
 
@@ -21,6 +22,8 @@ public:
     QImage getImage(){return mImage;}
     void setWidth(int w){m_width = w;}
     void setHeight(int h){m_height = h;}
+
+
 protected:
     void paintEvent(QPaintEvent *event);
     void mouseMoveEvent(QMouseEvent *event);

@@ -101,6 +101,7 @@ private:
 
 public slots:
     void processClick(int i);
+    void processClickInit(int i);
     void ProcClickForUrl(QString &i, QString&t, QImage& image );
     void fullScreenRequested(QWebEngineFullScreenRequest request);
     void procLoadUrlFinished(bool s);

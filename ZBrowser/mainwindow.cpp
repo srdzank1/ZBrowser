@@ -67,7 +67,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     t5 = new QTimer;
     connect(t5, SIGNAL(timeout()), this, SLOT(TimerFinish5()));
-    t5->start(100);
+    t5->start(300);
 
 
     t = new QTimer;
@@ -76,7 +76,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     t2 = new QTimer;
     connect(t2, SIGNAL(timeout()), this, SLOT(TimerFinish2()));
-    t2->start(12000);
+    t2->start(10000);
 
     loader = new CLoaderWidget(this);
     loader->setGeometry(0,0, width, 6);
@@ -280,15 +280,111 @@ void MainWindow::TimerFinish(){
     connect(view, SIGNAL(loadStarted()),this, SLOT(procStartedUrlFinished()));
 
 //    delete viewInit;
+    adminWidget->show();
+    horizontalMenu->setVisible(true);
+    headerImageInfo->show();
+
     delete t;
 }
 
 void MainWindow::TimerFinish2(){
 
-    processClick(0);
-
+    processClickInit(0);
     delete t2;
 }
+
+void MainWindow::processClickInit(int i){
+    statusHistoryEnabled = false;
+    catIndx = i;
+
+    if (catIndx == 0){
+//        adminWidget->show();
+    }else{
+        adminWidget->hide();
+    }
+
+    if (catIndx != 0){
+        if (admin != 0){
+            delete admin;
+            admin = 0;
+        }
+        if (editWebSites != 0){
+            delete editWebSites;
+            editWebSites = 0;
+        }
+        if (editSchedule != 0){
+            delete editSchedule;
+            editSchedule = 0;
+        }
+    }
+
+
+    tgroup xmlData = parser->getParsedData();
+    QImage imgTmpBkg = QImage(QDir::toNativeSeparators(QDir::currentPath() +"/"+ xmlData.categories.at(i)->background));
+    QImage imgTmp = QImage(QDir::toNativeSeparators(QDir::currentPath() +"/"+ xmlData.categories.at(i)->icon));
+    headerImageInfo->setImage(0, imgTmp);
+    headerImageInfo->setTitleIcon(xmlData.categories.at(i)->name);
+
+
+    centralMenu->setVisible(false);
+    centralMenu->createMenuByCategory(i);
+    centralMenu->setVisible(true);
+
+    if(xmlData.categories.at(i)->websites.count()!=0){
+        if (centralMenu->getRowMax()*200 > scroll->height()){
+            downArrowWidget->show();
+            upArrowWidget->show();
+        }else{
+            downArrowWidget->hide();
+            upArrowWidget->hide();
+
+        }
+    }else{
+        downArrowWidget->hide();
+        upArrowWidget->hide();
+    }
+
+
+//    horizontalMenu->setVisible(true);
+    scroll->verticalScrollBar()->setValue(0);
+    scroll->horizontalScrollBar()->setValue(0);
+    scroll->setFocus();
+    scroll->show();
+
+//    headerImageInfo->show();
+
+
+    // background video
+    QString bgvideo = xmlData.categories.at(i)->bgvideo;
+    QString videoSound = xmlData.categories.at(i)->videosound;
+    QString bgvideoSound;
+    if (videoSound == "false"){
+       bgvideoSound = "1";
+    }else{
+        bgvideoSound = "0";
+    }
+
+    bgvideo = bgvideo.trimmed();
+    QString htmlCont= cont;
+
+    QByteArray byteArray;
+    QBuffer buffer(&byteArray);
+    imgTmpBkg.save(&buffer, "JPEG"); // writes the image in PNG format inside the buffer
+    QString iconBase64 = QString::fromLatin1(byteArray.toBase64().data());
+
+    QString bgImage = "data:image/jpg;base64,"+iconBase64;
+
+    htmlCont = htmlCont.replace("%bkgimage%",bgImage);
+    htmlCont = htmlCont.replace("%url%",bgvideo);
+    htmlCont = htmlCont.replace("%muted%",bgvideoSound);
+    view->setHtml(htmlCont);
+    scroll->setFocus();
+    repaint();
+
+}
+
+
+
 
 void MainWindow::TimerFinish5(){
 
