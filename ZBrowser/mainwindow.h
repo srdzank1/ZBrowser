@@ -58,7 +58,6 @@ private:
     QHorizontalMenu *horizontalMenu;
     CMenuForm *centralMenu;
     QWebEngineView *view;
-    QWebEngineView *viewUrl;
     QWebEngineView *viewInit;
 
 
@@ -98,6 +97,7 @@ private:
     QTimer *t;
     QTimer *t2;
     QTimer *t5;
+    bool checkProc;
 
 public slots:
     void processClick(int i);

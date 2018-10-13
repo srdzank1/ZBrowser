@@ -24,7 +24,7 @@ MainWindow::MainWindow(QWidget *parent) :
     admin = 0;
     editWebSites = 0;
     editSchedule = 0;
-
+    checkProc = true;
 
     setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
     QRect rec = QApplication::desktop()->screenGeometry();
@@ -438,6 +438,8 @@ void MainWindow::procLoadProgress(int s){
 
     emit horizontalMenu->click(catIndx);
 
+    checkProc = true;
+
 }
 void MainWindow::ProcAdminClick(){
 
@@ -583,6 +585,7 @@ void MainWindow::fullScreenRequested(QWebEngineFullScreenRequest request)
 MainWindow::~MainWindow()
 {
     delete view;
+    delete viewInit;
     delete centralMenu;
     delete horizontalMenu;
     delete parser;
@@ -592,6 +595,9 @@ MainWindow::~MainWindow()
 
 void MainWindow::processClick(int i){
     statusHistoryEnabled = false;
+    if ((catIndx == i)&&checkProc){
+        return;
+    }
     catIndx = i;
 
     if (catIndx == 0){
@@ -720,9 +726,12 @@ void MainWindow::ProcClickForUrl(QString &url, QString &title, QImage& imgTmp){
 
     QString htmlCont= cont2;
     htmlCont = htmlCont.replace("%url%",url);
+    view->hide();
     view->setHtml(htmlCont);
+    view->show();
     m_url = url;
     view->history()->clear();
+    checkProc = false;
 }
 
 
