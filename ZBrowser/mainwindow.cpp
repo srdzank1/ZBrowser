@@ -31,57 +31,31 @@ MainWindow::MainWindow(QWidget *parent) :
     height = rec.height();
     width = rec.width();
 
-//    QImage imgTmp = QImage(QDir::toNativeSeparators(QDir::currentPath() +"/"+ "images/0138dd49a38e8e64eb2a4738dba6dc4f_6478f.jpg"));
     QImage imgTmp = QImage(QDir::toNativeSeparators(QDir::currentPath() +"/"+ "images/zac_zite_120.png"));
 
+    createView();
+    createViewInit();
 
-    view = new QWebEngineView(this);
-    view->setGeometry(0,0,width,height);
-    view->hide();
-
-    connect(view, SIGNAL(loadFinished(bool)),this, SLOT(procLoadUrlFinished(bool)));
-    connect(view, SIGNAL(loadProgress(int )),this, SLOT(procLoadProgress(int)));
-//    connect(view, SIGNAL(loadStarted()),this, SLOT(procStartedUrlFinished()));
-    connect(view, SIGNAL(urlChanged(const QUrl&)),this, SLOT(procLoadUrlChanged(const QUrl&)));
-    connect(view->page(), SIGNAL(selectionChanged()),this, SLOT(procSelectionChanged()));
-
-    view->settings()->setAttribute(QWebEngineSettings::FullScreenSupportEnabled, true);
-    view->settings()->setAttribute(QWebEngineSettings::PluginsEnabled, true);
-    view->history()->clear();
-
-    connect(view->page(),
-                &QWebEnginePage::fullScreenRequested,
-                this,
-                &MainWindow::fullScreenRequested);
-
-    view->settings()->setAttribute(QWebEngineSettings::FullScreenSupportEnabled, true);
-    view->settings()->setAttribute(QWebEngineSettings::PluginsEnabled, true);
-
-
-    viewInit = new QWebEngineView(this);
-    viewInit->setGeometry(0,0,width,height);
-    QString pathTmp = ("file:///" +QDir::currentPath() +"/"+ "test1.html");
-
-    viewInit->load(QUrl(pathTmp));
-    viewInit->hide();
-
+    // start Init video
     t5 = new QTimer;
     connect(t5, SIGNAL(timeout()), this, SLOT(TimerFinish5()));
     t5->start(300);
 
-
+    // start to show main Video
     t = new QTimer;
     connect(t, SIGNAL(timeout()), this, SLOT(TimerFinish()));
     t->start(15000);
-
+    // start to load main Video
     t2 = new QTimer;
     connect(t2, SIGNAL(timeout()), this, SLOT(TimerFinish2()));
     t2->start(10000);
 
-    loader = new CLoaderWidget(this);
-    loader->setGeometry(0,0, width, 6);
-    loader->hide();
-    view->pageAction(QWebEnginePage::Forward);
+    // CreateLoader
+
+    CreateLoader();
+
+//    view->pageAction(QWebEnginePage::Forward);
+
     QString filePathHtml = ":/res/html/proc1.html";
     QFile file(filePathHtml);
     file.open(QIODevice::ReadOnly | QFile::Text);
@@ -102,7 +76,6 @@ MainWindow::MainWindow(QWidget *parent) :
 
 
     QString bgImage = "";     //"data:image/jpg;base64,"+iconBase64;
-//    QString bgvideo = "https://player.vimeo.com/video/182513271"; //273431568
     QString bgvideo = "https://player.vimeo.com/video/273431568"; //
 
 
@@ -121,12 +94,6 @@ MainWindow::MainWindow(QWidget *parent) :
     htmlCont = htmlCont.replace("%bkgimage%",bgImage);
 
 
-//    view->setHtml(htmlCont);
-//    if (view->isHidden()){
-//        view->show();
-//    }
-//    view->hide();
-
     parser = new CParserXML(this);
     QString filePath = "://res/xml/menu.xml";
     parser->loadThemeXmlFile(filePath);
@@ -138,26 +105,76 @@ MainWindow::MainWindow(QWidget *parent) :
 
     tgroup xmlData = parser->getParsedData();
 
+    // CreateTopBarWidget
+    CreateTopBarWidget();
+    // create HeaderImageInfo
+    CreateHeaderImageInfo(xmlData);
+    // create horizontalMenu
+    CreateHorizontalMenu(xmlData);
+    // CreateCentralMenuScrollArea
+    CreateCentralMenuScrollArea(xmlData);
+    // CreateUpArrowWidget
+    CreateUpArrowWidget();
+    // CreateDownArrowWidget
+    CreateDownArrowWidget();
+
+    scroll->verticalScrollBar()->setValue(0);
+    scroll->horizontalScrollBar()->setValue(0);
+    scroll->setFocus();
+    scroll->hide();
+
+
+    // CreateBackArrowWidget
+    CreateBackArrowWidget();
+    // create CreateForwardWidget
+    CreateForwardWidget();
+    // create CreateHomeWidget
+    CreateHomeWidget();
+    // create CreateCloseOffWidget
+    CreateCloseOffWidget();
+    if (view->isHidden()){
+        view->show();
+    }
+    // adminWidget
+    CreateAdminWidget();
+    // headerImageInfoCategory
+    CreateHeaderImageInfoCategory(xmlData);
+    scroll->setFocus();
+
+}
+
+void MainWindow::CreateLoader(){
+    loader = new CLoaderWidget(this);
+    loader->setGeometry(0,0, width, 6);
+    loader->hide();
+}
+
+void MainWindow::CreateTopBarWidget(){
     topBarWidget = new CTopBarWidget(this);
     topBarWidget->setGeometry(0, 0, width, 60);
     topBarWidget->hide();
+}
 
 
+void MainWindow::CreateHeaderImageInfo(tgroup &xmlData){
     headerImageInfo = new CHeaderImageInfo(this);
     headerImageInfo->setGeometry(5,1, width, 49);
     headerImageInfo->setWidth(48);
-    imgTmp = QImage(QDir::toNativeSeparators(QDir::currentPath() +"/"+ xmlData.categories.at(0)->icon));
+    QImage imgTmp = QImage(QDir::toNativeSeparators(QDir::currentPath() +"/"+ xmlData.categories.at(0)->icon));
     headerImageInfo->setImage(0, imgTmp);
     headerImageInfo->setTitleIcon(xmlData.categories.at(0)->name);
     headerImageInfo->setHeight(48);
     headerImageInfo->hide();
+}
 
-
-
+void MainWindow::CreateHorizontalMenu(tgroup &xmlData){
     horizontalMenu = new QHorizontalMenu(this, xmlData);
     horizontalMenu->setGeometry(0,height-120, width, height);
     connect(horizontalMenu, SIGNAL(click(int)), this, SLOT(processClick(int)));
     horizontalMenu->hide();
+}
+
+void MainWindow::CreateCentralMenuScrollArea(tgroup &xmlData){
     int tempNum = width/200;
     int tempWidth = (tempNum-1)*200;
     int tempMarg = (width-tempWidth)/2;
@@ -177,7 +194,9 @@ MainWindow::MainWindow(QWidget *parent) :
     scroll->verticalScrollBar()->setStyleSheet("QScrollBar {width:0px;}");
     scroll->setWidget(centralMenu);
     scroll->setFocus();
+}
 
+void MainWindow::CreateUpArrowWidget(){
     upArrowWidget = new CBaseWidget(this);
     connect(upArrowWidget, SIGNAL(buttonClick()), this, SLOT(ProcUpClick()));
     upArrowWidget->setGeometry(width - 68, 70, 48, 48);
@@ -187,7 +206,9 @@ MainWindow::MainWindow(QWidget *parent) :
     QImage upArrowTemp_click = QImage(":/res/image/arrowup_click.png");
     upArrowWidget->setImage(0, upArrowTemp, upArrowTemp_hover,upArrowTemp_click);
     upArrowWidget->hide();
+}
 
+void MainWindow::CreateDownArrowWidget(){
     downArrowWidget = new CBaseWidget(this);
     connect(downArrowWidget, SIGNAL(buttonClick()), this, SLOT(ProcDownClick()));
     downArrowWidget->setGeometry(width - 68, height-175, 48, 48);
@@ -200,14 +221,9 @@ MainWindow::MainWindow(QWidget *parent) :
 
     scroll->hide();
     centralMenu->hide();
+}
 
-    scroll->verticalScrollBar()->setValue(0);
-    scroll->horizontalScrollBar()->setValue(0);
-    scroll->setFocus();
-    scroll->hide();
-
-
-
+void MainWindow::CreateBackArrowWidget(){
     backWidget = new CBaseWidget(this);
     connect(backWidget, SIGNAL(buttonClick()), this, SLOT(ProcBackViewClick()));
     backWidget->setGeometry(width/2 - 50, 1, 48, 48);
@@ -217,8 +233,9 @@ MainWindow::MainWindow(QWidget *parent) :
 
     backWidget->setImage(0, backWidgetTemp, backWidgetTemp_hover,backWidgetTemp_click);
     backWidget->hide();
+}
 
-
+void MainWindow::CreateForwardWidget(){
     forwardWidget = new CBaseWidget(this);
     connect(forwardWidget, SIGNAL(buttonClick()), this, SLOT(ProcForwardViewClick()));
     forwardWidget->setGeometry(width/2 +50, 1, 48, 48);
@@ -227,7 +244,9 @@ MainWindow::MainWindow(QWidget *parent) :
     QImage forwardWidgetTemp_click = QImage(":/res/image/next_click.png");
     forwardWidget->setImage(0, forwardWidgetTemp, forwardWidgetTemp_hover, forwardWidgetTemp_click);
     forwardWidget->hide();
+}
 
+void MainWindow::CreateHomeWidget(){
     homeWidget = new CBaseWidget(this);
     connect(homeWidget, SIGNAL(buttonClick()), this, SLOT(ProcHomeClick()));
     homeWidget->setGeometry(width/2 , 1, 48, 48);
@@ -237,7 +256,9 @@ MainWindow::MainWindow(QWidget *parent) :
 
     homeWidget->setImage(0, homeWidgetTemp, homeWidgetTemp_hover, homeWidgetTemp_click);
     homeWidget->hide();
+}
 
+void MainWindow::CreateCloseOffWidget(){
     closeOffWidget = new CBaseWidget(this);
     connect(closeOffWidget, SIGNAL(buttonClick()), this, SLOT(ProcCloseOffClick()));
     closeOffWidget->setGeometry(width - 115, 1, 48, 48);
@@ -246,11 +267,9 @@ MainWindow::MainWindow(QWidget *parent) :
     QImage closeOffWidgetTemp_click = QImage(":/res/image/close_click.png");
     closeOffWidget->setImage(0, closeOffWidgetTemp, closeOffWidgetTemp_hover, closeOffWidgetTemp_click);
     closeOffWidget->hide();
+}
 
-    if (view->isHidden()){
-        view->show();
-    }
-
+void MainWindow::CreateAdminWidget(){
     adminWidget = new CBaseWidget(this);
     connect(adminWidget, SIGNAL(buttonClick()), this, SLOT(ProcAdminClick()));
     adminWidget->setGeometry(width - 60, 1, 50, 50);
@@ -259,7 +278,9 @@ MainWindow::MainWindow(QWidget *parent) :
     QImage adminWidgetTemp_click = QImage(":/res/image/admin_click.png");
     adminWidget->setImage(0, adminWidgetTemp, adminWidgetTemp_hover, adminWidgetTemp_click);
     adminWidget->hide();
+}
 
+void MainWindow::CreateHeaderImageInfoCategory(tgroup &xmlData){
     headerImageInfoCategory = new CHeaderImageInfo(this);
     headerImageInfoCategory->setAnimate(true);
     headerImageInfoCategory->setGeometry(width -50 , 1, width, 49);
@@ -271,9 +292,41 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(headerImageInfoCategory, SIGNAL(buttonClick()), this, SLOT(ProcCloseOffClick()));
 
     headerImageInfoCategory->hide();
-    scroll->setFocus();
+}
+
+void MainWindow::createView(){
+    view = new QWebEngineView(this);
+    view->setGeometry(0,0,width,height);
+    view->hide();
+
+    connect(view, SIGNAL(loadFinished(bool)),this, SLOT(procLoadUrlFinished(bool)));
+    connect(view, SIGNAL(loadProgress(int )),this, SLOT(procLoadProgress(int)));
+    connect(view, SIGNAL(urlChanged(const QUrl&)),this, SLOT(procLoadUrlChanged(const QUrl&)));
+    connect(view->page(), SIGNAL(selectionChanged()),this, SLOT(procSelectionChanged()));
+
+    view->settings()->setAttribute(QWebEngineSettings::FullScreenSupportEnabled, true);
+    view->settings()->setAttribute(QWebEngineSettings::PluginsEnabled, true);
+    view->history()->clear();
+
+    connect(view->page(),
+                &QWebEnginePage::fullScreenRequested,
+                this,
+                &MainWindow::fullScreenRequested);
+
+    view->settings()->setAttribute(QWebEngineSettings::FullScreenSupportEnabled, true);
+    view->settings()->setAttribute(QWebEngineSettings::PluginsEnabled, true);
 
 }
+
+void MainWindow::createViewInit(){
+    viewInit = new QWebEngineView(this);
+    viewInit->setGeometry(0,0,width,height);
+    QString pathTmp = ("file:///" +QDir::currentPath() +"/"+ "test1.html");
+
+    viewInit->load(QUrl(pathTmp));
+    viewInit->hide();
+}
+
 
 void MainWindow::TimerFinish(){
     viewInit->hide();

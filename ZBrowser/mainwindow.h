@@ -60,6 +60,22 @@ private:
     QWebEngineView *view;
     QWebEngineView *viewInit;
 
+    void createView();
+    void createViewInit();
+    void CreateAdminWidget();
+    void CreateHeaderImageInfoCategory(tgroup &xmlData);
+    void CreateCloseOffWidget();
+    void CreateHomeWidget();
+    void CreateForwardWidget();
+    void CreateBackArrowWidget();
+    void CreateDownArrowWidget();
+    void CreateUpArrowWidget();
+    void CreateCentralMenuScrollArea(tgroup &xmlData);
+    void CreateHorizontalMenu(tgroup &xmlData);
+    void CreateHeaderImageInfo(tgroup &xmlData);
+    void CreateTopBarWidget();
+    void CreateLoader();
+
 
     int height;
     int width;
