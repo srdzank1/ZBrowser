@@ -46,7 +46,9 @@ SOURCES += \
     ccategorylist.cpp \
     ccategorylistitems.cpp \
     cschedule.cpp \
-    clargeimageedit.cpp
+    clargeimageedit.cpp \
+    Helper/qhelperc.cpp \
+    Helper/qworker_xml.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -69,7 +71,9 @@ HEADERS += \
     ccategorylist.h \
     ccategorylistitems.h \
     cschedule.h \
-    clargeimageedit.h
+    clargeimageedit.h \
+    Helper/qhelperc.h \
+    Helper/qworker_xml.h
 
 FORMS += \
         mainwindow.ui \

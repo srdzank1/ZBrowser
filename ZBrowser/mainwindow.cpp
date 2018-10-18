@@ -489,8 +489,8 @@ void MainWindow::procLoadProgress(int s){
         adminWidget->hide();
     }
 
-    emit horizontalMenu->click(catIndx);
-
+//    emit horizontalMenu->click(catIndx);
+    processClick(catIndx);
     checkProc = true;
 
 }
