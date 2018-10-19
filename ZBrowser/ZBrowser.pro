@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui webenginewidgets  webengine concurrent multimedia multimediawidgets
+QT       += core gui webenginewidgets  webengine concurrent multimedia multimediawidgets network
 
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
@@ -83,6 +83,8 @@ FORMS += \
 RESOURCES += \
     res.qrc
 
+OPENSSL_LIBS='-L/opt/ssl/lib -lssl -lcrypto'
 
+QMAKE_CXXFLAGS += -openssl-linked
 
 

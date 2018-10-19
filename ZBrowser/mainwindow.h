@@ -35,6 +35,7 @@
 #include <QMediaPlayer>
 #include <QMediaPlaylist>
 #include <QVideoWidget>
+#include  "Helper/qhelperc.h"
 
 class QWebView;
 namespace Ui {

@@ -15,8 +15,8 @@ QString QHelperC::getWebXML()
     QEventLoop pause;
     QWorkerXml worker;
     connect(&worker, SIGNAL(finishedSearch()), &pause, SLOT(quit()));
-//    worker.getList();
+    worker.getList();
     pause.exec();
-    return "";
+    return worker.mStr;
 }
 

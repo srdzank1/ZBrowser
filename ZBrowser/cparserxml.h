@@ -62,6 +62,7 @@ class CParserXML : public QWidget
 public:
     explicit CParserXML(QWidget *parent = nullptr);
     bool loadThemeXmlFile(const QString &xmlFile);
+    bool SetXmlThemeXmlFile(const QString &xmlString);
     tgroup getParsedData(){return m_group;}
     int CreateCashImage();
 

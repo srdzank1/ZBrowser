@@ -3,9 +3,15 @@
 QWorkerXml::QWorkerXml(QWidget *parent) : QWidget(parent)
   ,stat_finished(0)
 {
-//    Singleton *s = Singleton::Instance();
-//    urlhost = s->Get_UrlHost();
+    manager = new QNetworkAccessManager(this);
+    connect(manager, SIGNAL(finished(QNetworkReply*)),this, SLOT(GetWebXMLForParse(QNetworkReply*)));
 }
+
+QWorkerXml::~QWorkerXml()
+{
+    delete manager;
+}
+
 
 QString QWorkerXml::base64_decode(QString string)
 {
@@ -16,75 +22,23 @@ QString QWorkerXml::base64_decode(QString string)
 
 void QWorkerXml::getList()
 {
-    connect(&networkManager, SIGNAL(finished(QNetworkReply*)), this, SLOT(onPostList(QNetworkReply*)));
-    networkManager.clearAccessCache();
-    QUrl serviceUrl = QUrl(urlhost + "get_article_list");
-
-//    Singleton *s = Singleton::Instance();
-//    QByteArray HeaderVar = "Authorization";
-//    QByteArray HeaderValue = s->getToken().toUtf8();
-
-
-
-//    QByteArray postData;
-
-//    QJsonObject tt_json;
-//    tt_json["offset"] = vOffset;
-//    tt_json["limit"] = vLimit;
-//    tt_json["search_name"] = vSearchName;
-//    tt_json["search_by"] = vSearchBy;
-
-//    QJsonDocument doc(tt_json);
-//    QByteArray tt = doc.toJson();
-
-
-//    postData.append(tt);
-//    QNetworkRequest networkRequest(serviceUrl);
-//    networkRequest.setHeader(QNetworkRequest::ContentTypeHeader,"application/x-www-form-urlencoded");
-//    networkRequest.setRawHeader(HeaderVar, HeaderValue );
-//    networkManager.post(networkRequest,postData);
-//    HeaderVar.clear();
-//    HeaderValue.clear();
-//    postData.clear();
-
+    QUrl serviceUrl = QUrl("http://zacbrowser.com/10/Free/235kkj324.xml");
+    QNetworkRequest req;
+    req.setSslConfiguration(QSslConfiguration::defaultConfiguration());
+    req.setUrl(serviceUrl);
+    req.setRawHeader( "User-Agent", "Mozilla/5.0 (X11; U; Linux i686 (x86_64); "
+                               "en-US; rv:1.9.0.1) Gecko/2008070206 Firefox/3.0.1" );
+    req.setRawHeader( "charset", "utf-8" );
+    req.setRawHeader( "Connection", "keep-alive" );
+    manager->get(req);
 }
-void QWorkerXml::onPostList(QNetworkReply *rep)
+void QWorkerXml::GetWebXMLForParse(QNetworkReply *rep)
 {
-    disconnect(&networkManager, SIGNAL(finished(QNetworkReply*)), this, SLOT(onPostList(QNetworkReply*)));
-//    QByteArray bts = rep->readAll();
-//    QString str(bts);
-//    bts.clear();
-//    QJsonDocument jsonResponse = QJsonDocument::fromJson(str.toUtf8());
-//    QJsonObject jsonObject = jsonResponse.object();
-//    QJsonArray jsonArray = jsonObject["properties"].toArray();
+    QByteArray bts = rep->readAll();
 
-
-
-//    for (int a = 0; a < jsonArray.count(); a++)
-//    {
-//        artikalT art_temp;
-//        const QJsonValue & value = jsonArray.at(a);
-//        QJsonObject obj = value.toObject();
-//        art_temp.id = (obj["id"].toString());
-//        art_temp.sifra = (obj["sifra"].toString());
-//        art_temp.artikal = (obj["artikal"].toString());
-//        art_temp.edm = (obj["edm"].toString());
-//        art_temp.ref = (obj["ref"].toString());
-//        art_temp.kataloski_broj = (obj["kataloski_broj"].toString());
-//        art_temp.ddv = (obj["ddv"].toString());
-//        art_temp.proizvoditel = (obj["proizvoditel"].toString());
-//        art_temp.kategorija = (obj["kategorija"].toString());
-
-
-//        if(art_temp.id == "end")
-//        {
-//            continue;
-//        }
-//        else
-//        {
-//            listRes << art_temp ;
-//        }
-//    }
+    QString str(bts);
+    mStr = str;
+    bts.clear();
     emit finishedSearch();
 }
 

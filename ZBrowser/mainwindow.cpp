@@ -11,7 +11,6 @@ inline void delay(int millisecondsWait)
     loop.exec();
 }
 
-
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -25,6 +24,12 @@ MainWindow::MainWindow(QWidget *parent) :
     editWebSites = 0;
     editSchedule = 0;
     checkProc = true;
+
+    QHelperC *cXml = new QHelperC();
+    parser = new CParserXML(this);
+    QString filePath = cXml->getWebXML();
+    parser->SetXmlThemeXmlFile(filePath);
+    delete cXml;
 
     setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
     QRect rec = QApplication::desktop()->screenGeometry();
@@ -94,9 +99,9 @@ MainWindow::MainWindow(QWidget *parent) :
     htmlCont = htmlCont.replace("%bkgimage%",bgImage);
 
 
-    parser = new CParserXML(this);
-    QString filePath = "://res/xml/menu.xml";
-    parser->loadThemeXmlFile(filePath);
+//    parser = new CParserXML(this);
+//    QString filePath = "://res/xml/menu.xml";
+//    parser->loadThemeXmlFile(filePath);
 
 
 
