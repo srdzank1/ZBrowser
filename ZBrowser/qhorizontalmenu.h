@@ -7,6 +7,8 @@
 #include "simagewidget.h"
 #include "cparserxml.h"
 #include <QDir>
+#define SUBDIR "/images/"
+#define SUBDIR "/"
 
 namespace Ui {
 class QHorizontalMenu;

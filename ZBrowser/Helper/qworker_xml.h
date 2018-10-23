@@ -24,10 +24,12 @@ class QWorkerXml : public QWidget
 public:
     explicit QWorkerXml(QWidget *parent = 0);
     ~QWorkerXml();
-    void getList();
+    void getList(QString &urlXML);
+    void getImage(QString &urlImage);
 
     int stat_finished;
     QString mStr;
+    QByteArray mData;
 private:
     QNetworkAccessManager *manager;
     QString urlhost;
@@ -38,6 +40,7 @@ signals:
 
 public slots:
     void GetWebXMLForParse(QNetworkReply*);
+    void GetWebImageForParse(QNetworkReply *);
 
 };
 

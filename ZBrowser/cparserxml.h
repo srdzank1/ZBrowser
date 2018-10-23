@@ -9,6 +9,9 @@
 #include <QImage>
 #include <QImageReader>
 #include <QMutex>
+//#define SUBDIR "/images/"
+#define SUBDIR "/"
+
 
 
 typedef struct {

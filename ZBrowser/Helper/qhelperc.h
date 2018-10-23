@@ -4,6 +4,7 @@
 #include "Helper/qworker_xml.h"
 #include <QEventLoop>
 
+
 //
 
 class QHelperC : public QWidget
@@ -13,6 +14,7 @@ public:
     explicit QHelperC(QWidget *parent = 0);
     ~QHelperC();
     QString getWebXML();
+    QByteArray getWebImage(QString & imgUrl);
 
 private:
 

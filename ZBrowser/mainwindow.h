@@ -37,6 +37,9 @@
 #include <QVideoWidget>
 #include  "Helper/qhelperc.h"
 
+//#define SUBDIR "/images/"
+#define SUBDIR "/"
+
 class QWebView;
 namespace Ui {
 class MainWindow;

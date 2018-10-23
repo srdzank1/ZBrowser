@@ -264,7 +264,7 @@ int CParserXML::CreateCashImage(){
         for (int j = 0; j < item->websites.count(); j++){
             twebsite *webItem = item->websites.at(j);
             if (webItem->iconImageCash == 0){
-                webItem->iconImage = QImage(QDir::toNativeSeparators(QDir::currentPath() +"/"+ webItem->icon)).scaled(200, 187, Qt::KeepAspectRatio, Qt::FastTransformation);
+                webItem->iconImage = QImage(QDir::toNativeSeparators(QDir::currentPath() +SUBDIR+ webItem->icon)).scaled(200, 187, Qt::KeepAspectRatio, Qt::FastTransformation);
                 webItem->iconImageCash = 1;
             }
         }

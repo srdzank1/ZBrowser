@@ -83,8 +83,6 @@ FORMS += \
 RESOURCES += \
     res.qrc
 
-OPENSSL_LIBS='-L/opt/ssl/lib -lssl -lcrypto'
 
-QMAKE_CXXFLAGS += -openssl-linked
 
 

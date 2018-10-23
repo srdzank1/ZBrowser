@@ -45,7 +45,7 @@ void QHorizontalMenu::UpdateD(QRect r)
         QRect r1 = QRect(100 + cellWidth * i, 0, cellWidth, 120);
 
         imageItem[i]->setGeometry(r1);
-        QString iconPath = QDir::toNativeSeparators(QDir::currentPath() +"/"+ item->icon);
+        QString iconPath = QDir::toNativeSeparators(QDir::currentPath() +SUBDIR+ item->icon);
         imageItem[i]->setImagePathName(i, iconPath);
         imageItem[i]->setTitleIcon(item->name);
     }

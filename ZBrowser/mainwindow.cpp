@@ -25,18 +25,33 @@ MainWindow::MainWindow(QWidget *parent) :
     editSchedule = 0;
     checkProc = true;
 
-    QHelperC *cXml = new QHelperC();
-    parser = new CParserXML(this);
-    QString filePath = cXml->getWebXML();
-    parser->SetXmlThemeXmlFile(filePath);
-    delete cXml;
+//    QHelperC *cXml = new QHelperC();
+//    parser = new CParserXML(this);
+//    QString filePath = cXml->getWebXML();
+//    parser->SetXmlThemeXmlFile(filePath);
+//    tgroup xmlData1 = parser->getParsedData();
+
+//    for (int i = 0; i <xmlData1.categories.count(); i++){
+//        QString bkgNameImage = xmlData1.categories.at(i)->background;
+//        QString urlImage = "http://zacbrowser.com/10/images/" + bkgNameImage;
+//        QByteArray data = cXml->getWebImage(urlImage);
+//        QString fileImagePath = QDir::toNativeSeparators(QDir::currentPath() +"/imagesAlfa/"+bkgNameImage);
+//        QFile file(fileImagePath);
+//        file.open(QIODevice::WriteOnly);
+//        file.write(data);
+//        file.close();
+
+//        int stop = 0;
+//    }
+//    delete cXml;
+
 
     setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
     QRect rec = QApplication::desktop()->screenGeometry();
     height = rec.height();
     width = rec.width();
 
-    QImage imgTmp = QImage(QDir::toNativeSeparators(QDir::currentPath() +"/"+ "images/zac_zite_120.png"));
+    QImage imgTmp = QImage(QDir::toNativeSeparators(QDir::currentPath() +SUBDIR+ "zac_zite_120.png"));
 
     createView();
     createViewInit();
@@ -99,9 +114,9 @@ MainWindow::MainWindow(QWidget *parent) :
     htmlCont = htmlCont.replace("%bkgimage%",bgImage);
 
 
-//    parser = new CParserXML(this);
-//    QString filePath = "://res/xml/menu.xml";
-//    parser->loadThemeXmlFile(filePath);
+    parser = new CParserXML(this);
+    QString filePath = "://res/xml/menu.xml";
+    parser->loadThemeXmlFile(filePath);
 
 
 
@@ -165,7 +180,7 @@ void MainWindow::CreateHeaderImageInfo(tgroup &xmlData){
     headerImageInfo = new CHeaderImageInfo(this);
     headerImageInfo->setGeometry(5,1, width, 49);
     headerImageInfo->setWidth(48);
-    QImage imgTmp = QImage(QDir::toNativeSeparators(QDir::currentPath() +"/"+ xmlData.categories.at(0)->icon));
+    QImage imgTmp = QImage(QDir::toNativeSeparators(QDir::currentPath() +SUBDIR+ xmlData.categories.at(0)->icon));
     headerImageInfo->setImage(0, imgTmp);
     headerImageInfo->setTitleIcon(xmlData.categories.at(0)->name);
     headerImageInfo->setHeight(48);
@@ -290,7 +305,7 @@ void MainWindow::CreateHeaderImageInfoCategory(tgroup &xmlData){
     headerImageInfoCategory->setAnimate(true);
     headerImageInfoCategory->setGeometry(width -50 , 1, width, 49);
     headerImageInfoCategory->setWidth(48);
-    QImage imgTmpCat = QImage(QDir::toNativeSeparators(QDir::currentPath() +"/"+ xmlData.categories.at(0)->icon));
+    QImage imgTmpCat = QImage(QDir::toNativeSeparators(QDir::currentPath() +SUBDIR+ xmlData.categories.at(0)->icon));
     headerImageInfoCategory->setImage(0, imgTmpCat);
     headerImageInfoCategory->setTitleIcon("");
     headerImageInfoCategory->setHeight(48);
@@ -378,8 +393,8 @@ void MainWindow::processClickInit(int i){
 
 
     tgroup xmlData = parser->getParsedData();
-    QImage imgTmpBkg = QImage(QDir::toNativeSeparators(QDir::currentPath() +"/"+ xmlData.categories.at(i)->background));
-    QImage imgTmp = QImage(QDir::toNativeSeparators(QDir::currentPath() +"/"+ xmlData.categories.at(i)->icon));
+    QImage imgTmpBkg = QImage(QDir::toNativeSeparators(QDir::currentPath() +SUBDIR+ xmlData.categories.at(i)->background));
+    QImage imgTmp = QImage(QDir::toNativeSeparators(QDir::currentPath() +SUBDIR+ xmlData.categories.at(i)->icon));
     headerImageInfo->setImage(0, imgTmp);
     headerImageInfo->setTitleIcon(xmlData.categories.at(i)->name);
 
@@ -681,8 +696,8 @@ void MainWindow::processClick(int i){
 
 
     tgroup xmlData = parser->getParsedData();
-    QImage imgTmpBkg = QImage(QDir::toNativeSeparators(QDir::currentPath() +"/"+ xmlData.categories.at(i)->background));
-    QImage imgTmp = QImage(QDir::toNativeSeparators(QDir::currentPath() +"/"+ xmlData.categories.at(i)->icon));
+    QImage imgTmpBkg = QImage(QDir::toNativeSeparators(QDir::currentPath() +SUBDIR+ xmlData.categories.at(i)->background));
+    QImage imgTmp = QImage(QDir::toNativeSeparators(QDir::currentPath() +SUBDIR+ xmlData.categories.at(i)->icon));
     headerImageInfo->setImage(0, imgTmp);
     headerImageInfo->setTitleIcon(xmlData.categories.at(i)->name);
 
@@ -776,7 +791,7 @@ void MainWindow::ProcClickForUrl(QString &url, QString &title, QImage& imgTmp){
     topBarWidget->show();
     tgroup xmlData = parser->getParsedData();
 
-    QImage imgTmpCat = QImage(QDir::toNativeSeparators(QDir::currentPath() +"/"+ xmlData.categories.at(catIndx)->icon));
+    QImage imgTmpCat = QImage(QDir::toNativeSeparators(QDir::currentPath() +SUBDIR+ xmlData.categories.at(catIndx)->icon));
     headerImageInfoCategory->setImage(0, imgTmpCat);
     headerImageInfoCategory->show();
 
