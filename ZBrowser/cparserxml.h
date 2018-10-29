@@ -9,8 +9,8 @@
 #include <QImage>
 #include <QImageReader>
 #include <QMutex>
-//#define SUBDIR "/images/"
-#define SUBDIR "/"
+#define SUBDIR "/images/"
+//#define SUBDIR "/"
 
 
 

@@ -36,9 +36,11 @@
 #include <QMediaPlaylist>
 #include <QVideoWidget>
 #include  "Helper/qhelperc.h"
+#include <QDir>
 
-//#define SUBDIR "/images/"
-#define SUBDIR "/"
+
+#define SUBDIR "/images/"
+//#define SUBDIR "/"
 
 class QWebView;
 namespace Ui {
@@ -79,6 +81,10 @@ private:
     void CreateHeaderImageInfo(tgroup &xmlData);
     void CreateTopBarWidget();
     void CreateLoader();
+    QStringList GetAllImagesInFolder();
+    bool ItemImageExist(QStringList &images, QString & item);
+    QString ParseTransform(QString& url);
+
 
 
     int height;

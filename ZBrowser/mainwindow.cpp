@@ -25,25 +25,27 @@ MainWindow::MainWindow(QWidget *parent) :
     editSchedule = 0;
     checkProc = true;
 
-//    QHelperC *cXml = new QHelperC();
-//    parser = new CParserXML(this);
-//    QString filePath = cXml->getWebXML();
-//    parser->SetXmlThemeXmlFile(filePath);
-//    tgroup xmlData1 = parser->getParsedData();
+    QHelperC *cXml = new QHelperC();
+    parser = new CParserXML(this);
+    QString filePath = cXml->getWebXML();
+    parser->SetXmlThemeXmlFile(filePath);
+    tgroup xmlData1 = parser->getParsedData();
+    QStringList foundedImages = GetAllImagesInFolder();
+    for (int i = 0; i <xmlData1.categories.count(); i++){
+        QString bkgNameImage = xmlData1.categories.at(i)->background;
+        if (!ItemImageExist(foundedImages, bkgNameImage)) {
+            QString urlImage = "http://zacbrowser.com/10/images/" + bkgNameImage;
+            QByteArray data = cXml->getWebImage(urlImage);
+            QString fileImagePath = QDir::toNativeSeparators(QDir::currentPath() +"/imagesAlfa/"+bkgNameImage);
+            QFile file(fileImagePath);
+            file.open(QIODevice::WriteOnly);
+            file.write(data);
+            file.close();
+        }
 
-//    for (int i = 0; i <xmlData1.categories.count(); i++){
-//        QString bkgNameImage = xmlData1.categories.at(i)->background;
-//        QString urlImage = "http://zacbrowser.com/10/images/" + bkgNameImage;
-//        QByteArray data = cXml->getWebImage(urlImage);
-//        QString fileImagePath = QDir::toNativeSeparators(QDir::currentPath() +"/imagesAlfa/"+bkgNameImage);
-//        QFile file(fileImagePath);
-//        file.open(QIODevice::WriteOnly);
-//        file.write(data);
-//        file.close();
-
-//        int stop = 0;
-//    }
-//    delete cXml;
+        int stop = 0;
+    }
+    delete cXml;
 
 
     setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
@@ -114,9 +116,9 @@ MainWindow::MainWindow(QWidget *parent) :
     htmlCont = htmlCont.replace("%bkgimage%",bgImage);
 
 
-    parser = new CParserXML(this);
-    QString filePath = "://res/xml/menu.xml";
-    parser->loadThemeXmlFile(filePath);
+//    parser = new CParserXML(this);
+//    QString filePath = "://res/xml/menu.xml";
+//    parser->loadThemeXmlFile(filePath);
 
 
 
@@ -428,7 +430,7 @@ void MainWindow::processClickInit(int i){
 
 
     // background video
-    QString bgvideo = xmlData.categories.at(i)->bgvideo;
+    QString bgvideo = ParseTransform(xmlData.categories.at(i)->bgvideo);
     QString videoSound = xmlData.categories.at(i)->videosound;
     QString bgvideoSound;
     if (videoSound == "false"){
@@ -456,9 +458,6 @@ void MainWindow::processClickInit(int i){
 
 }
 
-
-
-
 void MainWindow::TimerFinish5(){
 
    viewInit->show();
@@ -472,7 +471,6 @@ void MainWindow::ProcDownClick(){
     scroll->verticalScrollBar()->setValue(scroll->verticalScrollBar()->value()+100);
 }
 
-
 void MainWindow::procStartedUrlFinished(){
     loader->show();
     loader->setValue(0);
@@ -480,9 +478,6 @@ void MainWindow::procStartedUrlFinished(){
 void MainWindow::procLoadUrlFinished(bool s){
     loader->setValue(100);
     loader->hide();
-//    if (view->isHidden()){
-//        view->show();
-//    }
 }
 
 
@@ -509,7 +504,6 @@ void MainWindow::procLoadProgress(int s){
         adminWidget->hide();
     }
 
-//    emit horizontalMenu->click(catIndx);
     processClick(catIndx);
     checkProc = true;
 
@@ -731,7 +725,7 @@ void MainWindow::processClick(int i){
 
 
     // background video
-    QString bgvideo = xmlData.categories.at(i)->bgvideo;
+    QString bgvideo = ParseTransform(xmlData.categories.at(i)->bgvideo);
     QString videoSound = xmlData.categories.at(i)->videosound;
     QString bgvideoSound;
     if (videoSound == "false"){
@@ -835,3 +829,36 @@ void MainWindow::ProcShowHMenu(bool s){
     }
 }
 
+QStringList MainWindow::GetAllImagesInFolder(){
+   QDir directory(QDir::toNativeSeparators(QDir::currentPath() +SUBDIR));
+   QStringList images = directory.entryList(QStringList() << "*.jpg" << "*.JPG",QDir::Files);
+    return images;
+}
+
+bool MainWindow::ItemImageExist(QStringList &images, QString & item){
+   bool status;
+   status = false;
+    QStringList::iterator it;
+   for (it = images.begin(); it != images.end(); it++){
+       if (*it == item){
+           status = true;
+           break;
+       }
+   }
+   return status;
+}
+
+
+QString MainWindow::ParseTransform(QString& url){
+    if (url.contains("vimeo", Qt::CaseInsensitive)){
+        url.replace(QString("vimeo.com"), QString("player.vimeo.com/video"));
+//    new form <bgvideo>https://vimeo.com/182513271</bgvideo>
+//    old form <bgvideo>https://player.vimeo.com/video/182513271</bgvideo>
+    }
+    if (url.contains("youtube", Qt::CaseInsensitive)){
+        url.replace(QString("www.youtube.com/watch?v="), QString("www.youtube.com/embed/"));
+//    new form <bgvideo>https://www.youtube.com/watch?v=RtU_mdL2vBM</bgvideo>
+//    old form <bgvideo>https://www.youtube.com/embed/dKCdV20zLMs</bgvideo>
+    }
+    return url;
+}
