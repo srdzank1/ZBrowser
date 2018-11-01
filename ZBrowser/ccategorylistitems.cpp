@@ -7,22 +7,8 @@ CCategoryListItems::CCategoryListItems(tgroup &data, QWidget *parent) : QWidget(
     yOffset = 187;
 }
 
-void CCategoryListItems::paintEvent(QPaintEvent *event){
-//    QPainter painter(this);
-//    QPainterPath path;
-
-//        path.addRoundedRect(QRectF(0, 0, geometry().width(), geometry().height()), 10, 10);
-//        QPen pen(Qt::darkYellow, 10);
-//        painter.setPen(pen);
-//        painter.fillPath(path, Qt::white);
-//        painter.drawPath(path);
-
-//    painter.end();
-
-}
 
 void CCategoryListItems::createCategoryMenuItems(int id){
- //   setUpdatesEnabled(false);
     m_width = geometry().width();
     m_height = geometry().height();
 
@@ -51,7 +37,6 @@ void CCategoryListItems::createCategoryMenuItems(int id){
                 connect(pLargeImage, SIGNAL(clickForUrl(QString&, QString&, QImage&)), this, SLOT(processClickForUrl(QString&, QString&, QImage&)));
 
                 QRect r1 = QRect( xOffset* i, yOffset* j , xOffset , yOffset);
-//                QRect r1 = QRect( marX+ xOffset* i, marY+ yOffset* j , xOffset , yOffset);
 
                 pLargeImage->setGeometry(r1);
                 pLargeImage->setWidth(xOffset);
@@ -79,5 +64,4 @@ void CCategoryListItems::createCategoryMenuItems(int id){
         setGeometry(0, 0, (iMax) * xOffset, (j+1.5) * yOffset);
     }
     update();
-//   setUpdatesEnabled(true);
 }

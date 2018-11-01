@@ -5,7 +5,7 @@
 #include <QVBoxLayout>
 #include <QLabel>
 #include "simagewidget.h"
-#include "cparserxml.h"
+#include "XMLParser/cparserxml.h"
 #include <QDir>
 #define SUBDIR "/images/"
 //#define SUBDIR "/"

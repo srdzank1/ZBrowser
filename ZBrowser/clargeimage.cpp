@@ -90,16 +90,14 @@ void CLargeImage::mouseMoveEvent(QMouseEvent *event)
 
 void CLargeImage::enterEvent(QEvent * event){
     bmouseOver = true;
-//     QSound::play(":sound/click.wav");
-     repaint();
+    repaint();
 }
 void CLargeImage::leaveEvent(QEvent * event){
     bmouseOver = false;
-     repaint();
+    repaint();
 }
 
 void CLargeImage::mouseReleaseEvent(QMouseEvent * event){
-//    emit click(iItem);
     emit clickForUrl(m_url, m_titleIcon, mImage);
     emit clickForEdit(iItem);
 }

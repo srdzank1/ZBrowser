@@ -7,8 +7,6 @@ SImageWidget::SImageWidget(QWidget *parent) : QWidget(parent)
 {
     setAttribute(Qt::WA_StaticContents);
     setMouseTracking(true);
-//    setGeometry(0,0,0,0);
-
 }
 
 void SImageWidget::setImagePathName(int id, const QString& pathName){
@@ -27,25 +25,6 @@ void SImageWidget::paintEvent(QPaintEvent *event){
     opt.setAlignment(Qt::AlignTop | Qt::AlignCenter);
     QPen pen;
     painter.setPen(pen);
-//    float scont = 0;
-//    if ((m_x >= 0 )&&(m_x < 44)){
-//        scont = (float)m_x/44;
-//    }
-//    else if ((m_x >= 44 )&&(m_x < 88)){
-//        scont =(float)(88 - m_x)/44;
-//    }
-//    else if(m_x > 88){
-//        scont = 0;
-//    }
-
-//    float scont1 = 0;
-
-//    if ((m_y >= 0 )&&(m_y < 40)){
-//        scont1 = (float)m_y/40;
-//    } else if(m_y >= 40){
-//        scont1 = 1;
-//    }
-
 
     float scont = 0;
     if ((m_x >= 0 )&&(m_x < 44)){
@@ -105,7 +84,6 @@ void SImageWidget::mouseMoveEvent(QMouseEvent *event)
 
 void SImageWidget::enterEvent(QEvent * event){
      bmouseOver = true;
-//     QSound::play(":sound/click.wav");
      repaint();
 }
 void SImageWidget::leaveEvent(QEvent * event){

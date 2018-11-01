@@ -25,58 +25,20 @@ MainWindow::MainWindow(QWidget *parent) :
     editSchedule = 0;
     checkProc = true;
 
-    QHelperC *cXml = new QHelperC();
-    parser = new CParserXML(this);
-    QString filePath = cXml->getWebXML();
-    parser->SetXmlThemeXmlFile(filePath);
-    tgroup xmlData1 = parser->getParsedData();
-    QStringList foundedImages = GetAllImagesInFolder();
-    for (int i = 0; i <xmlData1.categories.count(); i++){
-        QString bkgNameImage = xmlData1.categories.at(i)->background;
-        if (!ItemImageExist(foundedImages, bkgNameImage)) {
-            QString urlImage = "http://zacbrowser.com/10/images/" + bkgNameImage;
-            QByteArray data = cXml->getWebImage(urlImage);
-            QString fileImagePath = QDir::toNativeSeparators(QDir::currentPath() +"/imagesAlfa/"+bkgNameImage);
-            QFile file(fileImagePath);
-            file.open(QIODevice::WriteOnly);
-            file.write(data);
-            file.close();
-        }
-
-        int stop = 0;
-    }
-    delete cXml;
-
 
     setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
     QRect rec = QApplication::desktop()->screenGeometry();
     height = rec.height();
     width = rec.width();
 
+    LoadXMLFileFromURLInit();
+}
+
+
+void MainWindow::CreateInitElement(){
     QImage imgTmp = QImage(QDir::toNativeSeparators(QDir::currentPath() +SUBDIR+ "zac_zite_120.png"));
 
-    createView();
-    createViewInit();
-
-    // start Init video
-    t5 = new QTimer;
-    connect(t5, SIGNAL(timeout()), this, SLOT(TimerFinish5()));
-    t5->start(300);
-
-    // start to show main Video
-    t = new QTimer;
-    connect(t, SIGNAL(timeout()), this, SLOT(TimerFinish()));
-    t->start(15000);
-    // start to load main Video
-    t2 = new QTimer;
-    connect(t2, SIGNAL(timeout()), this, SLOT(TimerFinish2()));
-    t2->start(10000);
-
-    // CreateLoader
-
     CreateLoader();
-
-//    view->pageAction(QWebEnginePage::Forward);
 
     QString filePathHtml = ":/res/html/proc1.html";
     QFile file(filePathHtml);
@@ -115,15 +77,7 @@ MainWindow::MainWindow(QWidget *parent) :
     htmlCont = htmlCont.replace("%muted%",bgvideoSound);
     htmlCont = htmlCont.replace("%bkgimage%",bgImage);
 
-
-//    parser = new CParserXML(this);
-//    QString filePath = "://res/xml/menu.xml";
-//    parser->loadThemeXmlFile(filePath);
-
-
-
     QFuture<int> future = QtConcurrent::run(parser, &CParserXML::CreateCashImage);
-
 
     tgroup xmlData = parser->getParsedData();
 
@@ -162,22 +116,40 @@ MainWindow::MainWindow(QWidget *parent) :
     // headerImageInfoCategory
     CreateHeaderImageInfoCategory(xmlData);
     scroll->setFocus();
-
 }
+void MainWindow::LoadXMLFileFromURLInit(){
+    QHelperC *cXml = new QHelperC();
+    parser = new CParserXML(this);
+    QString filePath = cXml->getWebXML();
+    parser->SetXmlThemeXmlFile(filePath);
+    xmlData = parser->getParsedData();
+    QStringList foundedImages = GetAllImagesInFolder();
+    for (int i = 0; i <xmlData.categories.count(); i++){
+        QString bkgNameImage = xmlData.categories.at(i)->background;
+        if (!ItemImageExist(foundedImages, bkgNameImage)) {
+            QString urlImage = "http://zacbrowser.com/10/images/" + bkgNameImage;
+            QByteArray data = cXml->getWebImage(urlImage);
+            QString fileImagePath = QDir::toNativeSeparators(QDir::currentPath() +"/imagesAlfa/"+bkgNameImage);
+            QFile file(fileImagePath);
+            file.open(QIODevice::WriteOnly);
+            file.write(data);
+            file.close();
+        }
 
+        int stop = 0;
+    }
+    delete cXml;
+}
 void MainWindow::CreateLoader(){
     loader = new CLoaderWidget(this);
     loader->setGeometry(0,0, width, 6);
     loader->hide();
 }
-
 void MainWindow::CreateTopBarWidget(){
     topBarWidget = new CTopBarWidget(this);
     topBarWidget->setGeometry(0, 0, width, 60);
     topBarWidget->hide();
 }
-
-
 void MainWindow::CreateHeaderImageInfo(tgroup &xmlData){
     headerImageInfo = new CHeaderImageInfo(this);
     headerImageInfo->setGeometry(5,1, width, 49);
@@ -188,14 +160,12 @@ void MainWindow::CreateHeaderImageInfo(tgroup &xmlData){
     headerImageInfo->setHeight(48);
     headerImageInfo->hide();
 }
-
 void MainWindow::CreateHorizontalMenu(tgroup &xmlData){
     horizontalMenu = new QHorizontalMenu(this, xmlData);
     horizontalMenu->setGeometry(0,height-120, width, height);
     connect(horizontalMenu, SIGNAL(click(int)), this, SLOT(processClick(int)));
     horizontalMenu->hide();
 }
-
 void MainWindow::CreateCentralMenuScrollArea(tgroup &xmlData){
     int tempNum = width/200;
     int tempWidth = (tempNum-1)*200;
@@ -217,7 +187,6 @@ void MainWindow::CreateCentralMenuScrollArea(tgroup &xmlData){
     scroll->setWidget(centralMenu);
     scroll->setFocus();
 }
-
 void MainWindow::CreateUpArrowWidget(){
     upArrowWidget = new CBaseWidget(this);
     connect(upArrowWidget, SIGNAL(buttonClick()), this, SLOT(ProcUpClick()));
@@ -229,7 +198,6 @@ void MainWindow::CreateUpArrowWidget(){
     upArrowWidget->setImage(0, upArrowTemp, upArrowTemp_hover,upArrowTemp_click);
     upArrowWidget->hide();
 }
-
 void MainWindow::CreateDownArrowWidget(){
     downArrowWidget = new CBaseWidget(this);
     connect(downArrowWidget, SIGNAL(buttonClick()), this, SLOT(ProcDownClick()));
@@ -244,7 +212,6 @@ void MainWindow::CreateDownArrowWidget(){
     scroll->hide();
     centralMenu->hide();
 }
-
 void MainWindow::CreateBackArrowWidget(){
     backWidget = new CBaseWidget(this);
     connect(backWidget, SIGNAL(buttonClick()), this, SLOT(ProcBackViewClick()));
@@ -256,7 +223,6 @@ void MainWindow::CreateBackArrowWidget(){
     backWidget->setImage(0, backWidgetTemp, backWidgetTemp_hover,backWidgetTemp_click);
     backWidget->hide();
 }
-
 void MainWindow::CreateForwardWidget(){
     forwardWidget = new CBaseWidget(this);
     connect(forwardWidget, SIGNAL(buttonClick()), this, SLOT(ProcForwardViewClick()));
@@ -267,7 +233,6 @@ void MainWindow::CreateForwardWidget(){
     forwardWidget->setImage(0, forwardWidgetTemp, forwardWidgetTemp_hover, forwardWidgetTemp_click);
     forwardWidget->hide();
 }
-
 void MainWindow::CreateHomeWidget(){
     homeWidget = new CBaseWidget(this);
     connect(homeWidget, SIGNAL(buttonClick()), this, SLOT(ProcHomeClick()));
@@ -279,7 +244,6 @@ void MainWindow::CreateHomeWidget(){
     homeWidget->setImage(0, homeWidgetTemp, homeWidgetTemp_hover, homeWidgetTemp_click);
     homeWidget->hide();
 }
-
 void MainWindow::CreateCloseOffWidget(){
     closeOffWidget = new CBaseWidget(this);
     connect(closeOffWidget, SIGNAL(buttonClick()), this, SLOT(ProcCloseOffClick()));
@@ -290,7 +254,6 @@ void MainWindow::CreateCloseOffWidget(){
     closeOffWidget->setImage(0, closeOffWidgetTemp, closeOffWidgetTemp_hover, closeOffWidgetTemp_click);
     closeOffWidget->hide();
 }
-
 void MainWindow::CreateAdminWidget(){
     adminWidget = new CBaseWidget(this);
     connect(adminWidget, SIGNAL(buttonClick()), this, SLOT(ProcAdminClick()));
@@ -301,7 +264,6 @@ void MainWindow::CreateAdminWidget(){
     adminWidget->setImage(0, adminWidgetTemp, adminWidgetTemp_hover, adminWidgetTemp_click);
     adminWidget->hide();
 }
-
 void MainWindow::CreateHeaderImageInfoCategory(tgroup &xmlData){
     headerImageInfoCategory = new CHeaderImageInfo(this);
     headerImageInfoCategory->setAnimate(true);
@@ -315,7 +277,6 @@ void MainWindow::CreateHeaderImageInfoCategory(tgroup &xmlData){
 
     headerImageInfoCategory->hide();
 }
-
 void MainWindow::createView(){
     view = new QWebEngineView(this);
     view->setGeometry(0,0,width,height);
@@ -339,7 +300,6 @@ void MainWindow::createView(){
     view->settings()->setAttribute(QWebEngineSettings::PluginsEnabled, true);
 
 }
-
 void MainWindow::createViewInit(){
     viewInit = new QWebEngineView(this);
     viewInit->setGeometry(0,0,width,height);
@@ -348,8 +308,6 @@ void MainWindow::createViewInit(){
     viewInit->load(QUrl(pathTmp));
     viewInit->hide();
 }
-
-
 void MainWindow::TimerFinish(){
     viewInit->hide();
     connect(view, SIGNAL(loadStarted()),this, SLOT(procStartedUrlFinished()));
@@ -361,13 +319,11 @@ void MainWindow::TimerFinish(){
 
     delete t;
 }
-
 void MainWindow::TimerFinish2(){
 
     processClickInit(0);
     delete t2;
 }
-
 void MainWindow::processClickInit(int i){
     statusHistoryEnabled = false;
     catIndx = i;
@@ -457,7 +413,6 @@ void MainWindow::processClickInit(int i){
     repaint();
 
 }
-
 void MainWindow::TimerFinish5(){
 
    viewInit->show();
@@ -466,27 +421,21 @@ void MainWindow::TimerFinish5(){
 void MainWindow::ProcUpClick(){
     scroll->verticalScrollBar()->setValue(scroll->verticalScrollBar()->value()-100);
 }
-
 void MainWindow::ProcDownClick(){
     scroll->verticalScrollBar()->setValue(scroll->verticalScrollBar()->value()+100);
 }
-
 void MainWindow::procStartedUrlFinished(){
-    loader->show();
-    loader->setValue(0);
+//    loader->show();
+//    loader->setValue(0);
 }
 void MainWindow::procLoadUrlFinished(bool s){
-    loader->setValue(100);
-    loader->hide();
+//    loader->setValue(100);
+//    loader->hide();
 }
-
-
-
 void MainWindow::procLoadProgress(int s){
     loader->setValue(s);
 }
-
-    void MainWindow::ProcCloseOffClick(){
+void MainWindow::ProcCloseOffClick(){
 
     statusHistoryEnabled = false;
     homeWidget->setVisible(false);
@@ -530,7 +479,6 @@ void MainWindow::ProcAdminClick(){
     }
 
  }
-
 void MainWindow::procEditWebsites(){
 
     if (admin != 0){
@@ -550,7 +498,6 @@ void MainWindow::procEditWebsites(){
     }
 
 }
-
 void MainWindow::procEditSchedule(){
 
     if (admin != 0){
@@ -569,20 +516,16 @@ void MainWindow::procEditSchedule(){
     }
 
 }
-
 void MainWindow::ProcHomeClick(){
     QString htmlCont= cont2;
     htmlCont = htmlCont.replace("%url%",m_url);
     view->setHtml(htmlCont);
 
 }
-
 void MainWindow::procSelectionChanged(){
 //    horizontalMenu->hide();
 //    hiddenWidget->show();
 }
-
-
 void MainWindow::procLoadUrlChanged(const QUrl&){
 
     if (statusHistoryEnabled){
@@ -613,27 +556,36 @@ void MainWindow::procLoadUrlChanged(const QUrl&){
     }
 
 }
-
 void MainWindow::ProcBackViewClick(){
     view->page()->triggerAction(QWebEnginePage::Back);
 }
-
 void MainWindow::ProcForwardViewClick(){
     view->page()->triggerAction(QWebEnginePage::Forward);
 }
-
-
 void MainWindow::initVideo(){
+    createView();
+    createViewInit();
+
+    // start Init video
+    t5 = new QTimer;
+    connect(t5, SIGNAL(timeout()), this, SLOT(TimerFinish5()));
+    t5->start(300);
+
+    // start to show main Video
+    t = new QTimer;
+    connect(t, SIGNAL(timeout()), this, SLOT(TimerFinish()));
+    t->start(15000);
+    // start to load main Video
+    t2 = new QTimer;
+    connect(t2, SIGNAL(timeout()), this, SLOT(TimerFinish2()));
+    t2->start(10000);
+
 }
-
-
-
 void MainWindow::keyReleaseEvent(QKeyEvent *event){
     if((event->key() == Qt::Key_L)&&(event->modifiers() == Qt::CTRL)){
         close();
     }
 }
-
 void MainWindow::fullScreenRequested(QWebEngineFullScreenRequest request)
 {
     if (request.toggleOn()) {
@@ -648,7 +600,6 @@ void MainWindow::fullScreenRequested(QWebEngineFullScreenRequest request)
         m_fullScreenWindow.reset();
     }
 }
-
 MainWindow::~MainWindow()
 {
     delete view;
@@ -659,7 +610,6 @@ MainWindow::~MainWindow()
     delete viewInit;
     delete ui;
 }
-
 void MainWindow::processClick(int i){
     statusHistoryEnabled = false;
     if ((catIndx == i)&&checkProc){
@@ -689,7 +639,7 @@ void MainWindow::processClick(int i){
     }
 
 
-    tgroup xmlData = parser->getParsedData();
+//    tgroup xmlData = parser->getParsedData();
     QImage imgTmpBkg = QImage(QDir::toNativeSeparators(QDir::currentPath() +SUBDIR+ xmlData.categories.at(i)->background));
     QImage imgTmp = QImage(QDir::toNativeSeparators(QDir::currentPath() +SUBDIR+ xmlData.categories.at(i)->icon));
     headerImageInfo->setImage(0, imgTmp);
@@ -752,8 +702,6 @@ void MainWindow::processClick(int i){
     repaint();
 
 }
-
-
 void MainWindow::ProcClickForUrl(QString &url, QString &title, QImage& imgTmp){
 
     adminWidget->hide();
@@ -800,8 +748,6 @@ void MainWindow::ProcClickForUrl(QString &url, QString &title, QImage& imgTmp){
     view->history()->clear();
     checkProc = false;
 }
-
-
 void MainWindow::resizeEvent(QResizeEvent *event)
 {
     if (resizeCount == 0){
@@ -821,20 +767,17 @@ void MainWindow::resizeEvent(QResizeEvent *event)
     }
 
 }
-
 void MainWindow::ProcShowHMenu(bool s){
     if (s){
         horizontalMenu->show();
 //        hiddenWidget->hide();
     }
 }
-
 QStringList MainWindow::GetAllImagesInFolder(){
    QDir directory(QDir::toNativeSeparators(QDir::currentPath() +SUBDIR));
    QStringList images = directory.entryList(QStringList() << "*.jpg" << "*.JPG",QDir::Files);
     return images;
 }
-
 bool MainWindow::ItemImageExist(QStringList &images, QString & item){
    bool status;
    status = false;
@@ -847,18 +790,12 @@ bool MainWindow::ItemImageExist(QStringList &images, QString & item){
    }
    return status;
 }
-
-
-QString MainWindow::ParseTransform(QString& url){
+QString MainWindow::ParseTransform(QString url){
     if (url.contains("vimeo", Qt::CaseInsensitive)){
         url.replace(QString("vimeo.com"), QString("player.vimeo.com/video"));
-//    new form <bgvideo>https://vimeo.com/182513271</bgvideo>
-//    old form <bgvideo>https://player.vimeo.com/video/182513271</bgvideo>
     }
     if (url.contains("youtube", Qt::CaseInsensitive)){
         url.replace(QString("www.youtube.com/watch?v="), QString("www.youtube.com/embed/"));
-//    new form <bgvideo>https://www.youtube.com/watch?v=RtU_mdL2vBM</bgvideo>
-//    old form <bgvideo>https://www.youtube.com/embed/dKCdV20zLMs</bgvideo>
     }
     return url;
 }

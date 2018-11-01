@@ -36,8 +36,6 @@ void CMenuForm::UpdateD(QRect r)
 }
 
 void CMenuForm::createMenuByCategory(int id){
- //   setUpdatesEnabled(false);
-
 
     for (int i = 0; i < pListLargeImage.count(); i++){
             delete pListLargeImage.at(i);
@@ -86,7 +84,6 @@ void CMenuForm::createMenuByCategory(int id){
 
         setGeometry(0, 0, (iMax) * xOffset, (j+5.5) * yOffset);
     }
-//   setUpdatesEnabled(true);
 }
 
 bool CMenuForm::event(QEvent *event)
@@ -101,9 +98,6 @@ bool CMenuForm::event(QEvent *event)
     return QWidget::event(event);
 }
 
-void CMenuForm::processClick(int i){
-//    close();
-}
 
 void CMenuForm::processClickForUrl(QString& url, QString& title, QImage& img ){
    emit clickForUrl(url, title, img);

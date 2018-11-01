@@ -1,4 +1,4 @@
-#include "clargeimageedit.h"
+#include "Admin/clargeimageedit.h"
 
 
 CLargeImageEdit::CLargeImageEdit(QWidget *parent) : QWidget(parent)

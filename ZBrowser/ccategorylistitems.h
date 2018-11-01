@@ -3,8 +3,8 @@
 
 #include <QWidget>
 #include <QList>
-#include "cparserxml.h"
-#include "clargeimageedit.h"
+#include "XMLParser/cparserxml.h"
+#include "Admin/clargeimageedit.h"
 
 class CCategoryListItems : public QWidget
 {
@@ -14,7 +14,6 @@ public:
     void createCategoryMenuItems(int id);
 
 protected:
-    void paintEvent(QPaintEvent *event);
 signals:
 
 public slots:

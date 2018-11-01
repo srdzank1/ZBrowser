@@ -1,7 +1,7 @@
 #ifndef QHELPERC_H
 #define QHELPERC_H
 #include <QWidget>
-#include "Helper/qworker_xml.h"
+#include "XMLParser/qworker_xml.h"
 #include <QEventLoop>
 
 

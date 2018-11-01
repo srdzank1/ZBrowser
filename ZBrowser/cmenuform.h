@@ -3,7 +3,7 @@
 
 #include <QWidget>
 //#include "simagewidget.h"
-#include "cparserxml.h"
+#include "XMLParser/cparserxml.h"
 #include "clargeimage.h"
 
 #include "QDir"
@@ -24,7 +24,6 @@ public:
 protected:
     virtual bool event(QEvent *event);
 public slots:
-    void processClick(int i);
     void processClickForUrl(QString&, QString&, QImage&);
     int getRowMax(){return mRowCount;}
 private:

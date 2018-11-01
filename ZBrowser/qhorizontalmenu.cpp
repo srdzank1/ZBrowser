@@ -40,8 +40,6 @@ void QHorizontalMenu::UpdateD(QRect r)
 
     for(int i = 0; i < catwegoryCount; i++){
         tcategory *item =  m_group.categories.at(i);
-//        int i1 = i +1;
-//        QRect r1 = QRect(width/catwegoryCount * i1, 0,width/catwegoryCount * i1+ 100, 120);
         QRect r1 = QRect(100 + cellWidth * i, 0, cellWidth, 120);
 
         imageItem[i]->setGeometry(r1);

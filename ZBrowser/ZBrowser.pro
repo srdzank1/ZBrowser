@@ -30,50 +30,46 @@ SOURCES += \
     qhorizontalmenu.cpp \
     simagewidget.cpp \
     cmenuform.cpp \
-    cparserxml.cpp \
+    XMLParser/cparserxml.cpp \
     clargeimage.cpp \
-    fullscreenwindow.cpp \
-    fullscreennotification.cpp \
-    ccentralbackgroundimage.cpp \
+    VideoFullScreen/fullscreenwindow.cpp \
+    VideoFullScreen/fullscreennotification.cpp \
     cheaderimageinfo.cpp \
     cbasewidget.cpp \
-    qhidden.cpp \
     cloaderwidget.cpp \
     ctopbarwidget.cpp \
-    cadminsettingswidget.cpp \
-    cswitch.cpp \
-    ceditwebsites.cpp \
+    Admin/cswitch.cpp \
+    Admin/ceditwebsites.cpp \
     ccategorylist.cpp \
     ccategorylistitems.cpp \
-    cschedule.cpp \
-    clargeimageedit.cpp \
-    Helper/qhelperc.cpp \
-    Helper/qworker_xml.cpp
+    Admin/cschedule.cpp \
+    Admin/clargeimageedit.cpp \
+    XMLParser/qhelperc.cpp \
+    XMLParser/qworker_xml.cpp \
+    Admin/cadminsettingswidget.cpp
 
 HEADERS += \
         mainwindow.h \
     qhorizontalmenu.h \
     simagewidget.h \
     cmenuform.h \
-    cparserxml.h \
+    XMLParser/cparserxml.h \
     clargeimage.h \
-    fullscreenwindow.h \
-    fullscreennotification.h \
-    ccentralbackgroundimage.h \
+    VideoFullScreen/fullscreenwindow.h \
+    VideoFullScreen/fullscreennotification.h \
     cheaderimageinfo.h \
     cbasewidget.h \
-    qhidden.h \
     cloaderwidget.h \
     ctopbarwidget.h \
-    cadminsettingswidget.h \
-    cswitch.h \
-    ceditwebsites.h \
+    Admin/cswitch.h \
+    Admin/ceditwebsites.h \
     ccategorylist.h \
     ccategorylistitems.h \
-    cschedule.h \
-    clargeimageedit.h \
-    Helper/qhelperc.h \
-    Helper/qworker_xml.h
+    Admin/cschedule.h \
+    Admin/clargeimageedit.h \
+    XMLParser/qhelperc.h \
+    XMLParser/qworker_xml.h \
+    Admin/cadminsettingswidget.h
 
 FORMS += \
         mainwindow.ui \

@@ -7,22 +7,8 @@ CCategoryList::CCategoryList(tgroup &data, QWidget *parent) : QWidget(parent)
     yOffset = 187;
 }
 
-void CCategoryList::paintEvent(QPaintEvent *event){
-//    QPainter painter(this);
-//    QPainterPath path;
-
-//        path.addRoundedRect(QRectF(0, 0, geometry().width(), geometry().height()), 10, 10);
-//        QPen pen(Qt::darkYellow, 10);
-//        painter.setPen(pen);
-//        painter.fillPath(path, Qt::white);
-//        painter.drawPath(path);
-
-//    painter.end();
-
-}
 
 void CCategoryList::createCategoryMenu(int id){
- //   setUpdatesEnabled(false);
     m_width = geometry().width();
     m_height = geometry().height();
 
@@ -39,8 +25,6 @@ void CCategoryList::createCategoryMenu(int id){
     int iMax = 1;
     int jMax = catCount / iMax + 1;
 
-//    int iMax = (int)m_width / xOffset;
-//    int jMax = webCount / iMax + 1;
     mRowCount = jMax;
     for(int j = 0; j < jMax; j++){
         for(int i = 0; i < iMax; i++){
@@ -72,7 +56,6 @@ void CCategoryList::createCategoryMenu(int id){
         setGeometry(0, 0, (iMax) * xOffset, (j+5.5) * yOffset);
     }
     update();
-//   setUpdatesEnabled(true);
 }
 
 

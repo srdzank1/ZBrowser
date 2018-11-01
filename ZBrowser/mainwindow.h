@@ -11,31 +11,30 @@
 #include <QMenu>
 #include "qhorizontalmenu.h"
 #include "cmenuform.h"
-#include "cparserxml.h"
+#include "XMLParser/cparserxml.h"
 #include <QScrollArea>
 #include <QScrollBar>
 #include <QWebEngineSettings>
-#include "fullscreenwindow.h"
+#include "VideoFullScreen/fullscreenwindow.h"
 #include <QWebEngineFullScreenRequest>
 #include <QFuture>
 #include <QtConcurrent>
 #include <QTextStream>
-#include "ccentralbackgroundimage.h"
+
 #include "cheaderimageinfo.h"
 #include "cbasewidget.h"
 #include <QWebEngineHistory>
-#include "qhidden.h"
 #include "cloaderwidget.h"
 #include <QSound>
 #include "ctopbarwidget.h"
-#include "cadminsettingswidget.h"
-#include "ceditwebsites.h"
-#include "cschedule.h"
+#include "Admin/cadminsettingswidget.h"
+#include "Admin/ceditwebsites.h"
+#include "Admin/cschedule.h"
 #include <QDesktopServices>
 #include <QMediaPlayer>
 #include <QMediaPlaylist>
 #include <QVideoWidget>
-#include  "Helper/qhelperc.h"
+#include "XMLParser/qhelperc.h"
 #include <QDir>
 
 
@@ -55,6 +54,8 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
     void initVideo();
+    void LoadXMLFileFromURLInit();
+    void CreateInitElement();
 
 protected:
     void resizeEvent(QResizeEvent *event) override;
@@ -83,7 +84,7 @@ private:
     void CreateLoader();
     QStringList GetAllImagesInFolder();
     bool ItemImageExist(QStringList &images, QString & item);
-    QString ParseTransform(QString& url);
+    QString ParseTransform(QString url);
 
 
 
@@ -92,7 +93,6 @@ private:
     QScopedPointer<FullScreenWindow> m_fullScreenWindow;
     CParserXML *parser;
     QScrollArea *scroll;
-    CCentralBackgroundImage *backgroundImage;
     CHeaderImageInfo *headerImageInfo;
     CHeaderImageInfo *headerImageInfoCategory;
 
@@ -106,7 +106,6 @@ private:
     CBaseWidget * forwardWidget;
     CBaseWidget * closeOffWidget;
     CBaseWidget * adminWidget;
-    QHidden *hiddenWidget;
     bool statusHistoryEnabled;
     QString m_url;
     int resizeCount;
@@ -124,7 +123,7 @@ private:
     QTimer *t2;
     QTimer *t5;
     bool checkProc;
-
+    tgroup xmlData;
 public slots:
     void processClick(int i);
     void processClickInit(int i);

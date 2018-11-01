@@ -13,6 +13,9 @@ int main(int argc, char *argv[])
     QtWebEngine::initialize();
     MainWindow w;
     w.initVideo();
+    w.LoadXMLFileFromURLInit();
+    w.CreateInitElement();
+
     w.showFullScreen();
 //    w.showMaximized();
 

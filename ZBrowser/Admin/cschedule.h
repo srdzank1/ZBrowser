@@ -4,7 +4,7 @@
 #include <QWidget>
 #include <QLabel>
 #include <QPainter>
-#include "cparserxml.h"
+#include "XMLParser/cparserxml.h"
 
 class CSchedule : public QWidget
 {
