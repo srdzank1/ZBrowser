@@ -22,10 +22,13 @@ protected:
 signals:
     void clickForEditWebsitesMain();
     void clickForScheduleMain();
+    void clickForShowCloseButton(bool);
 
 public slots:
     void procForEditWebsitesMain(bool);
     void procForScheduleMain(bool);
+    void procShowCloseButton(bool);
+
 private:
     bool statOn;
    QLabel *securitySettings;

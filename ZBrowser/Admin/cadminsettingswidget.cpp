@@ -47,6 +47,7 @@ void CAdminSettingsWidget::menuGlobalSettings(){
 
     showCloseButton = new CSwitch(this);
     showCloseButton->setGeometry( QRect(270 , 100, 100 ,30));
+    connect(showCloseButton, SIGNAL(changeSwitchStatus(bool)), this, SLOT(procShowCloseButton(bool)));
     showCloseButton->show();
 
     //------------------------------------------------
@@ -161,3 +162,6 @@ void CAdminSettingsWidget::procForScheduleMain(bool){
     emit clickForScheduleMain();
 }
 
+void CAdminSettingsWidget::procShowCloseButton(bool stat){
+    emit clickForShowCloseButton(stat);
+}

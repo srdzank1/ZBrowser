@@ -116,6 +116,8 @@ void MainWindow::CreateInitElement(){
     // headerImageInfoCategory
     CreateHeaderImageInfoCategory(xmlData);
     scroll->setFocus();
+
+    closeOffWidget->show();
 }
 void MainWindow::LoadXMLFileFromURLInit(){
     QHelperC *cXml = new QHelperC();
@@ -246,18 +248,28 @@ void MainWindow::CreateHomeWidget(){
 }
 void MainWindow::CreateCloseOffWidget(){
     closeOffWidget = new CBaseWidget(this);
-    connect(closeOffWidget, SIGNAL(buttonClick()), this, SLOT(ProcCloseOffClick()));
-    closeOffWidget->setGeometry(width - 115, 1, 48, 48);
+    connect(closeOffWidget, SIGNAL(buttonClick()), this, SLOT(ProcCloseApplication()));
+    closeOffWidget->setGeometry(width - 60, 1, 48, 48);
     QImage closeOffWidgetTemp = QImage(":/res/image/close_normal.png");
     QImage closeOffWidgetTemp_hover = QImage(":/res/image/close_hover.png");
     QImage closeOffWidgetTemp_click = QImage(":/res/image/close_click.png");
     closeOffWidget->setImage(0, closeOffWidgetTemp, closeOffWidgetTemp_hover, closeOffWidgetTemp_click);
     closeOffWidget->hide();
 }
+
+void MainWindow::ProcShowCloseButton(bool stat){
+    if (stat) {
+        closeOffWidget->show();
+    }else{
+        closeOffWidget->hide();
+    }
+    closeOffWidget->repaint();
+}
+
 void MainWindow::CreateAdminWidget(){
     adminWidget = new CBaseWidget(this);
     connect(adminWidget, SIGNAL(buttonClick()), this, SLOT(ProcAdminClick()));
-    adminWidget->setGeometry(width - 60, 1, 50, 50);
+    adminWidget->setGeometry(width - 115, 1, 50, 50);
     QImage adminWidgetTemp = QImage(":/res/image/admin_normal.png");
     QImage adminWidgetTemp_hover = QImage(":/res/image/admin_hover.png");
     QImage adminWidgetTemp_click = QImage(":/res/image/admin_click.png");
@@ -439,7 +451,7 @@ void MainWindow::ProcCloseOffClick(){
 
     statusHistoryEnabled = false;
     homeWidget->setVisible(false);
-    closeOffWidget->setVisible(false);
+    closeOffWidget->setVisible(true);
     backWidget->setVisible(false);
     forwardWidget->setVisible(false);
     adminWidget->setVisible(false);
@@ -457,12 +469,18 @@ void MainWindow::ProcCloseOffClick(){
     checkProc = true;
 
 }
+void MainWindow::ProcCloseApplication(){
+    close();
+}
+
+
 void MainWindow::ProcAdminClick(){
 
     if (admin == 0){
         admin = new CAdminSettingsWidget(this);
         connect(admin, SIGNAL(clickForEditWebsitesMain()),this,SLOT(procEditWebsites()));
         connect(admin, SIGNAL(clickForScheduleMain()),this,SLOT(procEditSchedule()));
+        connect(admin, SIGNAL(clickForShowCloseButton(bool)), this, SLOT(ProcShowCloseButton(bool)));
         admin->setGeometry(width - 402, 60, 385, 600);
         admin->show();
     }else{

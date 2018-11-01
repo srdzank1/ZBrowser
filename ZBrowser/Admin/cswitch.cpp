@@ -24,6 +24,7 @@ void CSwitch::mouseReleaseEvent(QMouseEvent * event){
     }else{
         statOn = false;
     }
+    emit changeSwitchStatus(statOn);
     repaint();
 }
 

@@ -140,6 +140,7 @@ public slots:
     void ProcHomeClick();
     void ProcBackViewClick();
     void ProcCloseOffClick();
+    void ProcCloseApplication();
     void ProcForwardViewClick();
     void procLoadUrlChanged(const QUrl&);
     void ProcShowHMenu(bool s);
@@ -147,6 +148,7 @@ public slots:
     void ProcAdminClick();
     void procEditWebsites();
     void procEditSchedule();
+    void ProcShowCloseButton(bool);
 
 };
 

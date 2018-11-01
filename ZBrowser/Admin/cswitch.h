@@ -16,6 +16,7 @@ protected:
     void mouseReleaseEvent(QMouseEvent * event);
 
 signals:
+    void changeSwitchStatus(bool);
 
 public slots:
 private:
