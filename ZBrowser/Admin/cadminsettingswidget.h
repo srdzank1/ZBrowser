@@ -9,6 +9,16 @@
 #include <QLineEdit>
 #include "cswitch.h"
 
+typedef struct {
+   bool  showCloseButton;
+   bool  alwaysInFront;
+   bool  exitKeyboardShortcut;
+   bool  enableRestriction;
+   bool  enableSchedule;
+   QString  KeyboardShortcut;
+} tsettings;
+
+
 class CAdminSettingsWidget : public QWidget
 {
     Q_OBJECT
@@ -16,6 +26,8 @@ public:
     explicit CAdminSettingsWidget(QWidget *parent = nullptr);
     ~CAdminSettingsWidget();
     void menuGlobalSettings();
+    void getSettings(tsettings& esettings);
+    void setSettings(tsettings& esettings);
 protected:
     void paintEvent(QPaintEvent *event);
 
@@ -56,6 +68,7 @@ private:
    QPushButton * buttonSchedule;
    QPushButton * buttonCloseNow;
    QPushButton * buttonCloseMenu;
+   tsettings m_settings;
 };
 
 #endif // CADMINSETTINGSWIDGET_H

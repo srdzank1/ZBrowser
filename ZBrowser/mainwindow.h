@@ -56,7 +56,8 @@ public:
     void initVideo();
     void LoadXMLFileFromURLInit();
     void CreateInitElement();
-
+    void SaveSettingData();
+    void ReadSettingData();
 protected:
     void resizeEvent(QResizeEvent *event) override;
     void keyReleaseEvent(QKeyEvent *);
@@ -123,7 +124,8 @@ private:
     QTimer *t2;
     QTimer *t5;
     bool checkProc;
-    tgroup xmlData;
+    tgroup xmlData ;
+    tsettings mSettings;
 public slots:
     void processClick(int i);
     void processClickInit(int i);

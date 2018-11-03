@@ -27,6 +27,7 @@ typedef struct {
    QString  language;
    QString  updatetime;
    QString  isupdated;
+   bool hide;
 } twebsite;
 
 typedef struct {

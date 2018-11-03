@@ -4,13 +4,82 @@ CAdminSettingsWidget::CAdminSettingsWidget(QWidget *parent) : QWidget(parent)
 {
     setAttribute(Qt::WA_StaticContents);
     setMouseTracking(true);
+    m_settings.KeyboardShortcut = "";
+    m_settings.alwaysInFront = true;
+    m_settings.enableRestriction = true;
+    m_settings.enableSchedule = false;
+    m_settings.exitKeyboardShortcut = false;
+    m_settings.showCloseButton = false;
+
+
+
+    securitySettings = new QLabel(this);
+    labelshowCloseButton = new QLabel(this);
+    showCloseButton = new CSwitch(this);
+    labelalwaysInFront = new QLabel(this);
+    alwaysInFront = new CSwitch(this);
+    labelexitKeyboardShortcut = new QLabel(this);
+    exitKeyboardShortcut = new CSwitch(this);
+    labelenableRestriction = new QLabel(this);
+    enableRestriction = new CSwitch(this);
+    labelkeyboardShortcut = new QLabel(this);
+    keyboardShortcut = new QLineEdit(this);
+    labelenableSchedule = new QLabel(this);
+    enableSchedule = new CSwitch(this);
+    buttontWebSites = new QPushButton(this);
+    buttonSchedule = new QPushButton(this);
+    buttonCloseNow = new QPushButton(this);
+    buttonCloseMenu = new QPushButton(this);
+
     menuGlobalSettings();
     statOn = false;
 }
 
+void CAdminSettingsWidget::setSettings(tsettings &esettings){
+    m_settings.KeyboardShortcut = esettings.KeyboardShortcut;
+    m_settings.alwaysInFront = esettings.alwaysInFront;
+    m_settings.enableRestriction = esettings.enableRestriction;
+    m_settings.enableSchedule = esettings.enableSchedule;
+    m_settings.exitKeyboardShortcut = esettings.exitKeyboardShortcut;
+    m_settings.showCloseButton = esettings.showCloseButton;
+
+    keyboardShortcut->setText(m_settings.KeyboardShortcut);
+    alwaysInFront->SetStatus(m_settings.alwaysInFront);
+    enableRestriction->SetStatus(m_settings.enableRestriction);
+    enableSchedule->SetStatus(m_settings.enableSchedule);
+    exitKeyboardShortcut->SetStatus(m_settings.exitKeyboardShortcut);
+    showCloseButton->SetStatus(m_settings.showCloseButton);
+}
+
+void CAdminSettingsWidget::getSettings(tsettings& esettings){
+    esettings.KeyboardShortcut = keyboardShortcut->text();
+    esettings.alwaysInFront = alwaysInFront->GetStatus();
+    esettings.enableRestriction = enableRestriction->GetStatus();
+    esettings.enableSchedule = enableSchedule->GetStatus();
+    esettings.exitKeyboardShortcut = exitKeyboardShortcut->GetStatus();
+    esettings.showCloseButton = showCloseButton->GetStatus();
+}
+
+
 CAdminSettingsWidget::~CAdminSettingsWidget()
 {
-
+    delete securitySettings;
+    delete labelshowCloseButton;
+    delete showCloseButton;
+    delete labelalwaysInFront;
+    delete alwaysInFront;
+    delete labelexitKeyboardShortcut;
+    delete exitKeyboardShortcut;
+    delete labelenableRestriction;
+    delete enableRestriction;
+    delete labelkeyboardShortcut;
+    delete keyboardShortcut;
+    delete labelenableSchedule;
+    delete enableSchedule;
+    delete buttontWebSites;
+    delete buttonSchedule;
+    delete buttonCloseNow;
+    delete buttonCloseMenu;
 }
 
 void CAdminSettingsWidget::paintEvent(QPaintEvent *event){
@@ -27,9 +96,6 @@ void CAdminSettingsWidget::paintEvent(QPaintEvent *event){
 }
 
 void CAdminSettingsWidget::menuGlobalSettings(){
-
-
-    securitySettings = new QLabel(this);
     securitySettings->setGeometry(20,15, 300, 30);
     QFont cFont;
     cFont.setPointSize(14);
@@ -38,86 +104,75 @@ void CAdminSettingsWidget::menuGlobalSettings(){
     securitySettings->setText(QStringLiteral("Security / Settings"));
 
     //------------------------------------------------
-    labelshowCloseButton = new QLabel(this);
     labelshowCloseButton->setGeometry(20, 100, 200, 30);
     cFont.setPointSize(12);
     cFont.setBold(false);
     labelshowCloseButton->setFont(cFont);
     labelshowCloseButton->setText(QStringLiteral("Show close button"));
 
-    showCloseButton = new CSwitch(this);
     showCloseButton->setGeometry( QRect(270 , 100, 100 ,30));
+    showCloseButton->SetStatus(m_settings.showCloseButton);
     connect(showCloseButton, SIGNAL(changeSwitchStatus(bool)), this, SLOT(procShowCloseButton(bool)));
     showCloseButton->show();
 
     //------------------------------------------------
-    labelalwaysInFront = new QLabel(this);
     labelalwaysInFront->setGeometry(20, 140, 200, 30);
     cFont.setPointSize(12);
     cFont.setBold(false);
     labelalwaysInFront->setFont(cFont);
     labelalwaysInFront->setText(QStringLiteral("Always in front"));
 
-    alwaysInFront = new CSwitch(this);
     alwaysInFront->setGeometry( QRect(270 , 140, 100 ,30));
+    alwaysInFront->SetStatus(m_settings.alwaysInFront);
     alwaysInFront->show();
 
     //------------------------------------------------
-    labelexitKeyboardShortcut = new QLabel(this);
     labelexitKeyboardShortcut->setGeometry(20, 180, 240, 30);
     cFont.setPointSize(12);
     cFont.setBold(false);
     labelexitKeyboardShortcut->setFont(cFont);
     labelexitKeyboardShortcut->setText(QStringLiteral("Exit with keyboard shortcut"));
 
-    exitKeyboardShortcut = new CSwitch(this);
     exitKeyboardShortcut->setGeometry( QRect(270 , 180, 100 ,30));
+    exitKeyboardShortcut->SetStatus(m_settings.exitKeyboardShortcut);
     exitKeyboardShortcut->show();
 
     //------------------------------------------------
-    labelenableRestriction = new QLabel(this);
     labelenableRestriction->setGeometry(20, 220, 240, 30);
     cFont.setPointSize(12);
     cFont.setBold(false);
     labelenableRestriction->setFont(cFont);
     labelenableRestriction->setText(QStringLiteral("Enable restrictions"));
 
-    enableRestriction = new CSwitch(this);
     enableRestriction->setGeometry( QRect(270 , 220, 100 ,30));
+    enableRestriction->SetStatus(m_settings.enableRestriction);
     enableRestriction->show();
 
     //------------------------------------------------
-    labelkeyboardShortcut = new QLabel(this);
     labelkeyboardShortcut->setGeometry(20, 260, 240, 30);
     cFont.setPointSize(12);
     labelkeyboardShortcut->setFont(cFont);
     labelkeyboardShortcut->setText(QStringLiteral("Keyboard shortcut CTRL+"));
 
 
-    keyboardShortcut = new QLineEdit(this);
     keyboardShortcut->setGeometry(270, 260, 100, 30);
     cFont.setPointSize(12);
     keyboardShortcut->setMaxLength(1);
     keyboardShortcut->setFont(cFont);
-    keyboardShortcut->setText(QStringLiteral("L"));
+    keyboardShortcut->setText(m_settings.KeyboardShortcut);
 
     //------------------------------------------------
 
-    labelenableSchedule = new QLabel(this);
     labelenableSchedule->setGeometry(20, 300, 240, 30);
     cFont.setPointSize(12);
     cFont.setBold(false);
     labelenableSchedule->setFont(cFont);
     labelenableSchedule->setText(QStringLiteral("Enable schedule"));
 
-    enableSchedule = new CSwitch(this);
     enableSchedule->setGeometry( QRect(270 , 300, 100 ,30));
+    enableSchedule->SetStatus(m_settings.enableSchedule);
     enableSchedule->show();
 
-
-    //------------------------------------------------
-
-    buttontWebSites = new QPushButton(this);
     buttontWebSites->setGeometry( QRect(10 , 360, 360 ,55));
     connect(buttontWebSites, SIGNAL(clicked(bool)), this, SLOT(procForEditWebsitesMain(bool)));
     cFont.setPointSize(12);
@@ -126,7 +181,6 @@ void CAdminSettingsWidget::menuGlobalSettings(){
     buttontWebSites->setText(QStringLiteral("Edit web sites"));
     buttontWebSites->show();
 
-    buttonSchedule = new QPushButton(this);
     buttonSchedule->setGeometry( QRect(10 , 420, 360 ,55));
     connect(buttonSchedule, SIGNAL(clicked(bool)), this, SLOT(procForScheduleMain(bool)));
     cFont.setPointSize(12);
@@ -135,7 +189,6 @@ void CAdminSettingsWidget::menuGlobalSettings(){
     buttonSchedule->setText(QStringLiteral("Open schedule..."));
     buttonSchedule->show();
 
-    buttonCloseNow = new QPushButton(this);
     buttonCloseNow->setGeometry( QRect(10 , 480, 360 ,55));
     cFont.setPointSize(12);
     cFont.setBold(true);
@@ -143,15 +196,12 @@ void CAdminSettingsWidget::menuGlobalSettings(){
     buttonCloseNow->setText(QStringLiteral("Close now!"));
     buttonCloseNow->show();
 
-
-    buttonCloseMenu = new QPushButton(this);
     buttonCloseMenu->setGeometry( QRect(10 , 540, 360 ,55));
     cFont.setPointSize(12);
     cFont.setBold(true);
     buttonCloseMenu->setFont(cFont);
     buttonCloseMenu->setText(QStringLiteral("Close menu"));
     buttonCloseMenu->show();
-
 }
 
 void CAdminSettingsWidget::procForEditWebsitesMain(bool){

@@ -25,11 +25,18 @@ MainWindow::MainWindow(QWidget *parent) :
     editSchedule = 0;
     checkProc = true;
 
+    mSettings.KeyboardShortcut = "";
+    mSettings.alwaysInFront = false;
+    mSettings.enableRestriction = false;
+    mSettings.enableSchedule = false;
+    mSettings.exitKeyboardShortcut = false;
+    mSettings.showCloseButton = false;
 
     setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
     QRect rec = QApplication::desktop()->screenGeometry();
     height = rec.height();
     width = rec.width();
+    ReadSettingData();
 
     LoadXMLFileFromURLInit();
 }
@@ -117,8 +124,8 @@ void MainWindow::CreateInitElement(){
     CreateHeaderImageInfoCategory(xmlData);
     scroll->setFocus();
 
-    closeOffWidget->show();
 }
+
 void MainWindow::LoadXMLFileFromURLInit(){
     QHelperC *cXml = new QHelperC();
     parser = new CParserXML(this);
@@ -325,6 +332,7 @@ void MainWindow::TimerFinish(){
     connect(view, SIGNAL(loadStarted()),this, SLOT(procStartedUrlFinished()));
 
 //    delete viewInit;
+    ProcShowCloseButton(mSettings.showCloseButton);
     adminWidget->show();
     horizontalMenu->setVisible(true);
     headerImageInfo->show();
@@ -482,8 +490,10 @@ void MainWindow::ProcAdminClick(){
         connect(admin, SIGNAL(clickForScheduleMain()),this,SLOT(procEditSchedule()));
         connect(admin, SIGNAL(clickForShowCloseButton(bool)), this, SLOT(ProcShowCloseButton(bool)));
         admin->setGeometry(width - 402, 60, 385, 600);
+        admin->setSettings(mSettings);
         admin->show();
     }else{
+        admin->getSettings(mSettings);
         delete admin;
         admin = 0;
     }
@@ -620,6 +630,7 @@ void MainWindow::fullScreenRequested(QWebEngineFullScreenRequest request)
 }
 MainWindow::~MainWindow()
 {
+    SaveSettingData();
     delete view;
     delete viewInit;
     delete centralMenu;
@@ -643,6 +654,7 @@ void MainWindow::processClick(int i){
 
     if (catIndx != 0){
         if (admin != 0){
+            admin->getSettings(mSettings);
             delete admin;
             admin = 0;
         }
@@ -817,3 +829,30 @@ QString MainWindow::ParseTransform(QString url){
     }
     return url;
 }
+
+void MainWindow::SaveSettingData(){
+    QString fileImagePath = QDir::toNativeSeparators(QDir::currentPath() +"/settins.dat");
+    QFile file(fileImagePath);
+    file.open(QIODevice::WriteOnly);
+    QDataStream out(&file);   // we will serialize the data into the file
+    out << mSettings.KeyboardShortcut;
+    out << mSettings.alwaysInFront;
+    out << mSettings.enableRestriction;
+    out << mSettings.enableSchedule;
+    out << mSettings.exitKeyboardShortcut;
+    out << mSettings.showCloseButton;
+}
+
+void MainWindow::ReadSettingData(){
+    QString fileImagePath = QDir::toNativeSeparators(QDir::currentPath() +"/settins.dat");
+    QFile file(fileImagePath);
+    file.open(QIODevice::ReadOnly);
+    QDataStream in(&file);   // we will serialize the data into the file
+    in >> mSettings.KeyboardShortcut;
+    in >> mSettings.alwaysInFront;
+    in >> mSettings.enableRestriction;
+    in >> mSettings.enableSchedule;
+    in >> mSettings.exitKeyboardShortcut;
+    in >> mSettings.showCloseButton;
+}
+

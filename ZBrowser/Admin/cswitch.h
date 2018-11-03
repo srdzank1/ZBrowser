@@ -11,10 +11,11 @@ class CSwitch : public QWidget
     Q_OBJECT
 public:
     explicit CSwitch(QWidget *parent = nullptr);
+    bool GetStatus(){return statOn;}
+    void SetStatus(bool &eStatOn){statOn = eStatOn;}
 protected:
     void paintEvent(QPaintEvent *event);
     void mouseReleaseEvent(QMouseEvent * event);
-
 signals:
     void changeSwitchStatus(bool);
 

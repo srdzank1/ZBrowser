@@ -10,6 +10,11 @@
 #include <QScrollArea>
 #include <QScrollBar>
 
+typedef struct {
+   QString  id;
+   bool hide;
+} tfilterwebsite;
+
 class CEditWebSites : public QWidget
 {
     Q_OBJECT
