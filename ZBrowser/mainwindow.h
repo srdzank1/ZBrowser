@@ -58,6 +58,8 @@ public:
     void CreateInitElement();
     void SaveSettingData();
     void ReadSettingData();
+    void SaveFilteredData();
+    void ReadFilteredData();
 protected:
     void resizeEvent(QResizeEvent *event) override;
     void keyReleaseEvent(QKeyEvent *);
@@ -126,6 +128,7 @@ private:
     bool checkProc;
     tgroup xmlData ;
     tsettings mSettings;
+    tfilter mFilteredWeb;
 public slots:
     void processClick(int i);
     void processClickInit(int i);

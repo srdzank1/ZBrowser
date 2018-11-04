@@ -15,6 +15,11 @@ typedef struct {
    bool hide;
 } tfilterwebsite;
 
+typedef struct {
+   QList<tfilterwebsite*> filteredWebsites;
+} tfilter;
+
+
 class CEditWebSites : public QWidget
 {
     Q_OBJECT
@@ -22,6 +27,8 @@ public:
     explicit CEditWebSites(tgroup &data, QWidget *parent = nullptr);
     ~CEditWebSites();
     void menuGlobalSettings();
+    void setFilters(tfilter &efilter);
+    void getFilters(tfilter &efilter);
 
 protected:
     void paintEvent(QPaintEvent *event);

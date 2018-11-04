@@ -215,3 +215,4 @@ void CAdminSettingsWidget::procForScheduleMain(bool){
 void CAdminSettingsWidget::procShowCloseButton(bool stat){
     emit clickForShowCloseButton(stat);
 }
+

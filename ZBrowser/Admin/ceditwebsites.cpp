@@ -67,11 +67,35 @@ void CEditWebSites::menuGlobalSettings(){
     scroll->verticalScrollBar()->setStyleSheet("QScrollBar {width:0px;}");
     scroll->setWidget(categItems);
     scroll->setFocus();
-
 }
 
 void CEditWebSites::procChangeCategory(int& i){
     categItems->hide();
     categItems->createCategoryMenuItems(i);
     categItems->show();
+}
+
+void CEditWebSites::setFilters(tfilter &efilter){
+//    m_settings.KeyboardShortcut = esettings.KeyboardShortcut;
+//    m_settings.alwaysInFront = esettings.alwaysInFront;
+//    m_settings.enableRestriction = esettings.enableRestriction;
+//    m_settings.enableSchedule = esettings.enableSchedule;
+//    m_settings.exitKeyboardShortcut = esettings.exitKeyboardShortcut;
+//    m_settings.showCloseButton = esettings.showCloseButton;
+
+//    keyboardShortcut->setText(m_settings.KeyboardShortcut);
+//    alwaysInFront->SetStatus(m_settings.alwaysInFront);
+//    enableRestriction->SetStatus(m_settings.enableRestriction);
+//    enableSchedule->SetStatus(m_settings.enableSchedule);
+//    exitKeyboardShortcut->SetStatus(m_settings.exitKeyboardShortcut);
+//    showCloseButton->SetStatus(m_settings.showCloseButton);
+}
+
+void CEditWebSites::getFilters(tfilter& esettings){
+//    esettings.KeyboardShortcut = keyboardShortcut->text();
+//    esettings.alwaysInFront = alwaysInFront->GetStatus();
+//    esettings.enableRestriction = enableRestriction->GetStatus();
+//    esettings.enableSchedule = enableSchedule->GetStatus();
+//    esettings.exitKeyboardShortcut = exitKeyboardShortcut->GetStatus();
+//    esettings.showCloseButton = showCloseButton->GetStatus();
 }

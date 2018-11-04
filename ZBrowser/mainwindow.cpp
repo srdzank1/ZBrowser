@@ -37,6 +37,7 @@ MainWindow::MainWindow(QWidget *parent) :
     height = rec.height();
     width = rec.width();
     ReadSettingData();
+    ReadFilteredData();
 
     LoadXMLFileFromURLInit();
 }
@@ -491,6 +492,7 @@ void MainWindow::ProcAdminClick(){
         connect(admin, SIGNAL(clickForShowCloseButton(bool)), this, SLOT(ProcShowCloseButton(bool)));
         admin->setGeometry(width - 402, 60, 385, 600);
         admin->setSettings(mSettings);
+
         admin->show();
     }else{
         admin->getSettings(mSettings);
@@ -518,9 +520,11 @@ void MainWindow::procEditWebsites(){
         tgroup data = parser->getParsedData();
         editWebSites = new CEditWebSites(data, this);
         editWebSites->setGeometry(60, 120, width - 120, height- 240);
+        editWebSites->setFilters(mFilteredWeb);
         editWebSites->menuGlobalSettings();
         editWebSites->show();
     }else{
+        editWebSites->getFilters(mFilteredWeb);
         delete editWebSites;
         editWebSites = 0;
     }
@@ -631,6 +635,7 @@ void MainWindow::fullScreenRequested(QWebEngineFullScreenRequest request)
 MainWindow::~MainWindow()
 {
     SaveSettingData();
+    SaveFilteredData();
     delete view;
     delete viewInit;
     delete centralMenu;
@@ -854,5 +859,34 @@ void MainWindow::ReadSettingData(){
     in >> mSettings.enableSchedule;
     in >> mSettings.exitKeyboardShortcut;
     in >> mSettings.showCloseButton;
+}
+
+void MainWindow::SaveFilteredData(){
+    QString fileImagePath = QDir::toNativeSeparators(QDir::currentPath() +"/filtered.dat");
+    QFile file(fileImagePath);
+    file.open(QIODevice::WriteOnly);
+    QDataStream out(&file);   // we will serialize the data into the file
+    out << mFilteredWeb.filteredWebsites.count();
+    QList<tfilterwebsite*>::iterator it;
+    for(it = mFilteredWeb.filteredWebsites.begin(); it != mFilteredWeb.filteredWebsites.end(); it++){
+        out << (*it)->id;
+        out << (*it)->hide;
+    }
+}
+
+void MainWindow::ReadFilteredData(){
+    QString fileImagePath = QDir::toNativeSeparators(QDir::currentPath() +"/filtered.dat");
+    QFile file(fileImagePath);
+    file.open(QIODevice::ReadOnly);
+    QDataStream in(&file);   // we will serialize the data into the file
+    int count;
+    in >> count;
+
+    for(int i = 0; i<count;i++){
+        tfilterwebsite *item = new tfilterwebsite;
+        in >> item->id;
+        in >> item->hide;
+        mFilteredWeb.filteredWebsites.append(item);
+    }
 }
 
