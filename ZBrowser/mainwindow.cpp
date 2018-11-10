@@ -379,7 +379,7 @@ void MainWindow::processClickInit(int i){
 
 
     centralMenu->setVisible(false);
-    centralMenu->createMenuByCategory(i);
+    centralMenu->createMenuByCategory(i, mFilteredWeb);
     centralMenu->setVisible(true);
 
     if(xmlData.categories.at(i)->websites.count()!=0){
@@ -691,7 +691,7 @@ void MainWindow::processClick(int i){
 
 
     centralMenu->setVisible(false);
-    centralMenu->createMenuByCategory(i);
+    centralMenu->createMenuByCategory(i, mFilteredWeb);
     centralMenu->setVisible(true);
 
     if(xmlData.categories.at(i)->websites.count()!=0){

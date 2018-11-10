@@ -30,7 +30,7 @@ void CCategoryList::createCategoryMenu(int id){
         for(int i = 0; i < iMax; i++){
             if (j*iMax+i < catCount){
 
-                pLargeImage = new CLargeImageEdit(this);
+                pLargeImage = new CLargeImage(this);
                 pLargeImage->resize(QSize(0, 0));
                 connect(pLargeImage, SIGNAL(click(int)), this, SLOT(processClick(int)));
                 connect(pLargeImage, SIGNAL(clickForEdit(int&)), this, SLOT(processClickForEdit(int&)));

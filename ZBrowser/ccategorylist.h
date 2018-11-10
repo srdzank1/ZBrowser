@@ -4,7 +4,7 @@
 #include <QWidget>
 #include <QList>
 #include "XMLParser/cparserxml.h"
-#include "Admin/clargeimageedit.h"
+#include "clargeimage.h"
 
 class CCategoryList : public QWidget
 {
@@ -26,8 +26,8 @@ private:
     int xOffset;
     int yOffset;
     int mRowCount;
-    QList<CLargeImageEdit*> pListLargeImage;
-    CLargeImageEdit * pLargeImage;
+    QList<CLargeImage*> pListLargeImage;
+    CLargeImage * pLargeImage;
 };
 
 #endif // CCATEGORYLIST_H
