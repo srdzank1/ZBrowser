@@ -10,15 +10,6 @@
 #include <QScrollArea>
 #include <QScrollBar>
 
-typedef struct {
-   QString  id;
-   bool hide;
-} tfilterwebsite;
-
-typedef struct {
-   QList<tfilterwebsite*> filteredWebsites;
-} tfilter;
-
 
 class CEditWebSites : public QWidget
 {
@@ -27,13 +18,15 @@ public:
     explicit CEditWebSites(tgroup &data, QWidget *parent = nullptr);
     ~CEditWebSites();
     void menuGlobalSettings();
-    void setFilters(tfilter &efilter);
-    void getFilters(tfilter &efilter);
+    void setFilters(tfilterwebsite &efilter);
+    void getFilters(tfilterwebsite &efilter);
+    void FuncChangeCategory(int& i, tfilterwebsite &efilter);
+
 
 protected:
     void paintEvent(QPaintEvent *event);
 signals:
-
+    void webSitesChangeCategory(int &i);
 public slots:
     void procChangeCategory(int& i);
 private:
@@ -46,6 +39,7 @@ private:
     QScrollArea *scroll;
     QScrollArea *categScroll;
     QWidget * blank;
+
 };
 
 #endif // CEDITWEBSITES_H

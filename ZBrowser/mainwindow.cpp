@@ -500,6 +500,7 @@ void MainWindow::ProcAdminClick(){
         admin = 0;
     }
     if (editWebSites != 0){
+        editWebSites->getFilters(mFilteredWeb);
         delete editWebSites;
         editWebSites = 0;
     }
@@ -519,9 +520,10 @@ void MainWindow::procEditWebsites(){
     if (editWebSites == 0){
         tgroup data = parser->getParsedData();
         editWebSites = new CEditWebSites(data, this);
+        connect(editWebSites, SIGNAL(webSitesChangeCategory(int&)), this, SLOT(procWebSitesChangeCategory(int&)));
         editWebSites->setGeometry(60, 120, width - 120, height- 240);
-        editWebSites->setFilters(mFilteredWeb);
         editWebSites->menuGlobalSettings();
+        editWebSites->setFilters(mFilteredWeb);
         editWebSites->show();
     }else{
         editWebSites->getFilters(mFilteredWeb);
@@ -530,6 +532,13 @@ void MainWindow::procEditWebsites(){
     }
 
 }
+void MainWindow::procWebSitesChangeCategory(int&i){
+    editWebSites->getFilters(mFilteredWeb);
+    editWebSites->FuncChangeCategory(i, mFilteredWeb);
+
+    int stop = 0;
+}
+
 void MainWindow::procEditSchedule(){
 
     if (admin != 0){
@@ -866,11 +875,11 @@ void MainWindow::SaveFilteredData(){
     QFile file(fileImagePath);
     file.open(QIODevice::WriteOnly);
     QDataStream out(&file);   // we will serialize the data into the file
-    out << mFilteredWeb.filteredWebsites.count();
-    QList<tfilterwebsite*>::iterator it;
-    for(it = mFilteredWeb.filteredWebsites.begin(); it != mFilteredWeb.filteredWebsites.end(); it++){
-        out << (*it)->id;
-        out << (*it)->hide;
+    out << mFilteredWeb.count(); // size of map
+    tfilterwebsite::iterator it;
+
+    for (it = mFilteredWeb.begin(); it != mFilteredWeb.end(); it++){
+        out << (*it);
     }
 }
 
@@ -881,12 +890,11 @@ void MainWindow::ReadFilteredData(){
     QDataStream in(&file);   // we will serialize the data into the file
     int count;
     in >> count;
-
-    for(int i = 0; i<count;i++){
-        tfilterwebsite *item = new tfilterwebsite;
-        in >> item->id;
-        in >> item->hide;
-        mFilteredWeb.filteredWebsites.append(item);
+    mFilteredWeb.clear();
+    for(int i = 0; i < count; i++){
+        QString item;
+        in >> item;
+        mFilteredWeb.append(item);
     }
 }
 

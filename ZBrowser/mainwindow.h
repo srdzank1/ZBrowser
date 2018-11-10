@@ -36,6 +36,8 @@
 #include <QVideoWidget>
 #include "XMLParser/qhelperc.h"
 #include <QDir>
+#include "ccategorylistitems.h"
+#include <QMap>
 
 
 #define SUBDIR "/images/"
@@ -128,7 +130,7 @@ private:
     bool checkProc;
     tgroup xmlData ;
     tsettings mSettings;
-    tfilter mFilteredWeb;
+    tfilterwebsite mFilteredWeb;
 public slots:
     void processClick(int i);
     void processClickInit(int i);
@@ -154,7 +156,7 @@ public slots:
     void procEditWebsites();
     void procEditSchedule();
     void ProcShowCloseButton(bool);
-
+    void procWebSitesChangeCategory(int&i);
 };
 
 #endif // MAINWINDOW_H

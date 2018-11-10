@@ -41,8 +41,8 @@ void CCategoryList::createCategoryMenu(int id){
                 pLargeImage->setWidth(xOffset);
                 pLargeImage->setHeight(yOffset);
 
-                pLargeImage->setImagePathName(j*iMax+i, m_group.categories.at(j*iMax+i)->icon);
-
+                QString iconPath = QDir::toNativeSeparators(QDir::currentPath() +SUBDIR+ m_group.categories.at(j*iMax+i)->icon);
+                pLargeImage->setImagePathName(j*iMax+i, iconPath);
                 pLargeImage->setTitleIcon(m_group.categories.at(j*iMax+i)->name);
                 pListLargeImage.push_back(pLargeImage);
                 pLargeImage->repaint();
@@ -62,3 +62,4 @@ void CCategoryList::createCategoryMenu(int id){
 void CCategoryList::processClickForEdit(int& i){
     emit clickForEdit(i);
 }
+

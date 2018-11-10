@@ -1,4 +1,4 @@
-#include "ccategorylistitems.h"
+﻿#include "ccategorylistitems.h"
 
 CCategoryListItems::CCategoryListItems(tgroup &data, QWidget *parent) : QWidget(parent)
 {
@@ -50,6 +50,7 @@ void CCategoryListItems::createCategoryMenuItems(int id){
                     websitesList.at(j*iMax+i)->iconImageCash = 1;
                     websitesList.at(j*iMax+i)->iconImage = pLargeImage->getImage();
                 }
+                pLargeImage->setId(websitesList.at(j*iMax+i)->id);
                 pLargeImage->setUrl( websitesList.at(j*iMax+i)->url);
                 pLargeImage->setTitleIcon(websitesList.at(j*iMax+i)->name);
                 pListLargeImage.push_back(pLargeImage);
@@ -65,3 +66,40 @@ void CCategoryListItems::createCategoryMenuItems(int id){
     }
     update();
 }
+
+void CCategoryListItems::getHideStatus(tfilterwebsite &mFilterData){
+    QMap<QString, QString> map;
+    for(int ia = 0; ia < mFilterData.count(); ia++){
+        map.insert(mFilterData.at(ia), mFilterData.at(ia));
+    }
+
+    for (int i = 0; i < pListLargeImage.count(); i++){
+        if (map[pListLargeImage.at(i)->getId()] == pListLargeImage.at(i)->getId()){
+            for (int id = 0; id < mFilterData.count(); id ++){
+                if (mFilterData.at(id)==pListLargeImage.at(i)->getId()){
+                    mFilterData.removeAt(id);
+                }
+            }
+        }
+    }
+
+    for (int i = 0; i < pListLargeImage.count(); i++){
+        if(!pListLargeImage.at(i)->getStatus()){
+            mFilterData.push_back(pListLargeImage.at(i)->getId());
+        }
+    }
+}
+
+void CCategoryListItems::setHideStatus(tfilterwebsite &mFilterData){
+    QMap<QString, QString> map;
+    for(int ia = 0; ia < mFilterData.count(); ia++){
+        map.insert(mFilterData.at(ia), mFilterData.at(ia));
+    }
+    for (int i = 0; i < pListLargeImage.count(); i++){
+        if (map[pListLargeImage.at(i)->getId()] == pListLargeImage.at(i)->getId()){
+            pListLargeImage.at(i)->setStatus(false);
+        }
+    }
+}
+
+

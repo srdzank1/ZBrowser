@@ -3,8 +3,12 @@
 
 #include <QWidget>
 #include <QList>
+#include <QMap>
 #include "XMLParser/cparserxml.h"
 #include "Admin/clargeimageedit.h"
+
+typedef QList<QString> tfilterwebsite;
+
 
 class CCategoryListItems : public QWidget
 {
@@ -12,6 +16,8 @@ class CCategoryListItems : public QWidget
 public:
     explicit CCategoryListItems(tgroup &data, QWidget *parent = nullptr);
     void createCategoryMenuItems(int id);
+    void setHideStatus(tfilterwebsite &mFilterData);
+    void getHideStatus(tfilterwebsite &mFilterData);
 
 protected:
 signals:
@@ -27,6 +33,8 @@ private:
     int mRowCount;
     QList<CLargeImageEdit*> pListLargeImage;
     CLargeImageEdit * pLargeImage;
+
+
 };
 
 #endif // CCATEGORYLISTITEMS_H

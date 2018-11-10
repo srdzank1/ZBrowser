@@ -21,6 +21,11 @@ public:
     QImage getImage(){return mImage;}
     void setWidth(int w){m_width = w;}
     void setHeight(int h){m_height = h;}
+    void setStatus(bool stat){m_clickedStatus = stat;}
+    bool getStatus(){return m_clickedStatus;}
+    void setId(QString id){m_ID = id;}
+    QString getId(){return m_ID;}
+
 protected:
     void paintEvent(QPaintEvent *event);
     void mouseMoveEvent(QMouseEvent *event);
@@ -40,7 +45,7 @@ private:
     QImage mImage;
     QString m_url;
     QImage m_Icon;
-
+    QString m_ID;
     QImage m_imagePlus;
     QImage m_imageMinus;
 
