@@ -6,6 +6,7 @@ CEditWebSites::CEditWebSites(tgroup &data, QWidget *parent) : QWidget(parent)
     setMouseTracking(true);
     m_group = data;
     categItems = 0;
+    closeOffWidget = 0;
 }
 
 CEditWebSites::~CEditWebSites()
@@ -67,7 +68,24 @@ void CEditWebSites::menuGlobalSettings(){
     scroll->verticalScrollBar()->setStyleSheet("QScrollBar {width:0px;}");
     scroll->setWidget(categItems);
     scroll->setFocus();
+    CreateCloseOffWidget();
 }
+
+void CEditWebSites::CreateCloseOffWidget(){
+    closeOffWidget = new CBaseWidget(this);
+    connect(closeOffWidget, SIGNAL(buttonClick()), this, SLOT(ProcCloseWebSites()));
+    closeOffWidget->setGeometry(geometry().width() - 54, 6, 48, 48);
+    QImage closeOffWidgetTemp = QImage(":/res/image/close_normal.png");
+    QImage closeOffWidgetTemp_hover = QImage(":/res/image/close_hover.png");
+    QImage closeOffWidgetTemp_click = QImage(":/res/image/close_click.png");
+    closeOffWidget->setImage(0, closeOffWidgetTemp, closeOffWidgetTemp_hover, closeOffWidgetTemp_click);
+    closeOffWidget->show();
+}
+
+void CEditWebSites::ProcCloseWebSites(){
+    emit closeWebSites();
+}
+
 
 void CEditWebSites::procChangeCategory(int& i){
     emit webSitesChangeCategory(i);

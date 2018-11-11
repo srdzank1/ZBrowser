@@ -9,6 +9,7 @@
 #include "ccategorylist.h"
 #include <QScrollArea>
 #include <QScrollBar>
+#include "cbasewidget.h"
 
 
 class CEditWebSites : public QWidget
@@ -27,9 +28,13 @@ protected:
     void paintEvent(QPaintEvent *event);
 signals:
     void webSitesChangeCategory(int &i);
+    void closeWebSites();
 public slots:
     void procChangeCategory(int& i);
+    void ProcCloseWebSites();
+
 private:
+    void CreateCloseOffWidget();
     QLabel * webEdit;
     CCategoryList *categ;
     CCategoryListItems *categItems;
@@ -39,7 +44,7 @@ private:
     QScrollArea *scroll;
     QScrollArea *categScroll;
     QWidget * blank;
-
+    CBaseWidget *closeOffWidget;
 };
 
 #endif // CEDITWEBSITES_H

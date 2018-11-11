@@ -16,8 +16,8 @@ int main(int argc, char *argv[])
     w.LoadXMLFileFromURLInit();
     w.CreateInitElement();
 
-//    w.showFullScreen();
-    w.showMaximized();
+    w.showFullScreen();
+//    w.showMaximized();
 
     return a.exec();
 }

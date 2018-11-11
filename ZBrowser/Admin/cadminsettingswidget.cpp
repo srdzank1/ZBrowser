@@ -203,6 +203,7 @@ void CAdminSettingsWidget::menuGlobalSettings(){
     cFont.setBold(true);
     buttonCloseMenu->setFont(cFont);
     buttonCloseMenu->setText(QStringLiteral("Close menu"));
+    connect(buttonCloseMenu, SIGNAL(clicked(bool)), this, SLOT(procMenuClose(bool)));
     buttonCloseMenu->show();
 }
 
@@ -222,3 +223,7 @@ void CAdminSettingsWidget::procMenuCloseButton(bool stat){
     emit clickForCloseApplication();
 }
 
+
+void CAdminSettingsWidget::procMenuClose(bool stat){
+    emit clickForCloseMenu();
+}

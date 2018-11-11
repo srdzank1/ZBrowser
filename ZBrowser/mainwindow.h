@@ -157,6 +157,9 @@ public slots:
     void procEditSchedule();
     void ProcShowCloseButton(bool);
     void procWebSitesChangeCategory(int&i);
+    void ProcCloseAdminMenu();
+    void procCloseWebSites();
+
 };
 
 #endif // MAINWINDOW_H

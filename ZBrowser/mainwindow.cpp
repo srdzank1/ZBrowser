@@ -482,7 +482,20 @@ void MainWindow::ProcCloseApplication(){
     close();
 }
 
+void MainWindow::ProcCloseAdminMenu(){
+    admin->getSettings(mSettings);
+    delete admin;
+    admin = 0;
+}
 
+void MainWindow::procCloseWebSites(){
+    if (editWebSites != 0){
+        editWebSites->getFilters(mFilteredWeb);
+        delete editWebSites;
+        editWebSites = 0;
+    }
+    ProcAdminClick();
+}
 void MainWindow::ProcAdminClick(){
 
     if (admin == 0){
@@ -491,6 +504,8 @@ void MainWindow::ProcAdminClick(){
         connect(admin, SIGNAL(clickForScheduleMain()),this,SLOT(procEditSchedule()));
         connect(admin, SIGNAL(clickForShowCloseButton(bool)), this, SLOT(ProcShowCloseButton(bool)));
         connect(admin, SIGNAL(clickForCloseApplication()), this, SLOT(ProcCloseApplication()));
+        connect(admin, SIGNAL(clickForCloseMenu()), this, SLOT(ProcCloseAdminMenu()));
+
         admin->setGeometry(width - 402, 60, 385, 600);
         admin->setSettings(mSettings);
 
@@ -522,6 +537,8 @@ void MainWindow::procEditWebsites(){
         tgroup data = parser->getParsedData();
         editWebSites = new CEditWebSites(data, this);
         connect(editWebSites, SIGNAL(webSitesChangeCategory(int&)), this, SLOT(procWebSitesChangeCategory(int&)));
+        connect(editWebSites, SIGNAL(closeWebSites()), this, SLOT(procCloseWebSites()));
+
         editWebSites->setGeometry(60, 120, width - 120, height- 240);
         editWebSites->menuGlobalSettings();
         editWebSites->setFilters(mFilteredWeb);
