@@ -138,28 +138,29 @@ void CAdminSettingsWidget::menuGlobalSettings(){
     exitKeyboardShortcut->show();
 
     //------------------------------------------------
-    labelenableRestriction->setGeometry(20, 220, 240, 30);
-    cFont.setPointSize(12);
-    cFont.setBold(false);
-    labelenableRestriction->setFont(cFont);
-    labelenableRestriction->setText(QStringLiteral("Enable restrictions"));
-
-    enableRestriction->setGeometry( QRect(270 , 220, 100 ,30));
-    enableRestriction->SetStatus(m_settings.enableRestriction);
-    enableRestriction->show();
-
-    //------------------------------------------------
-    labelkeyboardShortcut->setGeometry(20, 260, 240, 30);
+    labelkeyboardShortcut->setGeometry(20, 220, 240, 30);
     cFont.setPointSize(12);
     labelkeyboardShortcut->setFont(cFont);
     labelkeyboardShortcut->setText(QStringLiteral("Keyboard shortcut CTRL+"));
 
 
-    keyboardShortcut->setGeometry(270, 260, 100, 30);
+    keyboardShortcut->setGeometry(270, 220, 100, 30);
     cFont.setPointSize(12);
     keyboardShortcut->setMaxLength(1);
     keyboardShortcut->setFont(cFont);
     keyboardShortcut->setText(m_settings.KeyboardShortcut);
+
+    //------------------------------------------------
+
+    labelenableRestriction->setGeometry(20, 260, 240, 30);
+    cFont.setPointSize(12);
+    cFont.setBold(false);
+    labelenableRestriction->setFont(cFont);
+    labelenableRestriction->setText(QStringLiteral("Enable restrictions"));
+
+    enableRestriction->setGeometry( QRect(270 , 260, 100 ,30));
+    enableRestriction->SetStatus(m_settings.enableRestriction);
+    enableRestriction->show();
 
     //------------------------------------------------
 
@@ -194,6 +195,7 @@ void CAdminSettingsWidget::menuGlobalSettings(){
     cFont.setBold(true);
     buttonCloseNow->setFont(cFont);
     buttonCloseNow->setText(QStringLiteral("Close now!"));
+    connect(buttonCloseNow, SIGNAL(clicked(bool)), this, SLOT(procMenuCloseButton(bool)));
     buttonCloseNow->show();
 
     buttonCloseMenu->setGeometry( QRect(10 , 540, 360 ,55));
@@ -214,5 +216,9 @@ void CAdminSettingsWidget::procForScheduleMain(bool){
 
 void CAdminSettingsWidget::procShowCloseButton(bool stat){
     emit clickForShowCloseButton(stat);
+}
+
+void CAdminSettingsWidget::procMenuCloseButton(bool stat){
+    emit clickForCloseApplication();
 }
 

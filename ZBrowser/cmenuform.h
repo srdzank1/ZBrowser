@@ -6,6 +6,8 @@
 #include "XMLParser/cparserxml.h"
 #include "clargeimage.h"
 #include "ccategorylistitems.h"
+#include "Admin/cadminsettingswidget.h"
+
 
 #include "QDir"
 
@@ -21,7 +23,7 @@ public:
     explicit CMenuForm(QWidget *parent, tgroup &data, int &width, int&height );
     ~CMenuForm();
     void UpdateD(QRect r);
-    void createMenuByCategory(int id, tfilterwebsite &mFilteredWeb);
+    void createMenuByCategory(int id, tfilterwebsite &mFilteredWeb, tsettings &mSettings);
 protected:
     virtual bool event(QEvent *event);
 public slots:

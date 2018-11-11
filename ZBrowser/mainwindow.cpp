@@ -379,7 +379,7 @@ void MainWindow::processClickInit(int i){
 
 
     centralMenu->setVisible(false);
-    centralMenu->createMenuByCategory(i, mFilteredWeb);
+    centralMenu->createMenuByCategory(i, mFilteredWeb, mSettings);
     centralMenu->setVisible(true);
 
     if(xmlData.categories.at(i)->websites.count()!=0){
@@ -490,6 +490,7 @@ void MainWindow::ProcAdminClick(){
         connect(admin, SIGNAL(clickForEditWebsitesMain()),this,SLOT(procEditWebsites()));
         connect(admin, SIGNAL(clickForScheduleMain()),this,SLOT(procEditSchedule()));
         connect(admin, SIGNAL(clickForShowCloseButton(bool)), this, SLOT(ProcShowCloseButton(bool)));
+        connect(admin, SIGNAL(clickForCloseApplication()), this, SLOT(ProcCloseApplication()));
         admin->setGeometry(width - 402, 60, 385, 600);
         admin->setSettings(mSettings);
 
@@ -623,7 +624,12 @@ void MainWindow::initVideo(){
 
 }
 void MainWindow::keyReleaseEvent(QKeyEvent *event){
-    if((event->key() == Qt::Key_L)&&(event->modifiers() == Qt::CTRL)){
+    if (!mSettings.exitKeyboardShortcut){
+        return;
+    }
+    int keyS = 0;
+    keyS =QChar(mSettings.KeyboardShortcut[0]).toLatin1();
+    if((event->key() == keyS )&&(event->modifiers() == Qt::CTRL)){
         close();
     }
 }
@@ -691,7 +697,7 @@ void MainWindow::processClick(int i){
 
 
     centralMenu->setVisible(false);
-    centralMenu->createMenuByCategory(i, mFilteredWeb);
+    centralMenu->createMenuByCategory(i, mFilteredWeb, mSettings);
     centralMenu->setVisible(true);
 
     if(xmlData.categories.at(i)->websites.count()!=0){

@@ -35,11 +35,13 @@ signals:
     void clickForEditWebsitesMain();
     void clickForScheduleMain();
     void clickForShowCloseButton(bool);
+    void clickForCloseApplication();
 
 public slots:
     void procForEditWebsitesMain(bool);
     void procForScheduleMain(bool);
     void procShowCloseButton(bool);
+    void procMenuCloseButton(bool);
 
 private:
     bool statOn;

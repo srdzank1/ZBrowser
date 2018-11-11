@@ -35,24 +35,27 @@ void CMenuForm::UpdateD(QRect r)
 
 }
 
-void CMenuForm::createMenuByCategory(int id, tfilterwebsite &mFilterData){
+void CMenuForm::createMenuByCategory(int id, tfilterwebsite &mFilterData, tsettings &mSettings){
 
     for (int i = 0; i < pListLargeImage.count(); i++){
             delete pListLargeImage.at(i);
-    }
-
-    QMap<QString, QString> map;
-    for(int ia = 0; ia < mFilterData.count(); ia++){
-        map.insert(mFilterData.at(ia), mFilterData.at(ia));
     }
 
     pListLargeImage.clear();
     tcategory* currentCategory =  m_group.categories.at(id);
     QList<twebsite*> websitesList = currentCategory->websites;
     QList<twebsite*>::iterator it2;
-    for (it2 = websitesList.begin(); it2  != websitesList.end(); it2++){
-        if ((*it2)->id == map[(*it2)->id]){
-            websitesList.erase(it2);
+
+    if(mSettings.enableRestriction == true){
+        QMap<QString, QString> map;
+        for(int ia = 0; ia < mFilterData.count(); ia++){
+            map.insert(mFilterData.at(ia), mFilterData.at(ia));
+        }
+
+        for (it2 = websitesList.begin(); it2  != websitesList.end(); it2++){
+            if ((*it2)->id == map[(*it2)->id]){
+                websitesList.erase(it2);
+            }
         }
     }
 
