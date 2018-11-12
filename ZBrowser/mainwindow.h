@@ -38,7 +38,7 @@
 #include <QDir>
 #include "ccategorylistitems.h"
 #include <QMap>
-
+#include <QStandardPaths>
 
 #define SUBDIR "/images/"
 //#define SUBDIR "/"
@@ -62,6 +62,9 @@ public:
     void ReadSettingData();
     void SaveFilteredData();
     void ReadFilteredData();
+    void clearXMLData();
+    void InitXMLGrabber();
+
 protected:
     void resizeEvent(QResizeEvent *event) override;
     void keyReleaseEvent(QKeyEvent *);
@@ -71,6 +74,7 @@ private:
     CMenuForm *centralMenu;
     QWebEngineView *view;
     QWebEngineView *viewInit;
+    QTimer *autoTimer;
 
     void createView();
     void createViewInit();
@@ -159,7 +163,7 @@ public slots:
     void procWebSitesChangeCategory(int&i);
     void ProcCloseAdminMenu();
     void procCloseWebSites();
-
+    void UpdateXMLFromWeb();
 };
 
 #endif // MAINWINDOW_H

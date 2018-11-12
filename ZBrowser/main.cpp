@@ -12,9 +12,10 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
     QtWebEngine::initialize();
     MainWindow w;
-    w.initVideo();
     w.LoadXMLFileFromURLInit();
+    w.initVideo();
     w.CreateInitElement();
+//    w.InitXMLGrabber();
 
     w.showFullScreen();
 //    w.showMaximized();

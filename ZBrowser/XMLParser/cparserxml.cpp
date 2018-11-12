@@ -256,7 +256,6 @@ bool CParserXML::SetXmlThemeXmlFile(const QString &xmlString)
     return true;
 }
 
-
 int CParserXML::CreateCashImage(){
     QImage * imgObj = new QImage();
     for(int i = 0; i < m_group.categories.count(); i++){

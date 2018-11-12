@@ -60,8 +60,10 @@ void CMenuForm::createMenuByCategory(int id, tfilterwebsite &mFilterData, tsetti
     }
 
     int webCount = websitesList.count();
+
     int iMax = (int)m_width / xOffset;
     int jMax = webCount / iMax + 1;
+
     mRowCount = jMax;
     for(int j = 0; j < jMax; j++){
         for(int i = 0; i < iMax; i++){

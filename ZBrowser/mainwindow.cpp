@@ -38,10 +38,19 @@ MainWindow::MainWindow(QWidget *parent) :
     width = rec.width();
     ReadSettingData();
     ReadFilteredData();
-
-    LoadXMLFileFromURLInit();
 }
 
+void MainWindow::InitXMLGrabber(){
+    autoTimer = new QTimer(this);
+    autoTimer->setInterval(20000);
+    autoTimer->setSingleShot(false);
+    connect(autoTimer, SIGNAL(timeout()), this, SLOT(UpdateXMLFromWeb()));
+    autoTimer->start();
+}
+
+void MainWindow::UpdateXMLFromWeb(){
+    LoadXMLFileFromURLInit();
+}
 
 void MainWindow::CreateInitElement(){
     QImage imgTmp = QImage(QDir::toNativeSeparators(QDir::currentPath() +SUBDIR+ "zac_zite_120.png"));
@@ -150,6 +159,18 @@ void MainWindow::LoadXMLFileFromURLInit(){
     }
     delete cXml;
 }
+
+void MainWindow::clearXMLData(){
+
+    for (int i = 0; i < xmlData.categories.count(); i++ ){
+        for (int j = 0; j < xmlData.categories.at(i)->websites.count(); i++ ){
+            delete xmlData.categories.at(i)->websites.at(j);
+        }
+        delete xmlData.categories.at(i);
+    }
+}
+
+
 void MainWindow::CreateLoader(){
     loader = new CLoaderWidget(this);
     loader->setGeometry(0,0, width, 6);
@@ -323,7 +344,7 @@ void MainWindow::createView(){
 void MainWindow::createViewInit(){
     viewInit = new QWebEngineView(this);
     viewInit->setGeometry(0,0,width,height);
-    QString pathTmp = ("file:///" +QDir::currentPath() +"/"+ "test1.html");
+    QString pathTmp = ("file:///" +QDir::currentPath() +"/"+ "intro.html");
 
     viewInit->load(QUrl(pathTmp));
     viewInit->hide();
@@ -868,8 +889,10 @@ QString MainWindow::ParseTransform(QString url){
 }
 
 void MainWindow::SaveSettingData(){
-    QString fileImagePath = QDir::toNativeSeparators(QDir::currentPath() +"/settins.dat");
+//    QString fileImagePath = QDir::toNativeSeparators(QDir::currentPath() +"/settings.dat");
+    QString fileImagePath = QDir::toNativeSeparators(QStandardPaths::writableLocation(QStandardPaths::TempLocation) +"/settings.dat");
     QFile file(fileImagePath);
+    file.setPermissions(QFile::ReadOwner|QFile::WriteOwner|QFile::ExeOwner|QFile::ReadGroup|QFile::ExeGroup|QFile::ReadOther|QFile::ExeOther);
     file.open(QIODevice::WriteOnly);
     QDataStream out(&file);   // we will serialize the data into the file
     out << mSettings.KeyboardShortcut;
@@ -881,8 +904,11 @@ void MainWindow::SaveSettingData(){
 }
 
 void MainWindow::ReadSettingData(){
-    QString fileImagePath = QDir::toNativeSeparators(QDir::currentPath() +"/settins.dat");
+//    QString fileImagePath = QDir::toNativeSeparators(QDir::currentPath() +"/settings.dat");
+    QString fileImagePath = QDir::toNativeSeparators(QStandardPaths::writableLocation(QStandardPaths::TempLocation) +"/settings.dat");
+
     QFile file(fileImagePath);
+    file.setPermissions(QFile::ReadOwner|QFile::WriteOwner|QFile::ExeOwner|QFile::ReadGroup|QFile::ExeGroup|QFile::ReadOther|QFile::ExeOther);
     file.open(QIODevice::ReadOnly);
     QDataStream in(&file);   // we will serialize the data into the file
     in >> mSettings.KeyboardShortcut;
@@ -894,8 +920,11 @@ void MainWindow::ReadSettingData(){
 }
 
 void MainWindow::SaveFilteredData(){
-    QString fileImagePath = QDir::toNativeSeparators(QDir::currentPath() +"/filtered.dat");
+//    QString fileImagePath = QDir::toNativeSeparators(QDir::currentPath() +"/filtered.dat");
+    QString fileImagePath = QDir::toNativeSeparators(QStandardPaths::writableLocation(QStandardPaths::TempLocation) +"/filtered.dat");
+
     QFile file(fileImagePath);
+    file.setPermissions(QFile::ReadOwner|QFile::WriteOwner|QFile::ExeOwner|QFile::ReadGroup|QFile::ExeGroup|QFile::ReadOther|QFile::ExeOther);
     file.open(QIODevice::WriteOnly);
     QDataStream out(&file);   // we will serialize the data into the file
     out << mFilteredWeb.count(); // size of map
@@ -907,8 +936,11 @@ void MainWindow::SaveFilteredData(){
 }
 
 void MainWindow::ReadFilteredData(){
-    QString fileImagePath = QDir::toNativeSeparators(QDir::currentPath() +"/filtered.dat");
+//    QString fileImagePath = QDir::toNativeSeparators(QDir::currentPath() +"/filtered.dat");
+    QString fileImagePath = QDir::toNativeSeparators(QStandardPaths::writableLocation(QStandardPaths::TempLocation) +"/filtered.dat");
+
     QFile file(fileImagePath);
+    file.setPermissions(QFile::ReadOwner|QFile::WriteOwner|QFile::ExeOwner|QFile::ReadGroup|QFile::ExeGroup|QFile::ReadOther|QFile::ExeOther);
     file.open(QIODevice::ReadOnly);
     QDataStream in(&file);   // we will serialize the data into the file
     int count;

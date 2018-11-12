@@ -1,6 +1,5 @@
 <RCC>
     <qresource prefix="/">
-        <file>res/xml/menu.xml</file>
         <file>res/image/app_icon.png</file>
         <file>res/image/bottom.png</file>
         <file>res/image/top.png</file>
