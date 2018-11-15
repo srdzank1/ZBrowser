@@ -43,20 +43,25 @@ void CMenuForm::createMenuByCategory(int id, tfilterwebsite &mFilterData, tsetti
 
     pListLargeImage.clear();
     tcategory* currentCategory =  m_group.categories.at(id);
-    QList<twebsite*> websitesList = currentCategory->websites;
+    QList<twebsite*> websitesList;
+    QList<twebsite*> websitesListR;
     QList<twebsite*>::iterator it2;
 
     if(mSettings.enableRestriction == true){
+        websitesListR = currentCategory->websites;
         QMap<QString, QString> map;
         for(int ia = 0; ia < mFilterData.count(); ia++){
             map.insert(mFilterData.at(ia), mFilterData.at(ia));
         }
 
-        for (it2 = websitesList.begin(); it2  != websitesList.end(); it2++){
-            if ((*it2)->id == map[(*it2)->id]){
-                websitesList.erase(it2);
+        for (it2 = websitesListR.begin(); it2  != websitesListR.end(); it2++){
+            twebsite* item = (*it2);
+            if (!map.contains(item->id)){
+                websitesList.append((*it2));
             }
         }
+    }else{
+        websitesList = currentCategory->websites;
     }
 
     int webCount = websitesList.count();
@@ -68,7 +73,6 @@ void CMenuForm::createMenuByCategory(int id, tfilterwebsite &mFilterData, tsetti
     for(int j = 0; j < jMax; j++){
         for(int i = 0; i < iMax; i++){
             if (j*iMax+i < webCount){
-
                 pLargeImage = new CLargeImage(this);
                 pLargeImage->resize(QSize(0, 0));
                 pLargeImage->repaint();
