@@ -48,11 +48,12 @@
               transition: opacity 0.3s;
             }
 
-            @media (min-aspect-ratio: 16/9) {
-              .video-foreground { height: 300%; top: -100%; }
+            @media (min-width: 1921px) {
+                .video-foreground { height: 300%; top: -100%; }
             }
-            @media (max-aspect-ratio: 16/9) {
-              .video-foreground { width: 300%; left: -100%; }
+
+            @media (min-width: 1920px) and (max-width: 601px) {
+                .video-foreground { width: 100%; left: 0%; }
             }
             @media all and (max-width: 600px) {
             .vid-info { width: 50%; padding: .5rem; }

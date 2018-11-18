@@ -717,6 +717,7 @@ void MainWindow::processClick(int i){
             admin = 0;
         }
         if (editWebSites != 0){
+            editWebSites->getFilters(mFilteredWeb);
             delete editWebSites;
             editWebSites = 0;
         }
