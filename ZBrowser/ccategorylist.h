@@ -4,7 +4,9 @@
 #include <QWidget>
 #include <QList>
 #include "XMLParser/cparserxml.h"
-#include "clargeimage.h"
+#include "Admin/clargeimageeditcategory.h"
+
+typedef QList<QString> tfiltercategory;
 
 class CCategoryList : public QWidget
 {
@@ -12,12 +14,18 @@ class CCategoryList : public QWidget
 public:
     explicit CCategoryList(tgroup &data, QWidget *parent = nullptr);
     void createCategoryMenu(int id);
+    void getHideStatusCategory(tfiltercategory &mFilterDataCategory);
+    void setHideStatusCategory(tfiltercategory &mFilterDataCategory);
 
 protected:
 signals:
     void clickForEdit(int &);
+    void updateHorizontalMenu();
+
 public slots:
     void processClickForEdit(int&);
+    void ProcupdateHorizontalMenu();
+
 private:
     tgroup m_group;
     int m_width;
@@ -26,8 +34,8 @@ private:
     int xOffset;
     int yOffset;
     int mRowCount;
-    QList<CLargeImage*> pListLargeImage;
-    CLargeImage * pLargeImage;
+    QList<CLargeImageEditCategory*> pListLargeImage;
+    CLargeImageEditCategory * pLargeImage;
 };
 
 #endif // CCATEGORYLIST_H

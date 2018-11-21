@@ -30,11 +30,11 @@ void CCategoryList::createCategoryMenu(int id){
         for(int i = 0; i < iMax; i++){
             if (j*iMax+i < catCount){
 
-                pLargeImage = new CLargeImage(this);
+                pLargeImage = new CLargeImageEditCategory(this);
                 pLargeImage->resize(QSize(0, 0));
                 connect(pLargeImage, SIGNAL(click(int)), this, SLOT(processClick(int)));
                 connect(pLargeImage, SIGNAL(clickForEdit(int&)), this, SLOT(processClickForEdit(int&)));
-
+                connect(pLargeImage, SIGNAL(updateHorizontalMenu()), this, SLOT(ProcupdateHorizontalMenu()));
                 QRect r1 = QRect( xOffset* i, yOffset* j , xOffset , yOffset);
 
                 pLargeImage->setGeometry(r1);
@@ -63,3 +63,41 @@ void CCategoryList::processClickForEdit(int& i){
     emit clickForEdit(i);
 }
 
+void CCategoryList::getHideStatusCategory(tfiltercategory &mFilterDataCategory){
+    QMap<QString, QString> map;
+    for(int ia = 0; ia < mFilterDataCategory.count(); ia++){
+        map.insert(mFilterDataCategory.at(ia), mFilterDataCategory.at(ia));
+    }
+
+    for (int i = 0; i < pListLargeImage.count(); i++){
+        if (map[pListLargeImage.at(i)->getId()] == pListLargeImage.at(i)->getId()){
+            for (int id = 0; id < mFilterDataCategory.count(); id ++){
+                if (mFilterDataCategory.at(id)==pListLargeImage.at(i)->getId()){
+                    mFilterDataCategory.removeAt(id);
+                }
+            }
+        }
+    }
+
+    for (int i = 0; i < pListLargeImage.count(); i++){
+        if(!pListLargeImage.at(i)->getStatus()){
+            mFilterDataCategory.push_back(pListLargeImage.at(i)->getId());
+        }
+    }
+}
+
+void CCategoryList::setHideStatusCategory(tfiltercategory &mFilterDataCategory){
+    QMap<QString, QString> map;
+    for(int ia = 0; ia < mFilterDataCategory.count(); ia++){
+        map.insert(mFilterDataCategory.at(ia), mFilterDataCategory.at(ia));
+    }
+    for (int i = 0; i < pListLargeImage.count(); i++){
+        if (map[pListLargeImage.at(i)->getId()] == pListLargeImage.at(i)->getId()){
+            pListLargeImage.at(i)->setStatus(false);
+        }
+    }
+}
+
+void CCategoryList::ProcupdateHorizontalMenu(){
+    emit updateHorizontalMenu();
+}

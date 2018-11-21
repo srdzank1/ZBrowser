@@ -64,7 +64,8 @@ public:
     void ReadFilteredData();
     void clearXMLData();
     void InitXMLGrabber();
-
+    void SaveFilteredDataCategory();
+    void ReadFilteredDataCategory();
 protected:
     void resizeEvent(QResizeEvent *event) override;
     void keyReleaseEvent(QKeyEvent *);
@@ -133,8 +134,11 @@ private:
     QTimer *t5;
     bool checkProc;
     tgroup xmlData ;
+    tgroup xmlDataOrig;
     tsettings mSettings;
     tfilterwebsite mFilteredWeb;
+    tfiltercategory mFilteredCategory;
+
 public slots:
     void processClick(int i);
     void processClickInit(int i);
@@ -164,6 +168,7 @@ public slots:
     void ProcCloseAdminMenu();
     void procCloseWebSites();
     void UpdateXMLFromWeb();
+    void procupdateHorizMenu();
 };
 
 #endif // MAINWINDOW_H

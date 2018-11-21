@@ -46,7 +46,8 @@ SOURCES += \
     Admin/clargeimageedit.cpp \
     XMLParser/qhelperc.cpp \
     XMLParser/qworker_xml.cpp \
-    Admin/cadminsettingswidget.cpp
+    Admin/cadminsettingswidget.cpp \
+    Admin/clargeimageeditcategory.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -69,7 +70,9 @@ HEADERS += \
     Admin/clargeimageedit.h \
     XMLParser/qhelperc.h \
     XMLParser/qworker_xml.h \
-    Admin/cadminsettingswidget.h
+    Admin/cadminsettingswidget.h \
+    Admin/clargeimageeditcategory.h
+
 
 FORMS += \
         mainwindow.ui \

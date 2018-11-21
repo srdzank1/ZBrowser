@@ -68,6 +68,8 @@ public:
     bool loadThemeXmlFile(const QString &xmlFile);
     bool SetXmlThemeXmlFile(const QString &xmlString);
     tgroup getParsedData(){return m_group;}
+    void setParsedData(tgroup & a_group){m_group = a_group;}
+
     int CreateCashImage();
 
 signals:

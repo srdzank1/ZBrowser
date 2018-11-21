@@ -34,7 +34,12 @@ QHorizontalMenu::~QHorizontalMenu()
 void QHorizontalMenu::UpdateD(QRect r)
 {
     int width = r.width()-200;
-    int cellWidth = width / catwegoryCount;
+    int cellWidth = 0;
+    if (catwegoryCount >0){
+        cellWidth = width / catwegoryCount;
+    }else{
+        cellWidth = width;
+    }
 
     int catwegoryCount = m_group.categories.count();
 

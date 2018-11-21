@@ -21,6 +21,8 @@ public:
     void menuGlobalSettings();
     void setFilters(tfilterwebsite &efilter);
     void getFilters(tfilterwebsite &efilter);
+    void setFiltersCategory(tfiltercategory &efilter);
+    void getFiltersCategory(tfiltercategory &efilter);
     void FuncChangeCategory(int& i, tfilterwebsite &efilter);
 
 
@@ -29,9 +31,11 @@ protected:
 signals:
     void webSitesChangeCategory(int &i);
     void closeWebSites();
+    void updateHorizMenu();
 public slots:
     void procChangeCategory(int& i);
     void ProcCloseWebSites();
+    void procUpdateHorizontalMenu();
 
 private:
     void CreateCloseOffWidget();

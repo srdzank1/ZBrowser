@@ -39,6 +39,7 @@ void CEditWebSites::menuGlobalSettings(){
 
     categ = new CCategoryList(m_group, this);
     connect(categ, SIGNAL(clickForEdit(int&)), this, SLOT(procChangeCategory(int&)));
+    connect(categ, SIGNAL(updateHorizontalMenu()),this, SLOT(procUpdateHorizontalMenu()));
     categ->setGeometry(QRect(20, 150, 300, geometry().height()-200));
     categ->createCategoryMenu(1);
 
@@ -106,4 +107,16 @@ void CEditWebSites::setFilters(tfilterwebsite &efilter){
 
 void CEditWebSites::getFilters(tfilterwebsite &efilter){
     categItems->getHideStatus(efilter);
+}
+
+void CEditWebSites::setFiltersCategory(tfiltercategory &efilter){
+    categ->setHideStatusCategory(efilter);
+}
+
+void CEditWebSites::getFiltersCategory(tfiltercategory &efilter){
+    categ->getHideStatusCategory(efilter);
+}
+
+void CEditWebSites::procUpdateHorizontalMenu(){
+    emit updateHorizMenu();
 }

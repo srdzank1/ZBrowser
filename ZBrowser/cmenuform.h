@@ -24,6 +24,7 @@ public:
     ~CMenuForm();
     void UpdateD(QRect r);
     void createMenuByCategory(int id, tfilterwebsite &mFilteredWeb, tsettings &mSettings);
+    void setXMLData(tgroup &data){m_group = data;}
 protected:
     virtual bool event(QEvent *event);
 public slots:

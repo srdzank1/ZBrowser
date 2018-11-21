@@ -38,6 +38,7 @@ MainWindow::MainWindow(QWidget *parent) :
     width = rec.width();
     ReadSettingData();
     ReadFilteredData();
+    ReadFilteredDataCategory();
 }
 
 void MainWindow::InitXMLGrabber(){
@@ -96,7 +97,6 @@ void MainWindow::CreateInitElement(){
 
     QFuture<int> future = QtConcurrent::run(parser, &CParserXML::CreateCashImage);
 
-    tgroup xmlData = parser->getParsedData();
 
     // CreateTopBarWidget
     CreateTopBarWidget();
@@ -356,6 +356,7 @@ void MainWindow::TimerFinish(){
 //    delete viewInit;
     ProcShowCloseButton(mSettings.showCloseButton);
     adminWidget->show();
+    procupdateHorizMenu();
     horizontalMenu->setVisible(true);
     headerImageInfo->show();
 
@@ -392,7 +393,6 @@ void MainWindow::processClickInit(int i){
     }
 
 
-    tgroup xmlData = parser->getParsedData();
     QImage imgTmpBkg = QImage(QDir::toNativeSeparators(QDir::currentPath() +SUBDIR+ xmlData.categories.at(i)->background));
     QImage imgTmp = QImage(QDir::toNativeSeparators(QDir::currentPath() +SUBDIR+ xmlData.categories.at(i)->icon));
     headerImageInfo->setImage(0, imgTmp);
@@ -512,6 +512,8 @@ void MainWindow::ProcCloseAdminMenu(){
 void MainWindow::procCloseWebSites(){
     if (editWebSites != 0){
         editWebSites->getFilters(mFilteredWeb);
+        editWebSites->getFiltersCategory(mFilteredCategory);
+
         delete editWebSites;
         editWebSites = 0;
     }
@@ -538,6 +540,7 @@ void MainWindow::ProcAdminClick(){
     }
     if (editWebSites != 0){
         editWebSites->getFilters(mFilteredWeb);
+        editWebSites->getFiltersCategory(mFilteredCategory);
         delete editWebSites;
         editWebSites = 0;
     }
@@ -556,21 +559,67 @@ void MainWindow::procEditWebsites(){
 
     if (editWebSites == 0){
         tgroup data = parser->getParsedData();
+
         editWebSites = new CEditWebSites(data, this);
         connect(editWebSites, SIGNAL(webSitesChangeCategory(int&)), this, SLOT(procWebSitesChangeCategory(int&)));
         connect(editWebSites, SIGNAL(closeWebSites()), this, SLOT(procCloseWebSites()));
-
+        connect(editWebSites, SIGNAL(updateHorizMenu()),this, SLOT(procupdateHorizMenu()));
         editWebSites->setGeometry(60, 120, width - 120, height- 240);
         editWebSites->menuGlobalSettings();
         editWebSites->setFilters(mFilteredWeb);
+        editWebSites->setFiltersCategory(mFilteredCategory);
+
         editWebSites->show();
     }else{
         editWebSites->getFilters(mFilteredWeb);
+        editWebSites->getFiltersCategory(mFilteredCategory);
         delete editWebSites;
         editWebSites = 0;
     }
 
 }
+
+
+void MainWindow::procupdateHorizMenu(){
+
+    xmlData = parser->getParsedData();
+
+    if (editWebSites){
+        editWebSites->getFilters(mFilteredWeb);
+        editWebSites->getFiltersCategory(mFilteredCategory);
+    }
+
+    tgroup xmlDataTemp;
+    QList<tcategory*>::iterator it2;
+    if(mSettings.enableRestriction == true){
+        QMap<QString, QString> map;
+        for(int ia = 0; ia < mFilteredCategory.count(); ia++){
+            map.insert(mFilteredCategory.at(ia), mFilteredCategory.at(ia));
+        }
+
+        for (it2 = xmlData.categories.begin(); it2  != xmlData.categories.end(); it2++){
+            tcategory* item = (*it2);
+            if (!map.contains(item->name)){
+                xmlDataTemp.categories.append(item);
+            }
+        }
+        xmlData = xmlDataTemp;
+    }
+
+
+    if(horizontalMenu){
+        delete horizontalMenu;
+        horizontalMenu = 0;
+    }
+    if (!horizontalMenu){
+        CreateHorizontalMenu(xmlData);
+        horizontalMenu->setGeometry(0, height-130, width, height);
+        horizontalMenu->UpdateD(QRect(0, 0, width, 130));
+        horizontalMenu->show();
+        update();
+    }
+}
+
 void MainWindow::procWebSitesChangeCategory(int&i){
     editWebSites->getFilters(mFilteredWeb);
     editWebSites->FuncChangeCategory(i, mFilteredWeb);
@@ -585,7 +634,8 @@ void MainWindow::procEditSchedule(){
         admin = 0;
     }
     if (editSchedule == 0){
-        tgroup data = parser->getParsedData();
+        tgroup data = xmlData;
+
         editSchedule = new CSchedule(data, this);
         editSchedule->setGeometry(60, 120, width - 120, height- 240);
         editSchedule->menuGlobalSettings();
@@ -689,6 +739,7 @@ MainWindow::~MainWindow()
 {
     SaveSettingData();
     SaveFilteredData();
+    SaveFilteredDataCategory();
     delete view;
     delete viewInit;
     delete centralMenu;
@@ -718,6 +769,7 @@ void MainWindow::processClick(int i){
         }
         if (editWebSites != 0){
             editWebSites->getFilters(mFilteredWeb);
+            editWebSites->getFiltersCategory(mFilteredCategory);
             delete editWebSites;
             editWebSites = 0;
         }
@@ -728,7 +780,6 @@ void MainWindow::processClick(int i){
     }
 
 
-//    tgroup xmlData = parser->getParsedData();
     QImage imgTmpBkg = QImage(QDir::toNativeSeparators(QDir::currentPath() +SUBDIR+ xmlData.categories.at(i)->background));
     QImage imgTmp = QImage(QDir::toNativeSeparators(QDir::currentPath() +SUBDIR+ xmlData.categories.at(i)->icon));
     headerImageInfo->setImage(0, imgTmp);
@@ -736,6 +787,7 @@ void MainWindow::processClick(int i){
 
 
     centralMenu->setVisible(false);
+    centralMenu->setXMLData(xmlData);
     centralMenu->createMenuByCategory(i, mFilteredWeb, mSettings);
     centralMenu->setVisible(true);
 
@@ -820,7 +872,6 @@ void MainWindow::ProcClickForUrl(QString &url, QString &title, QImage& imgTmp){
     closeOffWidget->setVisible(false);
     adminWidget->setVisible(false);
     topBarWidget->show();
-    tgroup xmlData = parser->getParsedData();
 
     QImage imgTmpCat = QImage(QDir::toNativeSeparators(QDir::currentPath() +SUBDIR+ xmlData.categories.at(catIndx)->icon));
     headerImageInfoCategory->setImage(0, imgTmpCat);
@@ -954,3 +1005,36 @@ void MainWindow::ReadFilteredData(){
     }
 }
 
+void MainWindow::SaveFilteredDataCategory(){
+//    QString fileImagePath = QDir::toNativeSeparators(QDir::currentPath() +"/filtered.dat");
+    QString fileImagePath = QDir::toNativeSeparators(QStandardPaths::writableLocation(QStandardPaths::TempLocation) +"/category.dat");
+
+    QFile file(fileImagePath);
+    file.setPermissions(QFile::ReadOwner|QFile::WriteOwner|QFile::ExeOwner|QFile::ReadGroup|QFile::ExeGroup|QFile::ReadOther|QFile::ExeOther);
+    file.open(QIODevice::WriteOnly);
+    QDataStream out(&file);   // we will serialize the data into the file
+    out << mFilteredCategory.count(); // size of map
+    tfilterwebsite::iterator it;
+
+    for (it = mFilteredCategory.begin(); it != mFilteredCategory.end(); it++){
+        out << (*it);
+    }
+}
+
+void MainWindow::ReadFilteredDataCategory(){
+//    QString fileImagePath = QDir::toNativeSeparators(QDir::currentPath() +"/filtered.dat");
+    QString fileImagePath = QDir::toNativeSeparators(QStandardPaths::writableLocation(QStandardPaths::TempLocation) +"/category.dat");
+
+    QFile file(fileImagePath);
+    file.setPermissions(QFile::ReadOwner|QFile::WriteOwner|QFile::ExeOwner|QFile::ReadGroup|QFile::ExeGroup|QFile::ReadOther|QFile::ExeOther);
+    file.open(QIODevice::ReadOnly);
+    QDataStream in(&file);   // we will serialize the data into the file
+    int count;
+    in >> count;
+    mFilteredCategory.clear();
+    for(int i = 0; i < count; i++){
+        QString item;
+        in >> item;
+        mFilteredCategory.append(item);
+    }
+}
