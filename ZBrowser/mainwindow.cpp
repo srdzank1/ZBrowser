@@ -11,6 +11,35 @@ inline void delay(int millisecondsWait)
     loop.exec();
 }
 
+void MainWindow::ZackClock(){
+    QTimer *timer = new QTimer(this);
+    connect(timer, SIGNAL(timeout()), this, SLOT(updateTimer()));
+    timer->start(1000);
+}
+
+void MainWindow::updateTimer(){
+    QDateTime current = QDateTime::currentDateTime();
+    int d = current.date().dayOfWeek();
+    int h = current.time().hour();
+    QString key = QString::number(d-1, 10) + ":" + QString::number(h, 10);
+
+    for (int i = 0; i < mFilteredSchedule.count(); i++){
+        if (mFilteredSchedule.at(i) == key){
+            ProcCloseOffClick();
+            horizontalMenu->hide();
+            break;
+        }else{
+           horizontalMenu->show();
+        }
+    }
+
+    if (mFilteredSchedule.count()==0){
+        horizontalMenu->show();
+    }
+}
+
+
+
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
@@ -39,6 +68,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ReadSettingData();
     ReadFilteredData();
     ReadFilteredDataCategory();
+    ReadFilteredDataSchedule();
 }
 
 void MainWindow::InitXMLGrabber(){
@@ -359,7 +389,7 @@ void MainWindow::TimerFinish(){
     procupdateHorizMenu();
     horizontalMenu->setVisible(true);
     headerImageInfo->show();
-
+    ZackClock();
     delete t;
 }
 void MainWindow::TimerFinish2(){
@@ -545,6 +575,7 @@ void MainWindow::ProcAdminClick(){
         editWebSites = 0;
     }
     if (editSchedule != 0){
+        editSchedule->getFilterSchedule(mFilteredSchedule);
         delete editSchedule;
         editSchedule = 0;
     }
@@ -639,6 +670,7 @@ void MainWindow::procEditSchedule(){
         editSchedule = new CSchedule(data, this);
         editSchedule->setGeometry(60, 120, width - 120, height- 240);
         editSchedule->menuGlobalSettings();
+        editSchedule->setFilterSchedule(mFilteredSchedule);
         editSchedule->show();
     }else{
         delete editSchedule;
@@ -740,6 +772,7 @@ MainWindow::~MainWindow()
     SaveSettingData();
     SaveFilteredData();
     SaveFilteredDataCategory();
+    SaveFilteredDataSchedule();
     delete view;
     delete viewInit;
     delete centralMenu;
@@ -774,6 +807,7 @@ void MainWindow::processClick(int i){
             editWebSites = 0;
         }
         if (editSchedule != 0){
+            editSchedule->getFilterSchedule(mFilteredSchedule);
             delete editSchedule;
             editSchedule = 0;
         }
@@ -1036,5 +1070,37 @@ void MainWindow::ReadFilteredDataCategory(){
         QString item;
         in >> item;
         mFilteredCategory.append(item);
+    }
+}
+
+void MainWindow::SaveFilteredDataSchedule(){
+    QString fileImagePath = QDir::toNativeSeparators(QStandardPaths::writableLocation(QStandardPaths::TempLocation) +"/schedule.dat");
+
+    QFile file(fileImagePath);
+    file.setPermissions(QFile::ReadOwner|QFile::WriteOwner|QFile::ExeOwner|QFile::ReadGroup|QFile::ExeGroup|QFile::ReadOther|QFile::ExeOther);
+    file.open(QIODevice::WriteOnly);
+    QDataStream out(&file);   // we will serialize the data into the file
+    out << mFilteredSchedule.count(); // size of map
+    tfilterschedule::iterator it;
+
+    for (it = mFilteredSchedule.begin(); it != mFilteredSchedule.end(); it++){
+        out << (*it);
+    }
+}
+
+void MainWindow::ReadFilteredDataSchedule(){
+    QString fileImagePath = QDir::toNativeSeparators(QStandardPaths::writableLocation(QStandardPaths::TempLocation) +"/schedule.dat");
+
+    QFile file(fileImagePath);
+    file.setPermissions(QFile::ReadOwner|QFile::WriteOwner|QFile::ExeOwner|QFile::ReadGroup|QFile::ExeGroup|QFile::ReadOther|QFile::ExeOther);
+    file.open(QIODevice::ReadOnly);
+    QDataStream in(&file);   // we will serialize the data into the file
+    int count;
+    in >> count;
+    mFilteredSchedule.clear();
+    for(int i = 0; i < count; i++){
+        QString item;
+        in >> item;
+        mFilteredSchedule.append(item);
     }
 }

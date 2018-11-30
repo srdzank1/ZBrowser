@@ -1,10 +1,21 @@
-#ifndef CSCHEDULE_H
+﻿#ifndef CSCHEDULE_H
 #define CSCHEDULE_H
 
 #include <QWidget>
 #include <QLabel>
 #include <QPainter>
+#include <QList>
+
 #include "XMLParser/cparserxml.h"
+
+typedef struct{
+    int day;
+    int hour;
+    QRect rect;
+    bool stat;
+} tschedulate;
+
+typedef QList<QString> tfilterschedule;
 
 class CSchedule : public QWidget
 {
@@ -13,18 +24,40 @@ public:
     explicit CSchedule(tgroup &data, QWidget *parent = nullptr);
     ~CSchedule();
     void menuGlobalSettings();
+    int GetSchedulateDays();
+    QList<int> GetSchedulateHoursByDay(int day);
 
+    void getFilterSchedule(tfilterschedule &data);
+    void setFilterSchedule(tfilterschedule &data);
 protected:
     void paintEvent(QPaintEvent *event);
-
-signals:
+    virtual void mouseMoveEvent(QMouseEvent *event);
+    virtual void mouseReleaseEvent(QMouseEvent * event);
+signals:;
 
 public slots:
 private:
     void createForm(QPainter &painter);
+    void deleteLSch();
+    void createHoursLabel(QPainter &painter);
+    void createWeekLabel(QPainter &painter);
+    void createBlockedIntervals(int day, int hours, QPainter &painter);
+    void createBasicBlock(QPainter &painter, const int &x, const int &y, const int &w, const int &h, bool status);
+    void createScheduleList();
+
+
     QLabel * editSchedule;
     tgroup m_group;
-
+    int SchWidth;
+    int SchHeight;
+    QList<tschedulate*> lSchedule;
+    int posX;
+    int posY;
+    int offset;
+    int calH;
+    int calD;
+    int stepX;
+    int stepY;
 };
 
 #endif // CSCHEDULE_H

@@ -66,6 +66,11 @@ public:
     void InitXMLGrabber();
     void SaveFilteredDataCategory();
     void ReadFilteredDataCategory();
+    void SaveFilteredDataSchedule();
+    void ReadFilteredDataSchedule();
+    void ZackClock();
+
+
 protected:
     void resizeEvent(QResizeEvent *event) override;
     void keyReleaseEvent(QKeyEvent *);
@@ -138,6 +143,7 @@ private:
     tsettings mSettings;
     tfilterwebsite mFilteredWeb;
     tfiltercategory mFilteredCategory;
+    tfilterschedule mFilteredSchedule;
 
 public slots:
     void processClick(int i);
@@ -169,6 +175,7 @@ public slots:
     void procCloseWebSites();
     void UpdateXMLFromWeb();
     void procupdateHorizMenu();
+    void updateTimer();
 };
 
 #endif // MAINWINDOW_H

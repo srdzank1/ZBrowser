@@ -2,7 +2,16 @@
 
 CSchedule::CSchedule(tgroup &data, QWidget *parent) : QWidget(parent)
 {
+    setMouseTracking(true);
     m_group = data;
+    posX = 0;
+    posY = 0;
+    offset = 100;
+    calH = 0;
+    calD = 0;
+    stepX = 0;
+    stepY = 0;
+
 }
 
 CSchedule::~CSchedule()
@@ -10,39 +19,186 @@ CSchedule::~CSchedule()
 
 }
 
+void CSchedule::mouseMoveEvent(QMouseEvent *event)
+{
+    posX = event->pos().x();
+    posY = event->pos().y();
+}
+
+void CSchedule::mouseReleaseEvent(QMouseEvent * event){
+    int s = posX;
+    int t = posY;
+    for (int i = 0; i < lSchedule.count(); i++){
+        tschedulate* item = lSchedule.at(i);
+        QRect R(item->rect.x(),
+                item->rect.y(),
+                item->rect.width() - item->rect.x(),
+                item->rect.height() - item->rect.y()
+                );
+
+        if (R.contains(s, t)){
+            item->stat = !item->stat;
+            break;
+        }
+    }
+    repaint();
+}
+
 void CSchedule::paintEvent(QPaintEvent *event){
     QPainter painter(this);
     QPainterPath path;
-
-        path.addRoundedRect(QRectF(0, 0, geometry().width(), geometry().height()), 10, 10);
+        path.addRoundedRect(QRectF(0, 0, SchWidth, SchHeight), 10, 10);
         QPen pen(Qt::darkYellow, 10);
         painter.setPen(pen);
         painter.fillPath(path, Qt::white);
         painter.drawPath(path);
         createForm(painter);
+        createHoursLabel(painter);
+        createWeekLabel(painter);
     painter.end();
 }
 
 void CSchedule::menuGlobalSettings(){
+    SchWidth = geometry().width();
+    SchHeight = geometry().height();
+    createScheduleList();
     editSchedule = new QLabel(this);
     editSchedule->setGeometry(20,15, 300, 30);
     QFont cFont;
     cFont.setPointSize(16);
     cFont.setBold(true);
-    editSchedule->setFont(cFont);
+    editSchedule->setFont (cFont);
     editSchedule->setText(QStringLiteral("Edit schedule"));
+}
+
+void CSchedule::deleteLSch(){
+    for (int i = 0; i < lSchedule.count(); i++){
+        delete lSchedule.at(i);
+    }
+    lSchedule.clear();
+}
+
+
+void CSchedule::createScheduleList(){
+    deleteLSch();
+
+    calH = SchWidth - 2 * offset;
+    calD = SchHeight - 2 * offset;
+    stepX = calH / 24;
+    stepY = calD / 7;
+    for (int d = 0; d < 7; d++){
+        for (int h = 0; h < 24; h++){
+            tschedulate *item = new tschedulate;
+            item->day = d;
+            item->hour = h;
+            QRect r(offset + stepX *h, offset + stepY *d, offset + stepX *(h+1), offset + stepY *(d+1));
+            item->rect = r;
+            item->stat = false;
+            lSchedule.append(item);
+        }
+    }
 }
 
 void CSchedule::createForm(QPainter &painter){
     QPen pen(Qt::darkYellow, 2);
     painter.setPen(pen);
-    int hStep = (geometry().height() -160) / 8;
-    int wStep = (geometry().width() -40) / 24;
-    for (int i = 0; i < 8; i++){
-        painter.drawLine(QLineF(20, 80 + i * hStep, geometry().width()-40, 80 + i * hStep));
+
+    for (int i = 0; i < lSchedule.count(); i++){
+        tschedulate * item = lSchedule.at(i);
+        createBasicBlock(painter,
+                         item->rect.x(),
+                         item->rect.y(),
+                         item->rect.width() - item->rect.x(),
+                         item->rect.height() - item->rect.y(),
+                         item->stat
+                         );
+    }
+}
+
+void CSchedule::createHoursLabel(QPainter &painter){
+    QPen pen(Qt::darkYellow, 2);
+    painter.setPen(pen);
+    for (int h = 0; h < 25; h++){
+        int hh = h < 13 ? h : h-12;
+        painter.drawText(QPoint(offset + stepX * h, offset-5), QString::number(hh, 10));
+    }
+    painter.drawText(QPoint(offset + stepX * 6 + stepX * 0.4 , offset-15), "AM");
+    painter.drawText(QPoint(offset + stepX * 18 + stepX * 0.4, offset-15), "PM");
+}
+
+
+
+
+void CSchedule::createWeekLabel(QPainter &painter){
+    QPen pen(Qt::darkYellow, 2);
+    painter.setPen(pen);
+    QString dayName = "s";
+    for (int d = 0; d < 7; d++){
+        switch (d){
+            case 0: dayName = "Monday"; break;
+            case 1: dayName = "Tuesday"; break;
+            case 2: dayName = "Wednesday"; break;
+            case 3: dayName = "Thursday"; break;
+            case 4: dayName = "Friday"; break;
+            case 5: dayName = "Saturday"; break;
+            case 6: dayName = "Sunday"; break;
+        }
+        painter.drawText(QPoint(20, offset + stepY * d + stepY *0.5), dayName);
+    }
+}
+
+void CSchedule::createBlockedIntervals(int day, int hours, QPainter &painter){
+    QPen pen(Qt::darkYellow, 2);
+    painter.setPen(pen);
+}
+
+
+int CSchedule::GetSchedulateDays(){
+    return 0;
+}
+
+QList<int> CSchedule::GetSchedulateHoursByDay(int day){
+    QList<int> a;
+    return a;
+}
+
+void CSchedule::createBasicBlock(QPainter &painter, const int &x, const int &y, const int &w, const int &h, bool status){
+    QPen pen(Qt::darkYellow, 2);
+    painter.setPen(pen);
+
+    QPainterPath path;
+    path.addRect(QRectF(x, y, w, h));
+    painter.setPen(pen);
+    if (status){
+        painter.fillPath(path, Qt::red);
+    }
+    painter.drawPath(path);
+}
+
+void CSchedule::getFilterSchedule(tfilterschedule &data){
+    data.clear();
+    for (int i = 0; i < lSchedule.count(); i++){
+        tschedulate *item = lSchedule.at(i);
+        QString tempItem = QString::number(item->day, 10) + ":"+ QString::number(item->hour,10);
+        if (item->stat){
+            data.append(tempItem);
+        }
+    }
+}
+
+void CSchedule::setFilterSchedule(tfilterschedule &data){
+
+    QMap<QString, QString> map;
+    for(int ia = 0; ia < data.count(); ia++){
+        map.insert(data.at(ia), data.at(ia));
     }
 
-    for (int i = 0; i < 24; i++){
-        painter.drawLine(QLineF(20 + i*wStep, 80 , 20 + i*wStep, geometry().height() -160));
+    for (int i = 0; i < lSchedule.count(); i++){
+        tschedulate *item = lSchedule.at(i);
+        QString tempItem = QString::number(item->day, 10) + ":"+ QString::number(item->hour,10);
+        if (map[tempItem] == tempItem){
+            item->stat = true;
+        }
     }
+
 }
