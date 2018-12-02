@@ -160,6 +160,8 @@ void CAdminSettingsWidget::menuGlobalSettings(){
 
     enableRestriction->setGeometry( QRect(270 , 260, 100 ,30));
     enableRestriction->SetStatus(m_settings.enableRestriction);
+    connect(enableRestriction, SIGNAL(changeEnableRestriction()), this, SLOT(procShowEnableRestriction()));
+
     enableRestriction->show();
 
     //------------------------------------------------
@@ -172,6 +174,7 @@ void CAdminSettingsWidget::menuGlobalSettings(){
 
     enableSchedule->setGeometry( QRect(270 , 300, 100 ,30));
     enableSchedule->SetStatus(m_settings.enableSchedule);
+    connect(enableSchedule, SIGNAL(changeEnableSchedule()), this, SLOT(procShowEnableSchedule()));
     enableSchedule->show();
 
     buttontWebSites->setGeometry( QRect(10 , 360, 360 ,55));
@@ -205,6 +208,15 @@ void CAdminSettingsWidget::menuGlobalSettings(){
     buttonCloseMenu->setText(QStringLiteral("Close menu"));
     connect(buttonCloseMenu, SIGNAL(clicked(bool)), this, SLOT(procMenuClose(bool)));
     buttonCloseMenu->show();
+}
+
+
+void CAdminSettingsWidget::procShowEnableRestriction(){
+    emit changeEnableRestriction();
+}
+
+void CAdminSettingsWidget::procShowEnableSchedule(){
+    emit changeEnableSchedule();
 }
 
 void CAdminSettingsWidget::procForEditWebsitesMain(bool){

@@ -18,7 +18,8 @@ protected:
     void mouseReleaseEvent(QMouseEvent * event);
 signals:
     void changeSwitchStatus(bool);
-
+    void changeEnableRestriction();
+    void changeEnableSchedule();
 public slots:
 private:
     QImage mOnImage;

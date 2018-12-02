@@ -37,13 +37,17 @@ signals:
     void clickForShowCloseButton(bool);
     void clickForCloseApplication();
     void clickForCloseMenu();
-
+    void changeEnableRestriction();
+    void changeEnableSchedule();
 public slots:
     void procForEditWebsitesMain(bool);
     void procForScheduleMain(bool);
     void procShowCloseButton(bool);
     void procMenuCloseButton(bool);
     void procMenuClose(bool stat);
+    void procShowEnableRestriction();
+    void procShowEnableSchedule();
+
 private:
     bool statOn;
    QLabel *securitySettings;

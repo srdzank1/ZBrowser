@@ -568,6 +568,9 @@ void MainWindow::ProcAdminClick(){
         connect(admin, SIGNAL(clickForShowCloseButton(bool)), this, SLOT(ProcShowCloseButton(bool)));
         connect(admin, SIGNAL(clickForCloseApplication()), this, SLOT(ProcCloseApplication()));
         connect(admin, SIGNAL(clickForCloseMenu()), this, SLOT(ProcCloseAdminMenu()));
+        connect(admin, SIGNAL(changeEnableRestriction()), this, SLOT(ProcChangeEnableRestriction()));
+        connect(admin, SIGNAL(changeEnableSchedule()), this, SLOT(ProcChangeEnableSchedule()));
+
 
         admin->setGeometry(width - 402, 60, 385, 600);
         admin->setSettings(mSettings);
@@ -591,6 +594,16 @@ void MainWindow::ProcAdminClick(){
     }
 
  }
+
+void MainWindow::ProcChangeEnableRestriction(){
+    admin->getSettings(mSettings);
+    procupdateHorizMenu();
+}
+
+void MainWindow::ProcChangeEnableSchedule(){
+    admin->getSettings(mSettings);
+}
+
 void MainWindow::procEditWebsites(){
 
     if (admin != 0){
@@ -622,7 +635,6 @@ void MainWindow::procEditWebsites(){
 
 
 void MainWindow::procupdateHorizMenu(){
-
     xmlData = parser->getParsedData();
 
     if (editWebSites){

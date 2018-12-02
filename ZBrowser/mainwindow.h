@@ -176,6 +176,8 @@ public slots:
     void UpdateXMLFromWeb();
     void procupdateHorizMenu();
     void updateTimer();
+    void ProcChangeEnableRestriction();
+    void ProcChangeEnableSchedule();
 };
 
 #endif // MAINWINDOW_H

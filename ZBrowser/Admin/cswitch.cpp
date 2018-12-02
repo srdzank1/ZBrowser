@@ -25,6 +25,8 @@ void CSwitch::mouseReleaseEvent(QMouseEvent * event){
         statOn = false;
     }
     emit changeSwitchStatus(statOn);
+    emit changeEnableRestriction();
+    emit changeEnableSchedule();
     repaint();
 }
 
