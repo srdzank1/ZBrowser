@@ -4,6 +4,7 @@
 #include <QWidget>
 #include <QLabel>
 #include <QPainter>
+#include <QMouseEvent>
 #include <QList>
 
 #include "XMLParser/cparserxml.h"

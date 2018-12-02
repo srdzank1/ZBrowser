@@ -6,7 +6,7 @@ CSchedule::CSchedule(tgroup &data, QWidget *parent) : QWidget(parent)
     m_group = data;
     posX = 0;
     posY = 0;
-    offset = 100;
+    offset = 125;
     calH = 0;
     calD = 0;
     stepX = 0;
@@ -116,6 +116,11 @@ void CSchedule::createForm(QPainter &painter){
 }
 
 void CSchedule::createHoursLabel(QPainter &painter){
+    QFont cFont;
+    cFont.setPointSize(10);
+    cFont.setBold(true);
+    painter.setFont(cFont);
+
     QPen pen(Qt::darkYellow, 2);
     painter.setPen(pen);
     for (int h = 0; h < 25; h++){

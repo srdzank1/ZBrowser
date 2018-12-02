@@ -18,6 +18,12 @@ void MainWindow::ZackClock(){
 }
 
 void MainWindow::updateTimer(){
+    if ( !mSettings.enableSchedule){
+        if (!statusHistoryEnabled){
+            horizontalMenu->show();
+        }
+        return;
+    }
     QDateTime current = QDateTime::currentDateTime();
     int d = current.date().dayOfWeek();
     int h = current.time().hour();
@@ -29,12 +35,16 @@ void MainWindow::updateTimer(){
             horizontalMenu->hide();
             break;
         }else{
-           horizontalMenu->show();
+            if (!statusHistoryEnabled){
+                horizontalMenu->show();
+            }
         }
     }
 
     if (mFilteredSchedule.count()==0){
-        horizontalMenu->show();
+        if (!statusHistoryEnabled){
+            horizontalMenu->show();
+        }
     }
 }
 
