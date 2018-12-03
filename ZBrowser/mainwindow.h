@@ -81,7 +81,8 @@ private:
     QWebEngineView *view;
     QWebEngineView *viewInit;
     QTimer *autoTimer;
-
+    bool statSleep;
+    bool statSleepPrevious;
     void createView();
     void createViewInit();
     void CreateAdminWidget();
@@ -100,7 +101,7 @@ private:
     QStringList GetAllImagesInFolder();
     bool ItemImageExist(QStringList &images, QString & item);
     QString ParseTransform(QString url);
-
+    void ProcClickForSleep();
 
 
     int height;

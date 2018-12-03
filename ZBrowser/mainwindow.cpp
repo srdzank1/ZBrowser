@@ -18,32 +18,45 @@ void MainWindow::ZackClock(){
 }
 
 void MainWindow::updateTimer(){
-    if ( !mSettings.enableSchedule){
-        if (!statusHistoryEnabled){
-            horizontalMenu->show();
-        }
-        return;
-    }
-    QDateTime current = QDateTime::currentDateTime();
-    int d = current.date().dayOfWeek();
-    int h = current.time().hour();
-    QString key = QString::number(d-1, 10) + ":" + QString::number(h, 10);
 
-    for (int i = 0; i < mFilteredSchedule.count(); i++){
-        if (mFilteredSchedule.at(i) == key){
-            ProcCloseOffClick();
-            horizontalMenu->hide();
-            break;
-        }else{
-            if (!statusHistoryEnabled){
-                horizontalMenu->show();
+    if (mSettings.enableSchedule == true){
+
+        QDateTime current = QDateTime::currentDateTime();
+        int d = current.date().dayOfWeek();
+        int h = current.time().hour();
+        int m = current.time().minute() < 30 ? 0 : 30;
+
+        QString key = QString::number(d-1, 10) + ":" + QString::number(h, 10)+ ":" + QString::number(m, 10);
+
+        QMap<QString, QString> map;
+        for (int i = 0; i < mFilteredSchedule.count(); i++){
+            map.insert(mFilteredSchedule.at(i), mFilteredSchedule.at(i));
+        }
+
+        if (map[key] == key){
+            statSleep = true;
+        }else {
+            statSleep = false;
+        }
+
+        if (statSleep != statSleepPrevious){
+            statSleepPrevious = statSleep;
+            if (statSleep){
+                if(statusHistoryEnabled){
+                    ProcCloseOffClick();
+                }
+                ProcClickForSleep();
+            }else{
+                catIndx = -1;
+                processClick(0);
             }
         }
-    }
-
-    if (mFilteredSchedule.count()==0){
-        if (!statusHistoryEnabled){
-            horizontalMenu->show();
+    }else{
+        if (statSleepPrevious == true){
+            statSleep = false;
+            statSleepPrevious = false;
+            catIndx = -1;
+            processClick(0);
         }
     }
 }
@@ -63,7 +76,8 @@ MainWindow::MainWindow(QWidget *parent) :
     editWebSites = 0;
     editSchedule = 0;
     checkProc = true;
-
+    statSleep = false;
+    statSleepPrevious = false;
     mSettings.KeyboardShortcut = "";
     mSettings.alwaysInFront = false;
     mSettings.enableRestriction = false;
@@ -596,12 +610,15 @@ void MainWindow::ProcAdminClick(){
  }
 
 void MainWindow::ProcChangeEnableRestriction(){
-    admin->getSettings(mSettings);
-    procupdateHorizMenu();
+    if (!statSleep){
+        admin->getSettings(mSettings);
+        procupdateHorizMenu();
+    }
 }
 
 void MainWindow::ProcChangeEnableSchedule(){
     admin->getSettings(mSettings);
+//    updateTimer();
 }
 
 void MainWindow::procEditWebsites(){
@@ -668,8 +685,10 @@ void MainWindow::procupdateHorizMenu(){
         CreateHorizontalMenu(xmlData);
         horizontalMenu->setGeometry(0, height-130, width, height);
         horizontalMenu->UpdateD(QRect(0, 0, width, 130));
-        horizontalMenu->show();
-        update();
+        if (!statSleep){
+            horizontalMenu->show();
+            update();
+        }
     }
 }
 
@@ -899,6 +918,38 @@ void MainWindow::processClick(int i){
     repaint();
 
 }
+
+
+void MainWindow::ProcClickForSleep(){
+    QString url= "https://vimeo.com/249291416";
+    statusHistoryEnabled = false;
+
+    centralMenu->setVisible(false);
+    horizontalMenu->setVisible(false);
+
+    QString bgvideo = ParseTransform(url);
+    QString videoSound = "true";
+    QString bgvideoSound;
+    if (videoSound == "false"){
+       bgvideoSound = "1";
+    }else{
+        bgvideoSound = "0";
+    }
+
+    bgvideo = bgvideo.trimmed();
+    QString htmlCont= cont;
+
+    QString bgImage = "";
+
+    htmlCont = htmlCont.replace("%bkgimage%",bgImage);
+    htmlCont = htmlCont.replace("%url%",bgvideo);
+    htmlCont = htmlCont.replace("%muted%",bgvideoSound);
+    view->setHtml(htmlCont);
+    scroll->setFocus();
+    repaint();
+
+}
+
 void MainWindow::ProcClickForUrl(QString &url, QString &title, QImage& imgTmp){
 
     adminWidget->hide();
@@ -944,6 +995,8 @@ void MainWindow::ProcClickForUrl(QString &url, QString &title, QImage& imgTmp){
     view->history()->clear();
     checkProc = false;
 }
+
+
 void MainWindow::resizeEvent(QResizeEvent *event)
 {
     if (resizeCount == 0){

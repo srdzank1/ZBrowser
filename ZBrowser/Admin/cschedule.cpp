@@ -84,13 +84,14 @@ void CSchedule::createScheduleList(){
 
     calH = SchWidth - 2 * offset;
     calD = SchHeight - 2 * offset;
-    stepX = calH / 24;
+    stepX = calH / 48;
     stepY = calD / 7;
     for (int d = 0; d < 7; d++){
-        for (int h = 0; h < 24; h++){
+        for (int h = 0; h < 48; h++){
             tschedulate *item = new tschedulate;
             item->day = d;
-            item->hour = h;
+            item->hour = h / 2;
+            item->min = h % 2 ? 30 : 0;
             QRect r(offset + stepX *h, offset + stepY *d, offset + stepX *(h+1), offset + stepY *(d+1));
             item->rect = r;
             item->stat = false;
@@ -123,12 +124,12 @@ void CSchedule::createHoursLabel(QPainter &painter){
 
     QPen pen(Qt::darkYellow, 2);
     painter.setPen(pen);
-    for (int h = 0; h < 25; h++){
-        int hh = h < 13 ? h : h-12;
-        painter.drawText(QPoint(offset + stepX * h, offset-5), QString::number(hh, 10));
+    for (int h = 0; h < 50; h+=2){
+        int hh = h < 26 ? h : h-24;
+        painter.drawText(QPoint(offset + stepX * h, offset-5), QString::number(hh/2, 10));
     }
-    painter.drawText(QPoint(offset + stepX * 6 + stepX * 0.4 , offset-15), "AM");
-    painter.drawText(QPoint(offset + stepX * 18 + stepX * 0.4, offset-15), "PM");
+    painter.drawText(QPoint(offset + stepX * 12 + stepX * 0.8 , offset-15), "AM");
+    painter.drawText(QPoint(offset + stepX * 36 + stepX * 0.8, offset-15), "PM");
 }
 
 
@@ -184,7 +185,7 @@ void CSchedule::getFilterSchedule(tfilterschedule &data){
     data.clear();
     for (int i = 0; i < lSchedule.count(); i++){
         tschedulate *item = lSchedule.at(i);
-        QString tempItem = QString::number(item->day, 10) + ":"+ QString::number(item->hour,10);
+        QString tempItem = QString::number(item->day, 10) + ":"+ QString::number(item->hour,10)+ ":"+ QString::number(item->min,10);
         if (item->stat){
             data.append(tempItem);
         }
@@ -200,7 +201,7 @@ void CSchedule::setFilterSchedule(tfilterschedule &data){
 
     for (int i = 0; i < lSchedule.count(); i++){
         tschedulate *item = lSchedule.at(i);
-        QString tempItem = QString::number(item->day, 10) + ":"+ QString::number(item->hour,10);
+        QString tempItem = QString::number(item->day, 10) + ":"+ QString::number(item->hour,10)+ ":"+ QString::number(item->min,10);
         if (map[tempItem] == tempItem){
             item->stat = true;
         }

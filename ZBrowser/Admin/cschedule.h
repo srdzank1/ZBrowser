@@ -12,6 +12,7 @@
 typedef struct{
     int day;
     int hour;
+    int min;
     QRect rect;
     bool stat;
 } tschedulate;
