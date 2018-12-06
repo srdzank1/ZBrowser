@@ -45,6 +45,7 @@ void MainWindow::updateTimer(){
                 if(statusHistoryEnabled){
                     ProcCloseOffClick();
                 }
+                PlayShoorSound();
                 ProcClickForSleep();
             }else{
                 catIndx = -1;
@@ -1178,4 +1179,10 @@ void MainWindow::ReadFilteredDataSchedule(){
         in >> item;
         mFilteredSchedule.append(item);
     }
+}
+
+
+void MainWindow::PlayShoorSound(){
+    QString pathFile = QDir::toNativeSeparators(QDir::currentPath() +"/sounds/snoor.wav");
+    QSound::play(pathFile);
 }

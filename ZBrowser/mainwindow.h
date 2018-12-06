@@ -102,7 +102,7 @@ private:
     bool ItemImageExist(QStringList &images, QString & item);
     QString ParseTransform(QString url);
     void ProcClickForSleep();
-
+    void PlayShoorSound();
 
     int height;
     int width;
