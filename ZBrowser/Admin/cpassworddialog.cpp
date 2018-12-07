@@ -37,24 +37,32 @@ void CPasswordDialog::paintEvent(QPaintEvent *event){
 void CPasswordDialog::dialogSettings(){
     QFont cFont;
 
-    userLabel->setGeometry(20, 30, 100, 30);
+    l = new QLabel(this);
+    l->setGeometry(20,10, 300, 30);
+    cFont.setPointSize(16);
+    cFont.setBold(true);
+    l->setFont(cFont);
+    l->setText(QStringLiteral("Login"));
+
+
+    userLabel->setGeometry(20, 50, 100, 30);
     cFont.setPointSize(12);
     cFont.setBold(false);
     userLabel->setFont(cFont);
     userLabel->setText(QStringLiteral("Username"));
 
-    userEdit->setGeometry(140, 30, 200, 30);
+    userEdit->setGeometry(140, 50, 200, 30);
     cFont.setPointSize(12);
     userEdit->setFont(cFont);
     userEdit->setText("");
 
-    passLabel->setGeometry(20, 70, 100, 30);
+    passLabel->setGeometry(20, 85, 100, 30);
     cFont.setPointSize(12);
     cFont.setBold(false);
     passLabel->setFont(cFont);
     passLabel->setText(QStringLiteral("Password"));
 
-    passEdit->setGeometry(140, 70, 200, 30);
+    passEdit->setGeometry(140, 85, 200, 30);
     cFont.setPointSize(12);
     passEdit->setEchoMode(QLineEdit::Password);
     passEdit->setFont(cFont);

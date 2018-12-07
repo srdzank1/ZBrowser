@@ -20,6 +20,8 @@ QHorizontalMenu::QHorizontalMenu(QWidget *parent, tgroup &data) :
 }
 
 void QHorizontalMenu::processClick(int i){
+    QString pathFile = QDir::toNativeSeparators(QDir::currentPath() +"/sounds/click.wav");
+    QSound::play(pathFile);
     emit click(i);
 }
 

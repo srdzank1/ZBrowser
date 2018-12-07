@@ -31,6 +31,7 @@ private:
     QLineEdit *passEdit;
     QPushButton *okButton;
     QPushButton *cancelButton;
+    QLabel *l;
 };
 
 #endif // CPASSWORDDIALOG_H

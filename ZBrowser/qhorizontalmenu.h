@@ -7,6 +7,8 @@
 #include "simagewidget.h"
 #include "XMLParser/cparserxml.h"
 #include <QDir>
+#include <QSound>
+
 #define SUBDIR "/images/"
 //#define SUBDIR "/"
 

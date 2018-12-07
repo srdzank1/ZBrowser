@@ -121,6 +121,8 @@ bool CMenuForm::event(QEvent *event)
 
 
 void CMenuForm::processClickForUrl(QString& url, QString& title, QImage& img ){
-   emit clickForUrl(url, title, img);
+    QString pathFile = QDir::toNativeSeparators(QDir::currentPath() +"/sounds/click.wav");
+    QSound::play(pathFile);
+    emit clickForUrl(url, title, img);
 }
 

@@ -7,6 +7,7 @@
 #include "clargeimage.h"
 #include "ccategorylistitems.h"
 #include "Admin/cadminsettingswidget.h"
+#include <QSound>
 
 
 #include "QDir"

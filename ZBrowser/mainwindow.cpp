@@ -45,9 +45,12 @@ void MainWindow::updateTimer(){
                 if(statusHistoryEnabled){
                     ProcCloseOffClick();
                 }
-                PlayShoorSound();
+                QString soundName = "snoring.wav";
+                PlaySound(soundName);
                 ProcClickForSleep();
             }else{
+                QString soundName = "Woohoo.wav";
+                PlaySound(soundName);
                 catIndx = -1;
                 processClick(0);
             }
@@ -56,6 +59,9 @@ void MainWindow::updateTimer(){
         if (statSleepPrevious == true){
             statSleep = false;
             statSleepPrevious = false;
+
+            QString soundName = "Woohoo.wav";
+            PlaySound(soundName);
             catIndx = -1;
             processClick(0);
         }
@@ -1313,7 +1319,9 @@ void MainWindow::ReadFilteredDataSchedule(){
 }
 
 
-void MainWindow::PlayShoorSound(){
-    QString pathFile = QDir::toNativeSeparators(QDir::currentPath() +"/sounds/snoor.wav");
+void MainWindow::PlaySound(QString &soundName){
+    QString pathFile = QDir::toNativeSeparators(QDir::currentPath() +"/sounds/"+soundName);
     QSound::play(pathFile);
 }
+
+
