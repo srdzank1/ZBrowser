@@ -69,6 +69,7 @@ void CSchedule::menuGlobalSettings(){
     cFont.setBold(true);
     editSchedule->setFont (cFont);
     editSchedule->setText(QStringLiteral("Edit schedule"));
+    CreateCloseOffWidget();
 }
 
 void CSchedule::deleteLSch(){
@@ -118,7 +119,7 @@ void CSchedule::createForm(QPainter &painter){
 
 void CSchedule::createHoursLabel(QPainter &painter){
     QFont cFont;
-    cFont.setPointSize(10);
+    cFont.setPointSize(12);
     cFont.setBold(true);
     painter.setFont(cFont);
 
@@ -126,10 +127,38 @@ void CSchedule::createHoursLabel(QPainter &painter){
     painter.setPen(pen);
     for (int h = 0; h < 50; h+=2){
         int hh = h < 26 ? h : h-24;
-        painter.drawText(QPoint(offset + stepX * h, offset-5), QString::number(hh/2, 10));
+        if (hh == 0){
+            painter.drawText(QPoint(offset + stepX  * h-5 , offset-30), QString::number(12, 10));
+        }else if(h == 48){
+            painter.drawText(QPoint(offset + stepX * h-5, offset-30), "");
+        }else{
+            painter.drawText(QPoint(offset + stepX * h-5, offset-30), QString::number(hh/2, 10));
+        }
     }
-    painter.drawText(QPoint(offset + stepX * 12 + stepX * 0.8 , offset-15), "AM");
-    painter.drawText(QPoint(offset + stepX * 36 + stepX * 0.8, offset-15), "PM");
+
+    for (int h = 0; h < 48; h++){
+        if (h % 2){
+            painter.drawLine(offset + stepX  * h , offset, offset + stepX  * h , offset-5);
+        }else{
+            painter.drawLine(offset + stepX  * h , offset, offset + stepX  * h , offset-10);
+        }
+        if (h == 24){
+            painter.drawLine(offset + stepX  * h , offset-10, offset + stepX  * h , offset-25);
+        }
+    }
+
+
+    cFont.setPointSize(14);
+    cFont.setBold(true);
+    painter.setFont(cFont);
+
+    painter.drawText(QPoint(offset + stepX * 12 + stepX * 0.8 -5 , offset-50), "AM");
+    painter.drawText(QPoint(offset + stepX * 36 + stepX * 0.8 -5, offset-50), "PM");
+
+    cFont.setPointSize(10);
+    cFont.setBold(true);
+    painter.setFont(cFont);
+
 }
 
 
@@ -207,4 +236,21 @@ void CSchedule::setFilterSchedule(tfilterschedule &data){
         }
     }
 
+}
+
+
+void CSchedule::CreateCloseOffWidget(){
+    closeOffWidget = new CBaseWidget(this);
+    connect(closeOffWidget, SIGNAL(buttonClick()), this, SLOT(ProcCloseWebSites()));
+    closeOffWidget->setGeometry(geometry().width() - 54, 6, 48, 48);
+    QImage closeOffWidgetTemp = QImage(":/res/image/close_normal.png");
+    QImage closeOffWidgetTemp_hover = QImage(":/res/image/close_hover.png");
+    QImage closeOffWidgetTemp_click = QImage(":/res/image/close_click.png");
+    closeOffWidget->setImage(0, closeOffWidgetTemp, closeOffWidgetTemp_hover, closeOffWidgetTemp_click);
+    closeOffWidget->show();
+}
+
+
+void CSchedule::ProcCloseWebSites(){
+    emit closeWebSites();
 }

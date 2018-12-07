@@ -47,7 +47,8 @@ SOURCES += \
     XMLParser/qhelperc.cpp \
     XMLParser/qworker_xml.cpp \
     Admin/cadminsettingswidget.cpp \
-    Admin/clargeimageeditcategory.cpp
+    Admin/clargeimageeditcategory.cpp \
+    Admin/cpassworddialog.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -71,7 +72,8 @@ HEADERS += \
     XMLParser/qhelperc.h \
     XMLParser/qworker_xml.h \
     Admin/cadminsettingswidget.h \
-    Admin/clargeimageeditcategory.h
+    Admin/clargeimageeditcategory.h \
+    Admin/cpassworddialog.h
 
 
 FORMS += \

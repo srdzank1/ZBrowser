@@ -6,6 +6,7 @@
 #include <QPainter>
 #include <QMouseEvent>
 #include <QList>
+#include "cbasewidget.h"
 
 #include "XMLParser/cparserxml.h"
 
@@ -35,9 +36,11 @@ protected:
     void paintEvent(QPaintEvent *event);
     virtual void mouseMoveEvent(QMouseEvent *event);
     virtual void mouseReleaseEvent(QMouseEvent * event);
-signals:;
+signals:
+    void closeWebSites();
 
 public slots:
+    void ProcCloseWebSites();
 private:
     void createForm(QPainter &painter);
     void deleteLSch();
@@ -46,7 +49,7 @@ private:
     void createBlockedIntervals(int day, int hours, QPainter &painter);
     void createBasicBlock(QPainter &painter, const int &x, const int &y, const int &w, const int &h, bool status);
     void createScheduleList();
-
+    void CreateCloseOffWidget();
 
     QLabel * editSchedule;
     tgroup m_group;
@@ -60,6 +63,8 @@ private:
     int calD;
     int stepX;
     int stepY;
+    CBaseWidget *closeOffWidget;
+
 };
 
 #endif // CSCHEDULE_H

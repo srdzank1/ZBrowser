@@ -74,6 +74,7 @@ MainWindow::MainWindow(QWidget *parent) :
     catIndx = 0;
     resizeCount = 0;
     admin = 0;
+    passDialog = 0;
     editWebSites = 0;
     editSchedule = 0;
     checkProc = true;
@@ -565,16 +566,22 @@ void MainWindow::ProcCloseAdminMenu(){
 }
 
 void MainWindow::procCloseWebSites(){
+    if(admin != 0){
+        admin->getSettings(mSettings);
+        delete admin;
+        admin = 0;
+    }
     if (editWebSites != 0){
         editWebSites->getFilters(mFilteredWeb);
         editWebSites->getFiltersCategory(mFilteredCategory);
-
         delete editWebSites;
         editWebSites = 0;
     }
-    ProcAdminClick();
-}
-void MainWindow::ProcAdminClick(){
+    if (editSchedule != 0){
+        editSchedule->getFilterSchedule(mFilteredSchedule);
+        delete editSchedule;
+        editSchedule = 0;
+    }
 
     if (admin == 0){
         admin = new CAdminSettingsWidget(this);
@@ -608,7 +615,124 @@ void MainWindow::ProcAdminClick(){
         editSchedule = 0;
     }
 
- }
+}
+
+void MainWindow::ProcPasswordDialog(){
+    if (passDialog == 0){
+        passDialog = new CPasswordDialog(this);
+        connect(passDialog, SIGNAL(clickOK()),this,SLOT(procOkPD()));
+        connect(passDialog, SIGNAL(clickCancel()),this,SLOT(procCancelPD()));
+        passDialog->setGeometry(width /2 - 200, height / 2 - 100, 400, 200);
+        passDialog->dialogSettings();
+        passDialog->show();
+    }
+}
+
+
+void MainWindow::ProcAdminClick(){
+    if(admin != 0){
+        admin->getSettings(mSettings);
+        delete admin;
+        admin = 0;
+    }
+    if (editWebSites != 0){
+        editWebSites->getFilters(mFilteredWeb);
+        editWebSites->getFiltersCategory(mFilteredCategory);
+        delete editWebSites;
+        editWebSites = 0;
+    }
+    if (editSchedule != 0){
+        editSchedule->getFilterSchedule(mFilteredSchedule);
+        delete editSchedule;
+        editSchedule = 0;
+    }
+
+    ProcPasswordDialog();
+}
+
+
+
+
+void MainWindow::procOkPD(){
+
+
+
+    // if ...
+    delete passDialog;
+    passDialog = 0;
+    if (admin == 0){
+        admin = new CAdminSettingsWidget(this);
+        connect(admin, SIGNAL(clickForEditWebsitesMain()),this,SLOT(procEditWebsites()));
+        connect(admin, SIGNAL(clickForScheduleMain()),this,SLOT(procEditSchedule()));
+        connect(admin, SIGNAL(clickForShowCloseButton(bool)), this, SLOT(ProcShowCloseButton(bool)));
+        connect(admin, SIGNAL(clickForCloseApplication()), this, SLOT(ProcCloseApplication()));
+        connect(admin, SIGNAL(clickForCloseMenu()), this, SLOT(ProcCloseAdminMenu()));
+        connect(admin, SIGNAL(changeEnableRestriction()), this, SLOT(ProcChangeEnableRestriction()));
+        connect(admin, SIGNAL(changeEnableSchedule()), this, SLOT(ProcChangeEnableSchedule()));
+
+
+        admin->setGeometry(width - 402, 60, 385, 600);
+        admin->setSettings(mSettings);
+
+        admin->show();
+    }else{
+        admin->getSettings(mSettings);
+        delete admin;
+        admin = 0;
+    }
+    if (editWebSites != 0){
+        editWebSites->getFilters(mFilteredWeb);
+        editWebSites->getFiltersCategory(mFilteredCategory);
+        delete editWebSites;
+        editWebSites = 0;
+    }
+    if (editSchedule != 0){
+        editSchedule->getFilterSchedule(mFilteredSchedule);
+        delete editSchedule;
+        editSchedule = 0;
+    }
+}
+
+void MainWindow::procCancelPD(){
+    delete passDialog;
+    passDialog = 0;
+}
+
+//void MainWindow::ProcAdminClick(){
+
+//    if (admin == 0){
+//        admin = new CAdminSettingsWidget(this);
+//        connect(admin, SIGNAL(clickForEditWebsitesMain()),this,SLOT(procEditWebsites()));
+//        connect(admin, SIGNAL(clickForScheduleMain()),this,SLOT(procEditSchedule()));
+//        connect(admin, SIGNAL(clickForShowCloseButton(bool)), this, SLOT(ProcShowCloseButton(bool)));
+//        connect(admin, SIGNAL(clickForCloseApplication()), this, SLOT(ProcCloseApplication()));
+//        connect(admin, SIGNAL(clickForCloseMenu()), this, SLOT(ProcCloseAdminMenu()));
+//        connect(admin, SIGNAL(changeEnableRestriction()), this, SLOT(ProcChangeEnableRestriction()));
+//        connect(admin, SIGNAL(changeEnableSchedule()), this, SLOT(ProcChangeEnableSchedule()));
+
+
+//        admin->setGeometry(width - 402, 60, 385, 600);
+//        admin->setSettings(mSettings);
+
+//        admin->show();
+//    }else{
+//        admin->getSettings(mSettings);
+//        delete admin;
+//        admin = 0;
+//    }
+//    if (editWebSites != 0){
+//        editWebSites->getFilters(mFilteredWeb);
+//        editWebSites->getFiltersCategory(mFilteredCategory);
+//        delete editWebSites;
+//        editWebSites = 0;
+//    }
+//    if (editSchedule != 0){
+//        editSchedule->getFilterSchedule(mFilteredSchedule);
+//        delete editSchedule;
+//        editSchedule = 0;
+//    }
+
+// }
 
 void MainWindow::ProcChangeEnableRestriction(){
     if (!statSleep){
@@ -710,6 +834,7 @@ void MainWindow::procEditSchedule(){
         tgroup data = xmlData;
 
         editSchedule = new CSchedule(data, this);
+        connect(editSchedule, SIGNAL(closeWebSites()), this, SLOT(procCloseWebSites()));
         editSchedule->setGeometry(60, 120, width - 120, height- 240);
         editSchedule->menuGlobalSettings();
         editSchedule->setFilterSchedule(mFilteredSchedule);
@@ -853,6 +978,12 @@ void MainWindow::processClick(int i){
             delete editSchedule;
             editSchedule = 0;
         }
+
+        if (passDialog != 0){
+            delete passDialog;
+            passDialog = 0;
+        }
+
     }
 
 
@@ -922,7 +1053,7 @@ void MainWindow::processClick(int i){
 
 
 void MainWindow::ProcClickForSleep(){
-    QString url= "https://vimeo.com/249291416";
+    QString url= "https://vimeo.com/248425744/adbf4e7413";
     statusHistoryEnabled = false;
 
     centralMenu->setVisible(false);

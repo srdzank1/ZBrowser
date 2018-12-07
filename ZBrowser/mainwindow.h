@@ -39,6 +39,8 @@
 #include "ccategorylistitems.h"
 #include <QMap>
 #include <QStandardPaths>
+#include "Admin/cpassworddialog.h"
+
 
 #define SUBDIR "/images/"
 //#define SUBDIR "/"
@@ -145,6 +147,8 @@ private:
     tfilterwebsite mFilteredWeb;
     tfiltercategory mFilteredCategory;
     tfilterschedule mFilteredSchedule;
+    CPasswordDialog *passDialog;
+
 
 public slots:
     void processClick(int i);
@@ -179,6 +183,9 @@ public slots:
     void updateTimer();
     void ProcChangeEnableRestriction();
     void ProcChangeEnableSchedule();
+    void ProcPasswordDialog();
+    void procOkPD();
+    void procCancelPD();
 };
 
 #endif // MAINWINDOW_H
