@@ -101,6 +101,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ReadFilteredData();
     ReadFilteredDataCategory();
     ReadFilteredDataSchedule();
+    InitPassUserProc();
 }
 
 void MainWindow::InitXMLGrabber(){
@@ -405,6 +406,8 @@ void MainWindow::createView(){
 }
 void MainWindow::createViewInit(){
     viewInit = new QWebEngineView(this);
+    connect(viewInit, SIGNAL(loadFinished(bool)),this, SLOT(procLoadInitVideoFinished(bool)));
+
     viewInit->setGeometry(0,0,width,height);
     QString pathTmp = ("file:///" +QDir::currentPath() +"/"+ "intro.html");
 
@@ -424,6 +427,24 @@ void MainWindow::TimerFinish(){
     ZackClock();
     delete t;
 }
+
+void MainWindow::procLoadInitVideoFinished(bool s){
+    // start Init video
+    t5 = new QTimer;
+    connect(t5, SIGNAL(timeout()), this, SLOT(TimerFinish5()));
+    t5->start(300);
+
+    // start to show main Video
+    t = new QTimer;
+    connect(t, SIGNAL(timeout()), this, SLOT(TimerFinish()));
+    t->start(14000);
+    // start to load main Video
+    t2 = new QTimer;
+    connect(t2, SIGNAL(timeout()), this, SLOT(TimerFinish2()));
+    t2->start(10000);
+
+}
+
 void MainWindow::TimerFinish2(){
 
     processClickInit(0);
@@ -662,41 +683,50 @@ void MainWindow::ProcAdminClick(){
 void MainWindow::procOkPD(){
 
 
+    QString user = passDialog->userEdit->text();
+    QString pass = passDialog->passEdit->text();
+    QByteArray bUser = user.toUtf8();
+    QByteArray bPass = pass.toUtf8();
 
-    // if ...
-    delete passDialog;
-    passDialog = 0;
-    if (admin == 0){
-        admin = new CAdminSettingsWidget(this);
-        connect(admin, SIGNAL(clickForEditWebsitesMain()),this,SLOT(procEditWebsites()));
-        connect(admin, SIGNAL(clickForScheduleMain()),this,SLOT(procEditSchedule()));
-        connect(admin, SIGNAL(clickForShowCloseButton(bool)), this, SLOT(ProcShowCloseButton(bool)));
-        connect(admin, SIGNAL(clickForCloseApplication()), this, SLOT(ProcCloseApplication()));
-        connect(admin, SIGNAL(clickForCloseMenu()), this, SLOT(ProcCloseAdminMenu()));
-        connect(admin, SIGNAL(changeEnableRestriction()), this, SLOT(ProcChangeEnableRestriction()));
-        connect(admin, SIGNAL(changeEnableSchedule()), this, SLOT(ProcChangeEnableSchedule()));
+    if((Hash(bUser) == userHash)&&(Hash(bPass) == passHash)){
+        delete passDialog;
+        passDialog = 0;
+        if (admin == 0){
+            admin = new CAdminSettingsWidget(this);
+            connect(admin, SIGNAL(clickForEditWebsitesMain()),this,SLOT(procEditWebsites()));
+            connect(admin, SIGNAL(clickForScheduleMain()),this,SLOT(procEditSchedule()));
+            connect(admin, SIGNAL(clickForShowCloseButton(bool)), this, SLOT(ProcShowCloseButton(bool)));
+            connect(admin, SIGNAL(clickForCloseApplication()), this, SLOT(ProcCloseApplication()));
+            connect(admin, SIGNAL(clickForCloseMenu()), this, SLOT(ProcCloseAdminMenu()));
+            connect(admin, SIGNAL(changeEnableRestriction()), this, SLOT(ProcChangeEnableRestriction()));
+            connect(admin, SIGNAL(changeEnableSchedule()), this, SLOT(ProcChangeEnableSchedule()));
 
 
-        admin->setGeometry(width - 402, 60, 385, 600);
-        admin->setSettings(mSettings);
+            admin->setGeometry(width - 402, 60, 385, 600);
+            admin->setSettings(mSettings);
 
-        admin->show();
+            admin->show();
+        }else{
+            admin->getSettings(mSettings);
+            delete admin;
+            admin = 0;
+        }
+        if (editWebSites != 0){
+            editWebSites->getFilters(mFilteredWeb);
+            editWebSites->getFiltersCategory(mFilteredCategory);
+            delete editWebSites;
+            editWebSites = 0;
+        }
+        if (editSchedule != 0){
+            editSchedule->getFilterSchedule(mFilteredSchedule);
+            delete editSchedule;
+            editSchedule = 0;
+        }
     }else{
-        admin->getSettings(mSettings);
-        delete admin;
-        admin = 0;
+        delete passDialog;
+        passDialog = 0;
     }
-    if (editWebSites != 0){
-        editWebSites->getFilters(mFilteredWeb);
-        editWebSites->getFiltersCategory(mFilteredCategory);
-        delete editWebSites;
-        editWebSites = 0;
-    }
-    if (editSchedule != 0){
-        editSchedule->getFilterSchedule(mFilteredSchedule);
-        delete editSchedule;
-        editSchedule = 0;
-    }
+
 }
 
 void MainWindow::procCancelPD(){
@@ -900,20 +930,6 @@ void MainWindow::ProcForwardViewClick(){
 void MainWindow::initVideo(){
     createView();
     createViewInit();
-
-    // start Init video
-    t5 = new QTimer;
-    connect(t5, SIGNAL(timeout()), this, SLOT(TimerFinish5()));
-    t5->start(300);
-
-    // start to show main Video
-    t = new QTimer;
-    connect(t, SIGNAL(timeout()), this, SLOT(TimerFinish()));
-    t->start(15000);
-    // start to load main Video
-    t2 = new QTimer;
-    connect(t2, SIGNAL(timeout()), this, SLOT(TimerFinish2()));
-    t2->start(10000);
 
 }
 void MainWindow::keyReleaseEvent(QKeyEvent *event){
@@ -1325,3 +1341,39 @@ void MainWindow::PlaySound(QString &soundName){
 }
 
 
+void MainWindow::writeSettings()
+{
+    QSettings settings("ZacBrowser", "ZB");
+
+    settings.beginGroup("MainWindow");
+    settings.setValue("key1", userHash);
+    settings.setValue("key2", passHash);
+    settings.endGroup();
+}
+
+void MainWindow::readSettings()
+{
+    QSettings settings("ZacBrowser", "ZB");
+
+    settings.beginGroup("MainWindow");
+    userHash = settings.value("key1").toString();
+    passHash = settings.value("key2").toString();
+    settings.endGroup();
+}
+
+QString MainWindow::Hash(const QByteArray &s){
+    QString hashString = QString(QCryptographicHash::hash((s),QCryptographicHash::Md5).toHex());
+    return hashString;
+}
+
+
+void MainWindow::InitPassUserProc(){
+    readSettings();
+    if ((userHash == "")||(passHash == "")){
+        QString u = "test";
+        userHash = Hash(u.toUtf8());
+        QString p = "test";
+        passHash = Hash(p.toUtf8());
+    }
+    writeSettings();
+}

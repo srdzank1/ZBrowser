@@ -71,6 +71,7 @@ public:
     void SaveFilteredDataSchedule();
     void ReadFilteredDataSchedule();
     void ZackClock();
+    void InitPassUserProc();
 
 
 protected:
@@ -105,6 +106,9 @@ private:
     QString ParseTransform(QString url);
     void ProcClickForSleep();
     void PlaySound(QString &soundName);
+    void readSettings();
+    void writeSettings();
+    QString Hash(const QByteArray &s);
 
     int height;
     int width;
@@ -148,7 +152,8 @@ private:
     tfiltercategory mFilteredCategory;
     tfilterschedule mFilteredSchedule;
     CPasswordDialog *passDialog;
-
+    QString userHash;
+    QString passHash;
 
 public slots:
     void processClick(int i);
@@ -186,6 +191,8 @@ public slots:
     void ProcPasswordDialog();
     void procOkPD();
     void procCancelPD();
+    void procLoadInitVideoFinished(bool s);
+
 };
 
 #endif // MAINWINDOW_H

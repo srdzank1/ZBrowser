@@ -14,6 +14,8 @@ public:
     explicit CPasswordDialog(QWidget *parent = nullptr);
     ~CPasswordDialog();
     void dialogSettings();
+    QLineEdit *userEdit;
+    QLineEdit *passEdit;
 
 protected:
     virtual void paintEvent(QPaintEvent *event);
@@ -26,9 +28,7 @@ public slots:
     void procCancel(bool);
 private:
     QLabel *userLabel;
-    QLineEdit *userEdit;
     QLabel *passLabel;
-    QLineEdit *passEdit;
     QPushButton *okButton;
     QPushButton *cancelButton;
     QLabel *l;

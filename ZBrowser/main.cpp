@@ -2,10 +2,6 @@
 #include <QApplication>
 #include <QtWebEngine/QtWebEngine>
 
-
-
-
-
 int main(int argc, char *argv[])
 {
     argv[1] = (char*)"--ppapi-flash-path=./pepflashplayer64_30_0_0_134.dll";
