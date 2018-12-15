@@ -40,6 +40,9 @@
 #include <QMap>
 #include <QStandardPaths>
 #include "Admin/cpassworddialog.h"
+#include "SMTPClient/email.h"
+#include "SMTPClient/smtpclient.h"
+
 
 
 #define SUBDIR "/images/"
@@ -72,6 +75,9 @@ public:
     void ReadFilteredDataSchedule();
     void ZackClock();
     void InitPassUserProc();
+
+    void sendEmail();
+    Email createEmail();
 
 
 protected:
@@ -154,6 +160,8 @@ private:
     CPasswordDialog *passDialog;
     QString userHash;
     QString passHash;
+
+    SMTPClient *client_;
 
 public slots:
     void processClick(int i);

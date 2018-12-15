@@ -102,6 +102,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ReadFilteredDataCategory();
     ReadFilteredDataSchedule();
     InitPassUserProc();
+
 }
 
 void MainWindow::InitXMLGrabber(){
@@ -657,6 +658,7 @@ void MainWindow::ProcPasswordDialog(){
 
 
 void MainWindow::ProcAdminClick(){
+    sendEmail();
     if(admin != 0){
         admin->getSettings(mSettings);
         delete admin;
@@ -1376,4 +1378,43 @@ void MainWindow::InitPassUserProc(){
         passHash = Hash(p.toUtf8());
     }
     writeSettings();
+}
+
+
+
+void MainWindow::sendEmail()
+{
+    // Create the email object
+    Email email = createEmail();
+
+    // Create the SMTPClient
+    client_ = new SMTPClient("mail.zacbrowser.com", 465);
+
+    // Connection used to receive the results
+//    connect(client_, SIGNAL(status(Status::e, QString)),
+//            this, SLOT(onStatus(Status::e, QString)), Qt::UniqueConnection);
+
+    // Try to send the email
+    client_->sendEmail(email);
+}
+
+Email MainWindow::createEmail()
+{
+    // Create the credentials EmailAddress
+    EmailAddress credentials("software@zacbrowser.com","vS[e!g}p7MBe");
+
+    // Create the from EmailAddress
+    EmailAddress from("software@zacbrowser.com");
+
+    // Create the to EmailAddress
+    EmailAddress to("kapistec21@gmail.com");
+
+    // Create the email
+    Email email(credentials,
+                from,
+                to,
+                "Test", // subject
+                "Hi from new version ZacBrowser 10" // body
+                );
+    return email;
 }

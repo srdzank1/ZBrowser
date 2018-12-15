@@ -85,5 +85,5 @@ RESOURCES += \
     res.qrc
 
 
-
+include( $$PWD/SMTPClient/SMTPClient.pri )
 
