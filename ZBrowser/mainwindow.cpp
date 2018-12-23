@@ -81,8 +81,11 @@ MainWindow::MainWindow(QWidget *parent) :
     resizeCount = 0;
     admin = 0;
     passDialog = 0;
+    registrationDialog = 0;
+    verifyDialog = 0;
     editWebSites = 0;
     editSchedule = 0;
+    msgDialog = 0;
     checkProc = true;
     statSleep = false;
     statSleepPrevious = false;
@@ -442,7 +445,7 @@ void MainWindow::procLoadInitVideoFinished(bool s){
     // start to load main Video
     t2 = new QTimer;
     connect(t2, SIGNAL(timeout()), this, SLOT(TimerFinish2()));
-    t2->start(10000);
+    t2->start(9000);
 
 }
 
@@ -657,8 +660,8 @@ void MainWindow::ProcPasswordDialog(){
 }
 
 
+
 void MainWindow::ProcAdminClick(){
-    sendEmail();
     if(admin != 0){
         admin->getSettings(mSettings);
         delete admin;
@@ -676,7 +679,8 @@ void MainWindow::ProcAdminClick(){
         editSchedule = 0;
     }
 
-    ProcPasswordDialog();
+    ProcRegistrationDialog();
+//    ProcPasswordDialog();
 }
 
 
@@ -1007,7 +1011,10 @@ void MainWindow::processClick(int i){
             delete passDialog;
             passDialog = 0;
         }
-
+        if (registrationDialog != 0){
+            delete registrationDialog;
+            registrationDialog = 0;
+        }
     }
 
 
@@ -1350,6 +1357,8 @@ void MainWindow::writeSettings()
     settings.beginGroup("MainWindow");
     settings.setValue("key1", userHash);
     settings.setValue("key2", passHash);
+    settings.setValue("email", emailReg);
+
     settings.endGroup();
 }
 
@@ -1360,6 +1369,8 @@ void MainWindow::readSettings()
     settings.beginGroup("MainWindow");
     userHash = settings.value("key1").toString();
     passHash = settings.value("key2").toString();
+    emailReg = settings.value("email").toString();
+
     settings.endGroup();
 }
 
@@ -1382,23 +1393,19 @@ void MainWindow::InitPassUserProc(){
 
 
 
-void MainWindow::sendEmail()
+void MainWindow::sendEmail(QString &emailAdd)
 {
     // Create the email object
-    Email email = createEmail();
+    Email email = createEmail(emailAdd);
 
     // Create the SMTPClient
     client_ = new SMTPClient("mail.zacbrowser.com", 465);
-
-    // Connection used to receive the results
-//    connect(client_, SIGNAL(status(Status::e, QString)),
-//            this, SLOT(onStatus(Status::e, QString)), Qt::UniqueConnection);
 
     // Try to send the email
     client_->sendEmail(email);
 }
 
-Email MainWindow::createEmail()
+Email MainWindow::createEmail(QString &emailAddr)
 {
     // Create the credentials EmailAddress
     EmailAddress credentials("software@zacbrowser.com","vS[e!g}p7MBe");
@@ -1407,14 +1414,114 @@ Email MainWindow::createEmail()
     EmailAddress from("software@zacbrowser.com");
 
     // Create the to EmailAddress
-    EmailAddress to("kapistec21@gmail.com");
+    EmailAddress to(emailAddr);
 
     // Create the email
     Email email(credentials,
                 from,
                 to,
-                "Test", // subject
-                "Hi from new version ZacBrowser 10" // body
+                "Zac Browser", // subject
+                "Hi from new version of ZacBrowser - Code: "+randString(2)+randNumString(2) // body
                 );
     return email;
+}
+
+QString MainWindow::randString(int len)
+{
+    QString str;
+    str.resize(len);
+    for (int s = 0; s < len ; ++s)
+        str[s] = QChar('A' + char(qrand() % ('Z' - 'A')));
+    return str;
+}
+
+QString MainWindow::randNumString(int len)
+{
+    QString str;
+    str.resize(len);
+    for (int s = 0; s < len ; ++s)
+        str[s] = QChar('0' + char(qrand() % ('9' - '0')));
+    return str;
+}
+
+
+void MainWindow::ProcRegistrationDialog(){
+    if (registrationDialog == 0){
+        registrationDialog = new CRegistrationDialog(this);
+        connect(registrationDialog, SIGNAL(clickOK()),this,SLOT(procOkRegDialog()));
+        connect(registrationDialog, SIGNAL(clickCancel()),this,SLOT(procCancelRegDialog()));
+        registrationDialog->setGeometry(width /2 - 200, height / 2 - 100, 450, 250);
+        registrationDialog->dialogSettings();
+        registrationDialog->show();
+    }
+}
+
+void MainWindow::procMsgDialog(const QString& title, const QString& info){
+    if (msgDialog == 0){
+        msgDialog = new CMessageDialog();
+        msgDialog->setParent(this);
+        connect(msgDialog, SIGNAL(clickOK()),this,SLOT(procOkMsgDialog()));
+        msgDialog->setGeometry(width /2 - 200, height / 2 - 100, 450, 250);
+        msgDialog->dialogSettings(title, info);
+        msgDialog->show();
+    }
+}
+
+void MainWindow::procOkMsgDialog(){
+    delete msgDialog;
+    msgDialog = 0;
+}
+
+
+void MainWindow::procOkRegDialog(){
+    bool err = false;
+    if (registrationDialog != 0){
+        if(validaEmail(registrationDialog->userEdit->text())){
+
+            userHash = Hash(registrationDialog->userEdit->text().toUtf8());
+            passHash = Hash(registrationDialog->passEdit->text().toUtf8());
+            emailReg = registrationDialog->userEdit->text();
+            QString temp = registrationDialog->passEdit->text();
+            if(registrationDialog->passEdit->text()==""){
+                procMsgDialog("Warning", "Password is incorrect");
+                err = true;
+            }
+            else if(registrationDialog->passEdit->text() !=registrationDialog->passEdit2->text()){
+                procMsgDialog("Warning", "Password is incorrect");
+                err = true;
+            }
+        }else{
+            procMsgDialog("Warning", "Email address is not valid!");
+                err = true;
+        }
+
+        if (!err){
+            sendEmail(emailReg);
+            QString info = "Successful finished registration process \n"
+                           "Pls check your email account \n "+
+                           emailReg + ", In inbox or spam folder,\n"
+                           "to get code for recovery process";
+            procMsgDialog("Info", info);
+            procCancelRegDialog();
+        }
+
+    }
+}
+
+void MainWindow::procCancelRegDialog(){
+    delete registrationDialog;
+    registrationDialog = 0;
+}
+
+
+bool MainWindow::validaEmail(QString email)
+{
+    bool retorno = true;
+    qDebug() << email;
+    QRegularExpression regex("^[0-9a-zA-Z]+([0-9a-zA-Z]*[-._+])*[0-9a-zA-Z]+@[0-9a-zA-Z]+([-.][0-9a-zA-Z]+)*([0-9a-zA-Z]*[.])[a-zA-Z]{2,6}$");
+    if(!regex.match(email).hasMatch())
+    {
+        retorno = false;
+    }
+    return retorno;
 }

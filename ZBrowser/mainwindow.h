@@ -40,9 +40,14 @@
 #include <QMap>
 #include <QStandardPaths>
 #include "Admin/cpassworddialog.h"
+#include "Admin/cregistrationdialog.h"
+#include "Admin/cverifydialog.h"
+#include "Admin/cmessagedialog.h"
+
+
 #include "SMTPClient/email.h"
 #include "SMTPClient/smtpclient.h"
-
+#include <QMessageBox>
 
 
 #define SUBDIR "/images/"
@@ -75,9 +80,10 @@ public:
     void ReadFilteredDataSchedule();
     void ZackClock();
     void InitPassUserProc();
+    void ProcRegistrationDialog();
 
-    void sendEmail();
-    Email createEmail();
+    void sendEmail(QString &emailAdd);
+    Email createEmail(QString &emailAdd);
 
 
 protected:
@@ -115,7 +121,9 @@ private:
     void readSettings();
     void writeSettings();
     QString Hash(const QByteArray &s);
-
+    QString randString(int len);
+    QString randNumString(int len);
+    bool validaEmail(QString email);
     int height;
     int width;
     QScopedPointer<FullScreenWindow> m_fullScreenWindow;
@@ -158,8 +166,12 @@ private:
     tfiltercategory mFilteredCategory;
     tfilterschedule mFilteredSchedule;
     CPasswordDialog *passDialog;
+    CRegistrationDialog *registrationDialog;
+    CVerifyDialog *verifyDialog;
+    CMessageDialog *msgDialog;
     QString userHash;
     QString passHash;
+    QString emailReg;
 
     SMTPClient *client_;
 
@@ -200,7 +212,10 @@ public slots:
     void procOkPD();
     void procCancelPD();
     void procLoadInitVideoFinished(bool s);
-
+    void procOkRegDialog();
+    void procCancelRegDialog();
+    void procMsgDialog(const QString&, const QString&);
+    void procOkMsgDialog();
 };
 
 #endif // MAINWINDOW_H
