@@ -1,5 +1,5 @@
-#ifndef CPASSWORDDIALOG_H
-#define CPASSWORDDIALOG_H
+#ifndef CCodeDialog_H
+#define CCodeDialog_H
 
 #include <QWidget>
 #include <QPainter>
@@ -7,15 +7,16 @@
 #include <QPushButton>
 #include <QLineEdit>
 
-class CPasswordDialog : public QWidget
+class CCodeDialog : public QWidget
 {
     Q_OBJECT
 public:
-    explicit CPasswordDialog(QWidget *parent = nullptr);
-    ~CPasswordDialog();
+    explicit CCodeDialog(QWidget *parent = nullptr);
+    ~CCodeDialog();
     void dialogSettings();
     QLineEdit *userEdit;
     QLineEdit *passEdit;
+    QLineEdit *passEdit2;
 
 protected:
     virtual void paintEvent(QPaintEvent *event);
@@ -23,18 +24,20 @@ protected:
 signals:
     void clickOK();
     void clickCancel();
-    void clickRecovery();
+    void clickAskCode();
 public slots:
     void procOk(bool);
     void procCancel(bool);
-    void procRecovery(bool);
+    void procAskCode(bool);
 private:
     QLabel *userLabel;
     QLabel *passLabel;
+    QLabel *passLabel2;
+
     QPushButton *okButton;
     QPushButton *cancelButton;
-    QPushButton *passRecoveryButton;
+    QPushButton *AskCodeButton;
     QLabel *l;
 };
 
-#endif // CPASSWORDDIALOG_H
+#endif // CCodeDialog_H

@@ -51,7 +51,8 @@ SOURCES += \
     Admin/cpassworddialog.cpp \
     Admin/cregistrationdialog.cpp \
     Admin/cverifydialog.cpp \
-    Admin/cmessagedialog.cpp
+    Admin/cmessagedialog.cpp \
+    Admin/ccodedialog.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -79,7 +80,8 @@ HEADERS += \
     Admin/cpassworddialog.h \
     Admin/cregistrationdialog.h \
     Admin/cverifydialog.h \
-    Admin/cmessagedialog.h
+    Admin/cmessagedialog.h \
+    Admin/ccodedialog.h
 
 
 FORMS += \

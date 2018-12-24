@@ -1,18 +1,22 @@
-﻿#include "cpassworddialog.h"
+#include "ccodedialog.h"
 
-CPasswordDialog::CPasswordDialog(QWidget *parent) : QWidget(parent)
+CCodeDialog::CCodeDialog(QWidget *parent) : QWidget(parent)
 {
     userLabel = new QLabel(this);
     userEdit = new QLineEdit(this);
+
     passLabel = new QLabel(this);
     passEdit = new QLineEdit(this);
+    passLabel2 = new QLabel(this);
+    passEdit2 = new QLineEdit(this);
+
+
     okButton = new QPushButton(this);
     cancelButton = new QPushButton(this);
-    passRecoveryButton = new QPushButton(this);
     userEdit->setFocus();
 }
 
-CPasswordDialog::~CPasswordDialog()
+CCodeDialog::~CCodeDialog()
 {
     delete userLabel;
     delete userEdit;
@@ -22,7 +26,7 @@ CPasswordDialog::~CPasswordDialog()
     delete cancelButton;
 }
 
-void CPasswordDialog::paintEvent(QPaintEvent *event){
+void CCodeDialog::paintEvent(QPaintEvent *event){
     QPainter painter(this);
     QPainterPath path;
 
@@ -35,7 +39,7 @@ void CPasswordDialog::paintEvent(QPaintEvent *event){
     painter.end();
 }
 
-void CPasswordDialog::dialogSettings(){
+void CCodeDialog::dialogSettings(){
     QFont cFont;
 
     l = new QLabel(this);
@@ -43,33 +47,24 @@ void CPasswordDialog::dialogSettings(){
     cFont.setPointSize(16);
     cFont.setBold(true);
     l->setFont(cFont);
-    l->setText(QStringLiteral("Login"));
+    l->setText(QStringLiteral("Validate Code"));
 
+    //----------------------------------------------------
 
-    userLabel->setGeometry(20, 50, 100, 30);
+    userLabel->setGeometry(20, 50, 120, 30);
     cFont.setPointSize(12);
     cFont.setBold(false);
     userLabel->setFont(cFont);
-    userLabel->setText(QStringLiteral("Username"));
+    userLabel->setText(QStringLiteral("Enter code "));
 
-    userEdit->setGeometry(140, 50, 200, 30);
+    userEdit->setGeometry(160, 50, 250, 30);
     cFont.setPointSize(12);
     userEdit->setFont(cFont);
     userEdit->setText("");
 
-    passLabel->setGeometry(20, 85, 100, 30);
-    cFont.setPointSize(12);
-    cFont.setBold(false);
-    passLabel->setFont(cFont);
-    passLabel->setText(QStringLiteral("Password"));
+//------------------------------------------------------------------------
 
-    passEdit->setGeometry(140, 85, 200, 30);
-    cFont.setPointSize(12);
-    passEdit->setEchoMode(QLineEdit::Password);
-    passEdit->setFont(cFont);
-    passEdit->setText("");
-
-    okButton->setGeometry( QRect(20 , 140, 100 ,30));
+    okButton->setGeometry( QRect(20 , 170, 100 ,30));
     cFont.setPointSize(12);
     cFont.setBold(true);
     okButton->setFont(cFont);
@@ -77,7 +72,7 @@ void CPasswordDialog::dialogSettings(){
     connect(okButton, SIGNAL(clicked(bool)), this, SLOT(procOk(bool)));
     okButton->show();
 
-    cancelButton->setGeometry( QRect(120 , 140, 100 ,30));
+    cancelButton->setGeometry( QRect(120 , 170, 100 ,30));
     cFont.setPointSize(12);
     cFont.setBold(true);
     cancelButton->setFont(cFont);
@@ -85,25 +80,26 @@ void CPasswordDialog::dialogSettings(){
     connect(cancelButton, SIGNAL(clicked(bool)), this, SLOT(procCancel(bool)));
     cancelButton->show();
 
-    passRecoveryButton->setGeometry( QRect(222 , 140, 158 ,30));
+    AskCodeButton->setGeometry( QRect(220 , 170, 100 ,30));
     cFont.setPointSize(12);
     cFont.setBold(true);
-    passRecoveryButton->setFont(cFont);
-    passRecoveryButton->setText(QStringLiteral("Password recovery"));
-    connect(passRecoveryButton, SIGNAL(clicked(bool)), this, SLOT(procRecovery(bool)));
-    passRecoveryButton->show();
+    AskCodeButton->setFont(cFont);
+    AskCodeButton->setText(QStringLiteral("Ask new code"));
+    connect(AskCodeButton, SIGNAL(clicked(bool)), this, SLOT(procAskCode(bool)));
+    AskCodeButton->show();
 
 }
 
-void CPasswordDialog::procOk(bool stat){
+void CCodeDialog::procOk(bool stat){
     emit clickOK();
 }
 
-void CPasswordDialog::procCancel(bool stat){
+void CCodeDialog::procCancel(bool stat){
     emit clickCancel();
 }
 
-void CPasswordDialog::procRecovery(bool stat){
-    emit clickRecovery();
+
+void CCodeDialog::procAskCode(bool stat){
+    emit clickAskCode();
 }
 

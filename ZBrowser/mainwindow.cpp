@@ -86,6 +86,7 @@ MainWindow::MainWindow(QWidget *parent) :
     editWebSites = 0;
     editSchedule = 0;
     msgDialog = 0;
+    codeDialog = 0;
     checkProc = true;
     statSleep = false;
     statSleepPrevious = false;
@@ -105,6 +106,11 @@ MainWindow::MainWindow(QWidget *parent) :
     ReadFilteredDataCategory();
     ReadFilteredDataSchedule();
     InitPassUserProc();
+    readSettings();
+    if (emailReg == ""){
+        mSettings.showCloseButton = true;
+    }
+
 
 }
 
@@ -653,13 +659,17 @@ void MainWindow::ProcPasswordDialog(){
         passDialog = new CPasswordDialog(this);
         connect(passDialog, SIGNAL(clickOK()),this,SLOT(procOkPD()));
         connect(passDialog, SIGNAL(clickCancel()),this,SLOT(procCancelPD()));
+        connect(passDialog, SIGNAL(clickRecovery()),this,SLOT(procRecoveryPD()));
+
         passDialog->setGeometry(width /2 - 200, height / 2 - 100, 400, 200);
         passDialog->dialogSettings();
         passDialog->show();
     }
 }
 
-
+void MainWindow::procRecoveryPD(){
+    ProcRegistrationDialog();
+}
 
 void MainWindow::ProcAdminClick(){
     if(admin != 0){
@@ -679,15 +689,16 @@ void MainWindow::ProcAdminClick(){
         editSchedule = 0;
     }
 
-    ProcRegistrationDialog();
-//    ProcPasswordDialog();
+    if (emailReg == ""){
+        ProcRegistrationDialog();
+    }else if(validateCode == "false"){
+        ProcValidateCodeDialog();
+    }else if(validateCode == "true"){
+        ProcPasswordDialog();
+    }
 }
 
-
-
-
-void MainWindow::procOkPD(){
-
+    void MainWindow::procOkPD(){
 
     QString user = passDialog->userEdit->text();
     QString pass = passDialog->passEdit->text();
@@ -968,6 +979,7 @@ MainWindow::~MainWindow()
     SaveFilteredData();
     SaveFilteredDataCategory();
     SaveFilteredDataSchedule();
+    writeSettings();
     delete view;
     delete viewInit;
     delete centralMenu;
@@ -1014,6 +1026,10 @@ void MainWindow::processClick(int i){
         if (registrationDialog != 0){
             delete registrationDialog;
             registrationDialog = 0;
+        }
+        if (msgDialog != 0){
+            delete msgDialog;
+            msgDialog = 0;
         }
     }
 
@@ -1358,6 +1374,7 @@ void MainWindow::writeSettings()
     settings.setValue("key1", userHash);
     settings.setValue("key2", passHash);
     settings.setValue("email", emailReg);
+    settings.setValue("validatecode", validateCode);
 
     settings.endGroup();
 }
@@ -1370,6 +1387,8 @@ void MainWindow::readSettings()
     userHash = settings.value("key1").toString();
     passHash = settings.value("key2").toString();
     emailReg = settings.value("email").toString();
+    codeHash = settings.value("code").toString();
+    validateCode = settings.value("validatecode").toString();
 
     settings.endGroup();
 }
@@ -1415,13 +1434,14 @@ Email MainWindow::createEmail(QString &emailAddr)
 
     // Create the to EmailAddress
     EmailAddress to(emailAddr);
-
+    QString tempCode = randString(2)+randNumString(2);
+    codeHash = Hash(tempCode.toUtf8());
     // Create the email
     Email email(credentials,
                 from,
                 to,
                 "Zac Browser", // subject
-                "Hi from new version of ZacBrowser - Code: "+randString(2)+randNumString(2) // body
+                "Hi from new version of ZacBrowser - Code: "+ tempCode// body
                 );
     return email;
 }
@@ -1450,11 +1470,47 @@ void MainWindow::ProcRegistrationDialog(){
         registrationDialog = new CRegistrationDialog(this);
         connect(registrationDialog, SIGNAL(clickOK()),this,SLOT(procOkRegDialog()));
         connect(registrationDialog, SIGNAL(clickCancel()),this,SLOT(procCancelRegDialog()));
+
         registrationDialog->setGeometry(width /2 - 200, height / 2 - 100, 450, 250);
         registrationDialog->dialogSettings();
         registrationDialog->show();
     }
 }
+
+
+
+
+void MainWindow::ProcValidateCodeDialog(){
+    if (codeDialog == 0){
+        codeDialog = new CCodeDialog(this);
+        connect(codeDialog, SIGNAL(clickOK()),this,SLOT(procOkValidateCodeDialog()));
+        connect(codeDialog, SIGNAL(clickCancel()),this,SLOT(procCancelValidateCodeDialog()));
+        connect(codeDialog, SIGNAL(clickAskCode()),this,SLOT(procAskValidateCodeDialog()));
+
+        codeDialog->setGeometry(width /2 - 200, height / 2 - 100, 450, 250);
+        codeDialog->dialogSettings();
+        codeDialog->show();
+    }
+}
+
+void MainWindow::procOkValidateCodeDialog(){
+    // if condition is valid
+    if (Hash(codeDialog->userEdit->text().toUtf8()) == codeHash){
+        validateCode = "true";
+    }else{
+        procMsgDialog("Warning", "Code is not match!");
+    }
+
+}
+void MainWindow::procCancelValidateCodeDialog(){
+    delete msgDialog;
+    msgDialog = 0;
+}
+void MainWindow::procAskValidateCodeDialog(){
+    // add code here
+    ProcRegistrationDialog();
+}
+
 
 void MainWindow::procMsgDialog(const QString& title, const QString& info){
     if (msgDialog == 0){
@@ -1474,6 +1530,7 @@ void MainWindow::procOkMsgDialog(){
 
 
 void MainWindow::procOkRegDialog(){
+    validateCode = "false";
     bool err = false;
     if (registrationDialog != 0){
         if(validaEmail(registrationDialog->userEdit->text())){
@@ -1497,6 +1554,7 @@ void MainWindow::procOkRegDialog(){
 
         if (!err){
             sendEmail(emailReg);
+            validateCode = "false";
             QString info = "Successful finished registration process \n"
                            "Pls check your email account \n "+
                            emailReg + ", In inbox or spam folder,\n"

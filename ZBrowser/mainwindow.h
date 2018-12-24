@@ -43,7 +43,7 @@
 #include "Admin/cregistrationdialog.h"
 #include "Admin/cverifydialog.h"
 #include "Admin/cmessagedialog.h"
-
+#include "Admin/ccodedialog.h"
 
 #include "SMTPClient/email.h"
 #include "SMTPClient/smtpclient.h"
@@ -81,7 +81,7 @@ public:
     void ZackClock();
     void InitPassUserProc();
     void ProcRegistrationDialog();
-
+    void ProcValidateCodeDialog();
     void sendEmail(QString &emailAdd);
     Email createEmail(QString &emailAdd);
 
@@ -169,9 +169,13 @@ private:
     CRegistrationDialog *registrationDialog;
     CVerifyDialog *verifyDialog;
     CMessageDialog *msgDialog;
+    CCodeDialog *codeDialog;
+
     QString userHash;
     QString passHash;
     QString emailReg;
+    QString codeHash;
+    QString validateCode;
 
     SMTPClient *client_;
 
@@ -216,6 +220,10 @@ public slots:
     void procCancelRegDialog();
     void procMsgDialog(const QString&, const QString&);
     void procOkMsgDialog();
+    void procRecoveryPD();
+    void procOkValidateCodeDialog();
+    void procCancelValidateCodeDialog();
+    void procAskValidateCodeDialog();
 };
 
 #endif // MAINWINDOW_H
