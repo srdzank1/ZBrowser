@@ -5,14 +5,9 @@ CCodeDialog::CCodeDialog(QWidget *parent) : QWidget(parent)
     userLabel = new QLabel(this);
     userEdit = new QLineEdit(this);
 
-    passLabel = new QLabel(this);
-    passEdit = new QLineEdit(this);
-    passLabel2 = new QLabel(this);
-    passEdit2 = new QLineEdit(this);
-
-
     okButton = new QPushButton(this);
     cancelButton = new QPushButton(this);
+    AskCodeButton = new QPushButton(this);
     userEdit->setFocus();
 }
 
@@ -20,10 +15,9 @@ CCodeDialog::~CCodeDialog()
 {
     delete userLabel;
     delete userEdit;
-    delete passLabel;
-    delete passEdit;
     delete okButton;
     delete cancelButton;
+    delete AskCodeButton;
 }
 
 void CCodeDialog::paintEvent(QPaintEvent *event){
@@ -80,7 +74,7 @@ void CCodeDialog::dialogSettings(){
     connect(cancelButton, SIGNAL(clicked(bool)), this, SLOT(procCancel(bool)));
     cancelButton->show();
 
-    AskCodeButton->setGeometry( QRect(220 , 170, 100 ,30));
+    AskCodeButton->setGeometry( QRect(220 , 170, 150 ,30));
     cFont.setPointSize(12);
     cFont.setBold(true);
     AskCodeButton->setFont(cFont);

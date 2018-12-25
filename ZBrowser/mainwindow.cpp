@@ -107,7 +107,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ReadFilteredDataSchedule();
     InitPassUserProc();
     readSettings();
-    if (emailReg == ""){
+    if (validateCode != "true"){
         mSettings.showCloseButton = true;
     }
 
@@ -691,6 +691,8 @@ void MainWindow::ProcAdminClick(){
 
     if (emailReg == ""){
         ProcRegistrationDialog();
+    }else if(validateCode == ""){
+        ProcValidateCodeDialog();
     }else if(validateCode == "false"){
         ProcValidateCodeDialog();
     }else if(validateCode == "true"){
@@ -1031,6 +1033,11 @@ void MainWindow::processClick(int i){
             delete msgDialog;
             msgDialog = 0;
         }
+        if (codeDialog != 0){
+            delete codeDialog;
+            codeDialog = 0;
+        }
+
     }
 
 
@@ -1497,14 +1504,16 @@ void MainWindow::procOkValidateCodeDialog(){
     // if condition is valid
     if (Hash(codeDialog->userEdit->text().toUtf8()) == codeHash){
         validateCode = "true";
+        procCancelValidateCodeDialog();
+        ProcPasswordDialog();
     }else{
         procMsgDialog("Warning", "Code is not match!");
     }
 
 }
 void MainWindow::procCancelValidateCodeDialog(){
-    delete msgDialog;
-    msgDialog = 0;
+    delete codeDialog;
+    codeDialog = 0;
 }
 void MainWindow::procAskValidateCodeDialog(){
     // add code here
