@@ -5,7 +5,7 @@ CLargeImage::CLargeImage(QWidget *parent) : QWidget(parent)
   ,iItem(0)
   ,m_titleIcon("*")
 {
-    setAttribute(Qt::WA_StaticContents);
+//    setAttribute(Qt::WA_StaticContents);
     setMouseTracking(true);
     m_brush.setColor(Qt::blue);
     setGeometry(0, 0, 200, 200);
@@ -15,6 +15,7 @@ CLargeImage::~CLargeImage()
 {
 
 }
+
 void CLargeImage::setImagePathName(int id, const QString& pathName){
     m_pathName = pathName;
     mImage = QImage(pathName).scaled(200, 187, Qt::KeepAspectRatio, Qt::FastTransformation);

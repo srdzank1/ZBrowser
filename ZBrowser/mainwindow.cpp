@@ -87,8 +87,9 @@ MainWindow::MainWindow(QWidget *parent) :
     editSchedule = 0;
     msgDialog = 0;
     codeDialog = 0;
-    checkProc = true;
+    checkProc = false;
     statSleep = false;
+    statScreenSaver = false;
     statSleepPrevious = false;
     mSettings.KeyboardShortcut = "";
     mSettings.alwaysInFront = false;
@@ -99,6 +100,9 @@ MainWindow::MainWindow(QWidget *parent) :
 
     setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
     QRect rec = QApplication::desktop()->screenGeometry();
+
+    qApp->installEventFilter(this);
+
     height = rec.height();
     width = rec.width();
     ReadSettingData();
@@ -111,6 +115,69 @@ MainWindow::MainWindow(QWidget *parent) :
         mSettings.showCloseButton = true;
     }
 
+    timerSS = new QTimer(this);
+    timerSS->setSingleShot(true);
+    connect(timerSS, SIGNAL(timeout()), this, SLOT(updateTimerScreenShot()));
+
+}
+
+
+bool MainWindow::eventFilter(QObject *obj, QEvent *event)
+{
+    if (!checkProc){
+        return false;
+    }
+    if ((event->type() == QEvent::MouseMove)||
+        (event->type() == QEvent::KeyPress))
+    {
+        timerSS->stop();
+        if(statScreenSaver){
+            FadeinWidget(horizontalMenu);
+            FadeinWidget(centralMenu);
+            FadeinWidget(headerImageInfo);
+            FadeinWidget(downArrowWidget);
+            FadeinWidget(upArrowWidget);
+            statScreenSaver = false;
+        }
+        timerSS->start(4000);
+    }
+     return false;
+}
+
+
+void MainWindow::FadeOutWidget(QWidget *w){
+    QGraphicsOpacityEffect *eff = new QGraphicsOpacityEffect(this);
+    w->setGraphicsEffect(eff);
+    QPropertyAnimation *a = new QPropertyAnimation(eff,"opacity");
+    a->setDuration(650);
+    a->setStartValue(1);
+    a->setEndValue(0);
+    a->setEasingCurve(QEasingCurve::OutBack);
+    a->start(QPropertyAnimation::DeleteWhenStopped);
+//    w->setVisible(false);
+}
+
+
+void MainWindow::FadeinWidget(QWidget *w){
+    QGraphicsOpacityEffect *eff = new QGraphicsOpacityEffect(this);
+    w->setVisible(true);
+    w->setGraphicsEffect(eff);
+    QPropertyAnimation *a = new QPropertyAnimation(eff,"opacity");
+    a->setDuration(650);
+    a->setStartValue(0);
+    a->setEndValue(1);
+    a->setEasingCurve(QEasingCurve::InBack);
+    a->start(QPropertyAnimation::DeleteWhenStopped);
+}
+// w is your widget
+
+void MainWindow::updateTimerScreenShot(){
+    FadeOutWidget(horizontalMenu);
+    FadeOutWidget(centralMenu);
+    FadeOutWidget(headerImageInfo);
+    FadeOutWidget(downArrowWidget);
+    FadeOutWidget(upArrowWidget);
+    statScreenSaver = true;
 
 }
 
@@ -436,22 +503,23 @@ void MainWindow::TimerFinish(){
     headerImageInfo->show();
     ZackClock();
     delete t;
+    checkProc = true;
 }
 
 void MainWindow::procLoadInitVideoFinished(bool s){
     // start Init video
     t5 = new QTimer;
     connect(t5, SIGNAL(timeout()), this, SLOT(TimerFinish5()));
-    t5->start(300);
+    t5->start(0);
 
     // start to show main Video
     t = new QTimer;
     connect(t, SIGNAL(timeout()), this, SLOT(TimerFinish()));
-    t->start(14000);
+    t->start(13900);
     // start to load main Video
     t2 = new QTimer;
     connect(t2, SIGNAL(timeout()), this, SLOT(TimerFinish2()));
-    t2->start(9000);
+    t2->start(0);
 
 }
 
@@ -1448,7 +1516,12 @@ Email MainWindow::createEmail(QString &emailAddr)
                 from,
                 to,
                 "Zac Browser", // subject
-                "Hi from new version of ZacBrowser - Code: "+ tempCode// body
+                "Thank you for choosing Zac Browser. \n"
+                "Please use this code to unlock the admin section:" + tempCode + "\n"
+                "If you require any further assistance, please feel free \n"
+                "to visit our support forms: https://zacbrowser.com/forum \n"
+                "Kindest regards,\n"
+                "Zac Browser Team"
                 );
     return email;
 }

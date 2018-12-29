@@ -2,7 +2,7 @@
 
 CEditWebSites::CEditWebSites(tgroup &data, QWidget *parent) : QWidget(parent)
 {
-    setAttribute(Qt::WA_StaticContents);
+//    setAttribute(Qt::WA_StaticContents);
     setMouseTracking(true);
     m_group = data;
     categItems = 0;

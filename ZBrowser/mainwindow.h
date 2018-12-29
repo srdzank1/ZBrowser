@@ -48,7 +48,7 @@
 #include "SMTPClient/email.h"
 #include "SMTPClient/smtpclient.h"
 #include <QMessageBox>
-
+#include <QGraphicsOpacityEffect>
 
 #define SUBDIR "/images/"
 //#define SUBDIR "/"
@@ -88,6 +88,7 @@ public:
 
 protected:
     void resizeEvent(QResizeEvent *event) override;
+    bool eventFilter(QObject *obj, QEvent *event);
     void keyReleaseEvent(QKeyEvent *);
 private:
     Ui::MainWindow *ui;
@@ -124,6 +125,11 @@ private:
     QString randString(int len);
     QString randNumString(int len);
     bool validaEmail(QString email);
+    void FadeinWidget(QWidget *w);
+    void FadeOutWidget(QWidget *w);
+
+
+
     int height;
     int width;
     QScopedPointer<FullScreenWindow> m_fullScreenWindow;
@@ -136,7 +142,7 @@ private:
     CBaseWidget * downArrowWidget;
     QString cont;
     QString cont2;
-
+    QTimer *timerSS;
     CBaseWidget * homeWidget;
     CBaseWidget * backWidget;
     CBaseWidget * forwardWidget;
@@ -146,6 +152,7 @@ private:
     QString m_url;
     int resizeCount;
     int catIndx;
+    bool statScreenSaver;
     CLoaderWidget *loader;
     CTopBarWidget *topBarWidget;
     CAdminSettingsWidget * admin;
@@ -224,6 +231,8 @@ public slots:
     void procOkValidateCodeDialog();
     void procCancelValidateCodeDialog();
     void procAskValidateCodeDialog();
+    void updateTimerScreenShot();
+
 };
 
 #endif // MAINWINDOW_H

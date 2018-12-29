@@ -6,7 +6,7 @@ CBaseWidget::CBaseWidget(QWidget *parent) : QWidget(parent)
   ,bmouseOver(false)
   ,bmouseClick(false)
 {
-    setAttribute(Qt::WA_StaticContents);
+//    setAttribute(Qt::WA_StaticContents);
     setMouseTracking(true);
     m_brush.setColor(Qt::blue);
 

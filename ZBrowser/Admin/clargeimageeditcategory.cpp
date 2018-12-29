@@ -6,7 +6,7 @@ CLargeImageEditCategory::CLargeImageEditCategory(QWidget *parent) : QWidget(pare
   ,iItem(0)
   ,m_titleIcon("*")
 {
-    setAttribute(Qt::WA_StaticContents);
+//    setAttribute(Qt::WA_StaticContents);
     setMouseTracking(true);
     m_clickedStatus = true;
     m_brush.setColor(Qt::blue);

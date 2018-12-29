@@ -4,7 +4,7 @@
 CHeaderImageInfo::CHeaderImageInfo(QWidget *parent) : QWidget(parent)
   ,iItem(0)
 {
-    setAttribute(Qt::WA_StaticContents);
+//    setAttribute(Qt::WA_StaticContents);
     setMouseTracking(true);
     m_brush.setColor(Qt::blue);
     mAnimate = false;

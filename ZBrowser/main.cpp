@@ -13,8 +13,8 @@ int main(int argc, char *argv[])
     w.CreateInitElement();
 //    w.InitXMLGrabber();
 
-    w.showFullScreen();
-//    w.showMaximized();
+//    w.showFullScreen();
+    w.showMaximized();
 
     return a.exec();
 }
