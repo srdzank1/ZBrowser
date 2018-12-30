@@ -46,30 +46,30 @@ void CVerifyDialog::dialogSettings(){
 
 
     userLabel->setGeometry(20, 50, 100, 30);
-    cFont.setPointSize(12);
+    cFont.setPointSize(10);
     cFont.setBold(false);
     userLabel->setFont(cFont);
     userLabel->setText(QStringLiteral("Enter valid email\n to get code"));
 
     userEdit->setGeometry(140, 50, 200, 30);
-    cFont.setPointSize(12);
+    cFont.setPointSize(10);
     userEdit->setFont(cFont);
     userEdit->setText("");
 
     passLabel->setGeometry(20, 85, 100, 30);
-    cFont.setPointSize(12);
+    cFont.setPointSize(10);
     cFont.setBold(false);
     passLabel->setFont(cFont);
     passLabel->setText(QStringLiteral("Code"));
 
     passEdit->setGeometry(140, 85, 200, 30);
-    cFont.setPointSize(12);
+    cFont.setPointSize(10);
     passEdit->setEchoMode(QLineEdit::Password);
     passEdit->setFont(cFont);
     passEdit->setText("");
 
     okButton->setGeometry( QRect(20 , 140, 100 ,30));
-    cFont.setPointSize(12);
+    cFont.setPointSize(10);
     cFont.setBold(true);
     okButton->setFont(cFont);
     okButton->setText(QStringLiteral("Ok"));
@@ -77,7 +77,7 @@ void CVerifyDialog::dialogSettings(){
     okButton->show();
 
     cancelButton->setGeometry( QRect(120 , 140, 100 ,30));
-    cFont.setPointSize(12);
+    cFont.setPointSize(10);
     cFont.setBold(true);
     cancelButton->setFont(cFont);
     cancelButton->setText(QStringLiteral("Cancel"));

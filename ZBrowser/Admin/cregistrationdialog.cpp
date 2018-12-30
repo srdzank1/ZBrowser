@@ -51,27 +51,27 @@ void CRegistrationDialog::dialogSettings(){
 
     //----------------------------------------------------
 
-    userLabel->setGeometry(20, 50, 120, 30);
-    cFont.setPointSize(12);
+    userLabel->setGeometry(20, 50, 120, 40);
+    cFont.setPointSize(10);
     cFont.setBold(false);
     userLabel->setFont(cFont);
-    userLabel->setText(QStringLiteral("Enter valid email\n to get code"));
+    userLabel->setText(QStringLiteral("Enter valid email\nto get code"));
 
     userEdit->setGeometry(160, 50, 250, 30);
-    cFont.setPointSize(12);
+    cFont.setPointSize(10);
     userEdit->setFont(cFont);
     userEdit->setText("");
 
     //-----------------------------------------------------
 
     passLabel->setGeometry(20, 85, 120, 30);
-    cFont.setPointSize(12);
+    cFont.setPointSize(10);
     cFont.setBold(false);
     passLabel->setFont(cFont);
     passLabel->setText(QStringLiteral("Password"));
 
     passEdit->setGeometry(160, 85, 250, 30);
-    cFont.setPointSize(12);
+    cFont.setPointSize(10);
     passEdit->setEchoMode(QLineEdit::Password);
     passEdit->setFont(cFont);
     passEdit->setText("");
@@ -79,13 +79,13 @@ void CRegistrationDialog::dialogSettings(){
     //-----------------------------------------------------
 
     passLabel2->setGeometry(20, 120, 120, 30);
-    cFont.setPointSize(12);
+    cFont.setPointSize(10);
     cFont.setBold(false);
     passLabel2->setFont(cFont);
     passLabel2->setText(QStringLiteral("Repeat password"));
 
     passEdit2->setGeometry(160, 120, 250, 30);
-    cFont.setPointSize(12);
+    cFont.setPointSize(10);
     passEdit2->setEchoMode(QLineEdit::Password);
     passEdit2->setFont(cFont);
     passEdit2->setText("");
@@ -94,7 +94,7 @@ void CRegistrationDialog::dialogSettings(){
 
 
     okButton->setGeometry( QRect(20 , 170, 100 ,30));
-    cFont.setPointSize(12);
+    cFont.setPointSize(10);
     cFont.setBold(true);
     okButton->setFont(cFont);
     okButton->setText(QStringLiteral("Ok"));
@@ -102,7 +102,7 @@ void CRegistrationDialog::dialogSettings(){
     okButton->show();
 
     cancelButton->setGeometry( QRect(120 , 170, 100 ,30));
-    cFont.setPointSize(12);
+    cFont.setPointSize(10);
     cFont.setBold(true);
     cancelButton->setFont(cFont);
     cancelButton->setText(QStringLiteral("Cancel"));
