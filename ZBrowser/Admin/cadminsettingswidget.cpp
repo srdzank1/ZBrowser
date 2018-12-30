@@ -124,6 +124,7 @@ void CAdminSettingsWidget::menuGlobalSettings(){
 
     alwaysInFront->setGeometry( QRect(270 , 140, 100 ,30));
     alwaysInFront->SetStatus(m_settings.alwaysInFront);
+    connect(alwaysInFront, SIGNAL(changeSwitchStatus(bool)), this, SLOT(procShowalwaysInFront(bool)));
     alwaysInFront->show();
 
     //------------------------------------------------
@@ -238,4 +239,9 @@ void CAdminSettingsWidget::procMenuCloseButton(bool stat){
 
 void CAdminSettingsWidget::procMenuClose(bool stat){
     emit clickForCloseMenu();
+}
+
+
+void CAdminSettingsWidget::procShowalwaysInFront(bool stat){
+    emit changealwaysInFront(stat);
 }

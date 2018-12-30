@@ -115,6 +115,13 @@ MainWindow::MainWindow(QWidget *parent) :
         mSettings.showCloseButton = true;
     }
 
+
+    if (mSettings.alwaysInFront){
+        setWindowFlags(Qt::Window | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint);
+    }else{
+        setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
+    }
+
     timerSS = new QTimer(this);
     timerSS->setSingleShot(true);
     connect(timerSS, SIGNAL(timeout()), this, SLOT(updateTimerScreenShot()));
@@ -132,11 +139,24 @@ bool MainWindow::eventFilter(QObject *obj, QEvent *event)
     {
         timerSS->stop();
         if(statScreenSaver){
+
             FadeinWidget(horizontalMenu);
             FadeinWidget(centralMenu);
             FadeinWidget(headerImageInfo);
-            FadeinWidget(downArrowWidget);
-            FadeinWidget(upArrowWidget);
+
+
+            if(xmlData.categories.at(catIndx)->websites.count()!=0){
+            if (centralMenu->getRowMax()*200 > scroll->height()){
+                FadeinWidget(downArrowWidget);
+                FadeinWidget(upArrowWidget);
+            }else{
+                FadeOutWidget(downArrowWidget);
+                FadeOutWidget(upArrowWidget);
+            }
+        }else{
+            FadeOutWidget(downArrowWidget);
+            FadeOutWidget(upArrowWidget);
+        }
             statScreenSaver = false;
         }
         timerSS->start(4000);
@@ -149,7 +169,7 @@ void MainWindow::FadeOutWidget(QWidget *w){
     QGraphicsOpacityEffect *eff = new QGraphicsOpacityEffect(this);
     w->setGraphicsEffect(eff);
     QPropertyAnimation *a = new QPropertyAnimation(eff,"opacity");
-    a->setDuration(650);
+    a->setDuration(500);
     a->setStartValue(1);
     a->setEndValue(0);
     a->setEasingCurve(QEasingCurve::OutBack);
@@ -163,7 +183,7 @@ void MainWindow::FadeinWidget(QWidget *w){
     w->setVisible(true);
     w->setGraphicsEffect(eff);
     QPropertyAnimation *a = new QPropertyAnimation(eff,"opacity");
-    a->setDuration(650);
+    a->setDuration(500);
     a->setStartValue(0);
     a->setEndValue(1);
     a->setEasingCurve(QEasingCurve::InBack);
@@ -174,11 +194,12 @@ void MainWindow::FadeinWidget(QWidget *w){
 void MainWindow::updateTimerScreenShot(){
     FadeOutWidget(horizontalMenu);
     FadeOutWidget(centralMenu);
-    FadeOutWidget(headerImageInfo);
     FadeOutWidget(downArrowWidget);
     FadeOutWidget(upArrowWidget);
     statScreenSaver = true;
-
+    if (checkProc){
+        FadeOutWidget(headerImageInfo);
+    }
 }
 
 void MainWindow::InitXMLGrabber(){
@@ -571,7 +592,6 @@ void MainWindow::processClickInit(int i){
         }else{
             downArrowWidget->hide();
             upArrowWidget->hide();
-
         }
     }else{
         downArrowWidget->hide();
@@ -787,6 +807,7 @@ void MainWindow::ProcAdminClick(){
             connect(admin, SIGNAL(clickForCloseMenu()), this, SLOT(ProcCloseAdminMenu()));
             connect(admin, SIGNAL(changeEnableRestriction()), this, SLOT(ProcChangeEnableRestriction()));
             connect(admin, SIGNAL(changeEnableSchedule()), this, SLOT(ProcChangeEnableSchedule()));
+            connect(admin, SIGNAL(changealwaysInFront(bool)), this, SLOT(ProcAlwaysInFront(bool)));
 
 
             admin->setGeometry(width - 402, 60, 385, 600);
@@ -815,6 +836,17 @@ void MainWindow::ProcAdminClick(){
     }
 
 }
+
+void MainWindow::ProcAlwaysInFront(bool stat){
+    if (stat) {
+        mSettings.alwaysInFront = true;
+        setWindowFlags(Qt::Window | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint);
+    }else{
+        mSettings.alwaysInFront = false;
+        setWindowFlags(Qt::Window | Qt::FramelessWindowHint);
+    }
+}
+
 
 void MainWindow::procCancelPD(){
     delete passDialog;
@@ -1114,7 +1146,6 @@ void MainWindow::processClick(int i){
     headerImageInfo->setImage(0, imgTmp);
     headerImageInfo->setTitleIcon(xmlData.categories.at(i)->name);
 
-
     centralMenu->setVisible(false);
     centralMenu->setXMLData(xmlData);
     centralMenu->createMenuByCategory(i, mFilteredWeb, mSettings);
@@ -1142,6 +1173,7 @@ void MainWindow::processClick(int i){
     scroll->show();
 
     headerImageInfo->show();
+    headerImageInfo->repaint();
 
 
     // background video
@@ -1228,6 +1260,7 @@ void MainWindow::ProcClickForUrl(QString &url, QString &title, QImage& imgTmp){
     headerImageInfo->setTitleIcon(title);
 
     headerImageInfo->setVisible(true);
+    headerImageInfo->update();
     horizontalMenu->setVisible(false);
     homeWidget->setVisible(true);
     closeOffWidget->setVisible(false);

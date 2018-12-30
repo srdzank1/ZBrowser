@@ -232,7 +232,7 @@ public slots:
     void procCancelValidateCodeDialog();
     void procAskValidateCodeDialog();
     void updateTimerScreenShot();
-
+    void ProcAlwaysInFront(bool stat);
 };
 
 #endif // MAINWINDOW_H

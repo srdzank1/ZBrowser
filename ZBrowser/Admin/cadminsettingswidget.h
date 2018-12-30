@@ -39,6 +39,7 @@ signals:
     void clickForCloseMenu();
     void changeEnableRestriction();
     void changeEnableSchedule();
+    void changealwaysInFront(bool);
 public slots:
     void procForEditWebsitesMain(bool);
     void procForScheduleMain(bool);
@@ -47,6 +48,7 @@ public slots:
     void procMenuClose(bool stat);
     void procShowEnableRestriction();
     void procShowEnableSchedule();
+    void procShowalwaysInFront(bool);
 
 private:
     bool statOn;
