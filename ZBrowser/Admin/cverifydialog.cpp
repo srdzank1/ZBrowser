@@ -1,27 +1,31 @@
 ﻿#include "cverifydialog.h"
 
-CVerifyDialog::CVerifyDialog(QWidget *parent) : QWidget(parent)
+CRegistrationVerifyDialog::CRegistrationVerifyDialog(QWidget *parent) : QWidget(parent)
 {
-    userLabel = new QLabel(this);
+    emailLabel = new QLabel(this);
     userEdit = new QLineEdit(this);
-    passLabel = new QLabel(this);
-    passEdit = new QLineEdit(this);
+    codeLabel = new QLabel(this);
     okButton = new QPushButton(this);
     cancelButton = new QPushButton(this);
+    sendNewEmailButton = new QPushButton(this);
+    sendNewCodeButton = new QPushButton(this);
     userEdit->setFocus();
 }
 
-CVerifyDialog::~CVerifyDialog()
+CRegistrationVerifyDialog::~CRegistrationVerifyDialog()
 {
-    delete userLabel;
+    delete emailLabel;
     delete userEdit;
-    delete passLabel;
-    delete passEdit;
+    delete codeLabel;
+//    delete passEdit;
     delete okButton;
     delete cancelButton;
+    delete sendNewEmailButton;
+    delete sendNewCodeButton;
+
 }
 
-void CVerifyDialog::paintEvent(QPaintEvent *event){
+void CRegistrationVerifyDialog::paintEvent(QPaintEvent *event){
     QPainter painter(this);
     QPainterPath path;
 
@@ -34,7 +38,7 @@ void CVerifyDialog::paintEvent(QPaintEvent *event){
     painter.end();
 }
 
-void CVerifyDialog::dialogSettings(){
+void CRegistrationVerifyDialog::dialogSettings(){
     QFont cFont;
 
     l = new QLabel(this);
@@ -44,31 +48,28 @@ void CVerifyDialog::dialogSettings(){
     l->setFont(cFont);
     l->setText(QStringLiteral("Registration"));
 
+    // ----------------------------------------------------------
 
-    userLabel->setGeometry(20, 50, 100, 30);
+    emailLabel->setGeometry(20, 50, 350, 30);
     cFont.setPointSize(12);
     cFont.setBold(false);
-    userLabel->setFont(cFont);
-    userLabel->setText(QStringLiteral("Enter valid email\n to get code"));
+    emailLabel->setFont(cFont);
+    emailLabel->setText(QStringLiteral("Please retrieve the code sent by email to \n") + mEmail);
 
-    userEdit->setGeometry(140, 50, 200, 30);
+    codeLabel->setGeometry(20, 90, 350, 30);
+    cFont.setPointSize(12);
+    cFont.setBold(false);
+    codeLabel->setFont(cFont);
+    codeLabel->setText(QStringLiteral("Code "));
+
+    userEdit->setGeometry(100, 90, 200, 30);
     cFont.setPointSize(12);
     userEdit->setFont(cFont);
     userEdit->setText("");
 
-    passLabel->setGeometry(20, 85, 100, 30);
-    cFont.setPointSize(12);
-    cFont.setBold(false);
-    passLabel->setFont(cFont);
-    passLabel->setText(QStringLiteral("Code"));
+// ----------------------------------------------------------
 
-    passEdit->setGeometry(140, 85, 200, 30);
-    cFont.setPointSize(12);
-    passEdit->setEchoMode(QLineEdit::Password);
-    passEdit->setFont(cFont);
-    passEdit->setText("");
-
-    okButton->setGeometry( QRect(20 , 140, 100 ,30));
+    okButton->setGeometry( QRect(20 , 140, 50 ,30));
     cFont.setPointSize(12);
     cFont.setBold(true);
     okButton->setFont(cFont);
@@ -76,21 +77,50 @@ void CVerifyDialog::dialogSettings(){
     connect(okButton, SIGNAL(clicked(bool)), this, SLOT(procOk(bool)));
     okButton->show();
 
-    cancelButton->setGeometry( QRect(120 , 140, 100 ,30));
+    cancelButton->setGeometry( QRect(70 , 140, 60 ,30));
     cFont.setPointSize(12);
     cFont.setBold(true);
     cancelButton->setFont(cFont);
     cancelButton->setText(QStringLiteral("Cancel"));
     connect(cancelButton, SIGNAL(clicked(bool)), this, SLOT(procCancel(bool)));
     cancelButton->show();
+
+
+    sendNewCodeButton->setGeometry( QRect(130 , 140, 120 ,30));
+    cFont.setPointSize(12);
+    cFont.setBold(true);
+    sendNewCodeButton->setFont(cFont);
+    sendNewCodeButton->setText(QStringLiteral("New code"));
+    connect(sendNewCodeButton, SIGNAL(clicked(bool)), this, SLOT(procNewCode(bool)));
+    sendNewCodeButton->show();
+
+    sendNewEmailButton->setGeometry( QRect(250 , 140, 120 ,30));
+    cFont.setPointSize(12);
+    cFont.setBold(true);
+    sendNewEmailButton->setFont(cFont);
+    sendNewEmailButton->setText(QStringLiteral("Change email"));
+    connect(sendNewEmailButton, SIGNAL(clicked(bool)), this, SLOT(procNewEmail(bool)));
+    sendNewEmailButton->show();
 }
 
-void CVerifyDialog::procOk(bool stat){
+void CRegistrationVerifyDialog::procOk(bool stat){
     emit clickOK();
 }
 
-void CVerifyDialog::procCancel(bool stat){
+void CRegistrationVerifyDialog::procCancel(bool stat){
     emit clickCancel();
+}
+
+void CRegistrationVerifyDialog::procNewCode(bool stat){
+    emit clickNewCode();
+}
+
+void CRegistrationVerifyDialog::procNewEmail(bool stat){
+    emit clickNewEmail();
+}
+
+void CRegistrationVerifyDialog::setEmailText(QString& text){
+   mEmail = text;
 }
 
 

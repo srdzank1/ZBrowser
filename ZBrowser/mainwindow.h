@@ -79,7 +79,6 @@ public:
     void SaveFilteredDataSchedule();
     void ReadFilteredDataSchedule();
     void ZackClock();
-    void InitPassUserProc();
     void ProcRegistrationDialog();
     void ProcValidateCodeDialog();
     void sendEmail(QString &emailAdd);
@@ -127,6 +126,7 @@ private:
     bool validaEmail(QString email);
     void FadeinWidget(QWidget *w);
     void FadeOutWidget(QWidget *w);
+    void ProcRegVerifyDialog();
 
 
 
@@ -174,12 +174,11 @@ private:
     tfilterschedule mFilteredSchedule;
     CPasswordDialog *passDialog;
     CRegistrationDialog *registrationDialog;
-    CVerifyDialog *verifyDialog;
+    CRegistrationVerifyDialog *verifyDialog;
     CMessageDialog *msgDialog;
     CCodeDialog *codeDialog;
 
-    QString userHash;
-    QString passHash;
+
     QString emailReg;
     QString codeHash;
     QString validateCode;
@@ -220,19 +219,26 @@ public slots:
     void ProcChangeEnableRestriction();
     void ProcChangeEnableSchedule();
     void ProcPasswordDialog();
-    void procOkPD();
-    void procCancelPD();
+    void procOkPasswordDialog();
+    void procCancelPasswordDialog();
     void procLoadInitVideoFinished(bool s);
-    void procOkRegDialog();
     void procCancelRegDialog();
     void procMsgDialog(const QString&, const QString&);
     void procOkMsgDialog();
-    void procRecoveryPD();
+    void procRecoveryPasswordDialog();
     void procOkValidateCodeDialog();
     void procCancelValidateCodeDialog();
-    void procAskValidateCodeDialog();
+//    void procAskValidateCodeDialog();
     void updateTimerScreenShot();
     void ProcAlwaysInFront(bool stat);
+
+    void procOkVerifyDialog();
+    void procCancelVerifyDialog();
+    void procNewCodeVerifyDialog();
+    void procNewEmailVerifyDialog();
+
+    void procOkRegistrationDialog();
+    void procCancelRegistrationDialog();
 };
 
 #endif // MAINWINDOW_H

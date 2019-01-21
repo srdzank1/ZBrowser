@@ -4,8 +4,6 @@ CPasswordDialog::CPasswordDialog(QWidget *parent) : QWidget(parent)
 {
     userLabel = new QLabel(this);
     userEdit = new QLineEdit(this);
-    passLabel = new QLabel(this);
-    passEdit = new QLineEdit(this);
     okButton = new QPushButton(this);
     cancelButton = new QPushButton(this);
     passRecoveryButton = new QPushButton(this);
@@ -16,10 +14,9 @@ CPasswordDialog::~CPasswordDialog()
 {
     delete userLabel;
     delete userEdit;
-    delete passLabel;
-    delete passEdit;
     delete okButton;
     delete cancelButton;
+    delete passRecoveryButton;
 }
 
 void CPasswordDialog::paintEvent(QPaintEvent *event){
@@ -50,24 +47,13 @@ void CPasswordDialog::dialogSettings(){
     cFont.setPointSize(12);
     cFont.setBold(false);
     userLabel->setFont(cFont);
-    userLabel->setText(QStringLiteral("Username"));
+    userLabel->setText(QStringLiteral("Code"));
 
     userEdit->setGeometry(140, 50, 200, 30);
     cFont.setPointSize(12);
     userEdit->setFont(cFont);
+    userEdit->setEchoMode(QLineEdit::Password);
     userEdit->setText("");
-
-    passLabel->setGeometry(20, 85, 100, 30);
-    cFont.setPointSize(12);
-    cFont.setBold(false);
-    passLabel->setFont(cFont);
-    passLabel->setText(QStringLiteral("Password"));
-
-    passEdit->setGeometry(140, 85, 200, 30);
-    cFont.setPointSize(12);
-    passEdit->setEchoMode(QLineEdit::Password);
-    passEdit->setFont(cFont);
-    passEdit->setText("");
 
     okButton->setGeometry( QRect(20 , 140, 100 ,30));
     cFont.setPointSize(12);
@@ -89,7 +75,7 @@ void CPasswordDialog::dialogSettings(){
     cFont.setPointSize(12);
     cFont.setBold(true);
     passRecoveryButton->setFont(cFont);
-    passRecoveryButton->setText(QStringLiteral("Password recovery"));
+    passRecoveryButton->setText(QStringLiteral("Forget Code"));
     connect(passRecoveryButton, SIGNAL(clicked(bool)), this, SLOT(procRecovery(bool)));
     passRecoveryButton->show();
 

@@ -5,12 +5,6 @@ CRegistrationDialog::CRegistrationDialog(QWidget *parent) : QWidget(parent)
     userLabel = new QLabel(this);
     userEdit = new QLineEdit(this);
 
-    passLabel = new QLabel(this);
-    passEdit = new QLineEdit(this);
-    passLabel2 = new QLabel(this);
-    passEdit2 = new QLineEdit(this);
-
-
     okButton = new QPushButton(this);
     cancelButton = new QPushButton(this);
     userEdit->setFocus();
@@ -20,8 +14,8 @@ CRegistrationDialog::~CRegistrationDialog()
 {
     delete userLabel;
     delete userEdit;
-    delete passLabel;
-    delete passEdit;
+//    delete passLabel;
+//    delete passEdit;
     delete okButton;
     delete cancelButton;
 }
@@ -51,47 +45,18 @@ void CRegistrationDialog::dialogSettings(){
 
     //----------------------------------------------------
 
-    userLabel->setGeometry(20, 50, 120, 30);
+    userLabel->setGeometry(20, 70, 350, 30);
     cFont.setPointSize(12);
     cFont.setBold(false);
     userLabel->setFont(cFont);
-    userLabel->setText(QStringLiteral("Enter valid email\n to get code"));
+    userLabel->setText(QStringLiteral("Enter valid email to get code"));
 
-    userEdit->setGeometry(160, 50, 250, 30);
+    userEdit->setGeometry(20, 100, 350, 30);
     cFont.setPointSize(12);
     userEdit->setFont(cFont);
     userEdit->setText("");
 
     //-----------------------------------------------------
-
-    passLabel->setGeometry(20, 85, 120, 30);
-    cFont.setPointSize(12);
-    cFont.setBold(false);
-    passLabel->setFont(cFont);
-    passLabel->setText(QStringLiteral("Password"));
-
-    passEdit->setGeometry(160, 85, 250, 30);
-    cFont.setPointSize(12);
-    passEdit->setEchoMode(QLineEdit::Password);
-    passEdit->setFont(cFont);
-    passEdit->setText("");
-
-    //-----------------------------------------------------
-
-    passLabel2->setGeometry(20, 120, 120, 30);
-    cFont.setPointSize(12);
-    cFont.setBold(false);
-    passLabel2->setFont(cFont);
-    passLabel2->setText(QStringLiteral("Repeat password"));
-
-    passEdit2->setGeometry(160, 120, 250, 30);
-    cFont.setPointSize(12);
-    passEdit2->setEchoMode(QLineEdit::Password);
-    passEdit2->setFont(cFont);
-    passEdit2->setText("");
-
-    //-----------------------------------------------------
-
 
     okButton->setGeometry( QRect(20 , 170, 100 ,30));
     cFont.setPointSize(12);
