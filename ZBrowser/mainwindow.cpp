@@ -813,14 +813,15 @@ void MainWindow::procCancelPasswordDialog(){
 void MainWindow::procRecoveryPasswordDialog(){
     sendEmail(emailReg);
     // to do add message box
-    procMsgDialog("Info", "Check your email!");
-
+    procMsgDialog("Info", "Check your email! "+ convertEmailToHiden(emailReg));
 }
 
 //---------------------------------------------------------------------------------------------------
 void MainWindow::ProcRegVerifyDialog(){
     if (verifyDialog == 0){
         verifyDialog = new CRegistrationVerifyDialog(this);
+        QString tempEmail = convertEmailToHiden(emailReg);
+        verifyDialog->setEmailText(tempEmail);
         connect(verifyDialog, SIGNAL(clickOK()),this,SLOT(procOkVerifyDialog()));
         connect(verifyDialog, SIGNAL(clickCancel()),this,SLOT(procCancelVerifyDialog()));
         connect(verifyDialog, SIGNAL(clickNewCode()),this,SLOT(procNewCodeVerifyDialog()));
@@ -854,7 +855,7 @@ void MainWindow::procCancelVerifyDialog(){
 }
 void MainWindow::procNewCodeVerifyDialog(){
     sendEmail(emailReg);
-    procMsgDialog("Warning", "Check your email for code!");
+    procMsgDialog("Warning", "Check your email for code! "+convertEmailToHiden(emailReg));
 }
 
 void MainWindow::procNewEmailVerifyDialog(){
@@ -1668,3 +1669,18 @@ bool MainWindow::validaEmail(QString email)
     }
     return retorno;
 }
+
+QString MainWindow::convertEmailToHiden(QString email){
+    QStringList tempList;
+    tempList = email.split("@");
+    QString firstPart = tempList.at(0);
+    QString lastPart = tempList.at(1);
+    firstPart = firstPart.replace(0, 1, "*");
+    firstPart = firstPart.replace(firstPart.length()-1, 1, "*");
+
+    lastPart = lastPart.replace(0, 1, "*");
+    lastPart = lastPart.replace(lastPart.length()-1, 1, "*");
+    email = firstPart+"@"+lastPart;
+    return email;
+}
+

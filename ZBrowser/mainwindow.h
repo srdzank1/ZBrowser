@@ -83,6 +83,7 @@ public:
     void ProcValidateCodeDialog();
     void sendEmail(QString &emailAdd);
     Email createEmail(QString &emailAdd);
+    QString convertEmailToHiden(QString email);
 
 
 protected:

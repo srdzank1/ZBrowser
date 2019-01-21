@@ -41,13 +41,13 @@ void CMessageDialog::dialogSettings(const QString& title, const QString& info){
     //----------------------------------------------------
 
     MsgLabel->setGeometry(20, 50, 360, 110);
-    cFont.setPointSize(10);
+    cFont.setPointSize(12);
     cFont.setBold(false);
     MsgLabel->setFont(cFont);
     MsgLabel->setText(info);
 
     okButton->setGeometry( QRect(20 , 170, 100 ,30));
-    cFont.setPointSize(10);
+    cFont.setPointSize(12);
     cFont.setBold(true);
     okButton->setFont(cFont);
     okButton->setText(QStringLiteral("Ok"));
