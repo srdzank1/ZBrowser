@@ -44,19 +44,19 @@ void CPasswordDialog::dialogSettings(){
 
 
     userLabel->setGeometry(20, 50, 100, 30);
-    cFont.setPointSize(12);
+    cFont.setPointSize(10);
     cFont.setBold(false);
     userLabel->setFont(cFont);
     userLabel->setText(QStringLiteral("Code"));
 
     userEdit->setGeometry(140, 50, 200, 30);
-    cFont.setPointSize(12);
+    cFont.setPointSize(10);
     userEdit->setFont(cFont);
     userEdit->setEchoMode(QLineEdit::Password);
     userEdit->setText("");
 
     okButton->setGeometry( QRect(20 , 140, 100 ,30));
-    cFont.setPointSize(12);
+    cFont.setPointSize(10);
     cFont.setBold(true);
     okButton->setFont(cFont);
     okButton->setText(QStringLiteral("Ok"));
@@ -64,7 +64,7 @@ void CPasswordDialog::dialogSettings(){
     okButton->show();
 
     cancelButton->setGeometry( QRect(100 , 140, 80 ,30));
-    cFont.setPointSize(12);
+    cFont.setPointSize(10);
     cFont.setBold(true);
     cancelButton->setFont(cFont);
     cancelButton->setText(QStringLiteral("Cancel"));
@@ -72,7 +72,7 @@ void CPasswordDialog::dialogSettings(){
     cancelButton->show();
 
     passRecoveryButton->setGeometry( QRect(180 , 140, 200 ,30));
-    cFont.setPointSize(12);
+    cFont.setPointSize(10);
     cFont.setBold(true);
     passRecoveryButton->setFont(cFont);
     passRecoveryButton->setText(QStringLiteral("Forget Code"));

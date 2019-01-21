@@ -813,7 +813,7 @@ void MainWindow::procCancelPasswordDialog(){
 void MainWindow::procRecoveryPasswordDialog(){
     sendEmail(emailReg);
     // to do add message box
-    procMsgDialog("Info", "Check your email! "+ convertEmailToHiden(emailReg));
+    procMsgDialog("Info", "Check your email! \n"+ convertEmailToHiden(emailReg));
 }
 
 //---------------------------------------------------------------------------------------------------
@@ -855,7 +855,7 @@ void MainWindow::procCancelVerifyDialog(){
 }
 void MainWindow::procNewCodeVerifyDialog(){
     sendEmail(emailReg);
-    procMsgDialog("Warning", "Check your email for code! "+convertEmailToHiden(emailReg));
+    procMsgDialog("Warning", "Check your email for code! \n"+convertEmailToHiden(emailReg));
 }
 
 void MainWindow::procNewEmailVerifyDialog(){
@@ -912,7 +912,7 @@ void MainWindow::ProcAdminClick(){
         delete editSchedule;
         editSchedule = 0;
     }
-    validateCode = "false";
+//    validateCode = "false";
     if (validateCode != "true"){
         ProcRegistrationDialog();
     }else{

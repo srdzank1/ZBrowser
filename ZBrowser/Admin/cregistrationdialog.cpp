@@ -46,13 +46,13 @@ void CRegistrationDialog::dialogSettings(){
     //----------------------------------------------------
 
     userLabel->setGeometry(20, 70, 350, 30);
-    cFont.setPointSize(12);
+    cFont.setPointSize(10);
     cFont.setBold(false);
     userLabel->setFont(cFont);
     userLabel->setText(QStringLiteral("Enter valid email to get code"));
 
     userEdit->setGeometry(20, 100, 350, 30);
-    cFont.setPointSize(12);
+    cFont.setPointSize(10);
     userEdit->setFont(cFont);
     userEdit->setText("");
 
@@ -60,7 +60,7 @@ void CRegistrationDialog::dialogSettings(){
 
 
     okButton->setGeometry( QRect(20 , 170, 100 ,30));
-    cFont.setPointSize(12);
+    cFont.setPointSize(10);
     cFont.setBold(true);
     okButton->setFont(cFont);
     okButton->setText(QStringLiteral("Ok"));
@@ -68,7 +68,7 @@ void CRegistrationDialog::dialogSettings(){
     okButton->show();
 
     cancelButton->setGeometry( QRect(120 , 170, 100 ,30));
-    cFont.setPointSize(12);
+    cFont.setPointSize(10);
     cFont.setBold(true);
     cancelButton->setFont(cFont);
     cancelButton->setText(QStringLiteral("Cancel"));
