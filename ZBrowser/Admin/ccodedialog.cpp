@@ -46,20 +46,20 @@ void CCodeDialog::dialogSettings(){
     //----------------------------------------------------
 
     userLabel->setGeometry(20, 50, 120, 30);
-    cFont.setPointSize(12);
+    cFont.setPointSize(10);
     cFont.setBold(false);
     userLabel->setFont(cFont);
     userLabel->setText(QStringLiteral("Enter code "));
 
     userEdit->setGeometry(160, 50, 250, 30);
-    cFont.setPointSize(12);
+    cFont.setPointSize(10);
     userEdit->setFont(cFont);
     userEdit->setText("");
 
 //------------------------------------------------------------------------
 
     okButton->setGeometry( QRect(20 , 170, 100 ,30));
-    cFont.setPointSize(12);
+    cFont.setPointSize(10);
     cFont.setBold(true);
     okButton->setFont(cFont);
     okButton->setText(QStringLiteral("Ok"));
@@ -67,7 +67,7 @@ void CCodeDialog::dialogSettings(){
     okButton->show();
 
     cancelButton->setGeometry( QRect(120 , 170, 100 ,30));
-    cFont.setPointSize(12);
+    cFont.setPointSize(10);
     cFont.setBold(true);
     cancelButton->setFont(cFont);
     cancelButton->setText(QStringLiteral("Cancel"));
@@ -75,7 +75,7 @@ void CCodeDialog::dialogSettings(){
     cancelButton->show();
 
     AskCodeButton->setGeometry( QRect(220 , 170, 150 ,30));
-    cFont.setPointSize(12);
+    cFont.setPointSize(10);
     cFont.setBold(true);
     AskCodeButton->setFont(cFont);
     AskCodeButton->setText(QStringLiteral("Ask new code"));

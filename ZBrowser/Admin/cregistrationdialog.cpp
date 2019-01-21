@@ -58,6 +58,7 @@ void CRegistrationDialog::dialogSettings(){
 
     //-----------------------------------------------------
 
+
     okButton->setGeometry( QRect(20 , 170, 100 ,30));
     cFont.setPointSize(12);
     cFont.setBold(true);

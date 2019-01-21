@@ -38,6 +38,104 @@ void CRegistrationVerifyDialog::paintEvent(QPaintEvent *event){
     painter.end();
 }
 
+//void CRegistrationVerifyDialog::dialogSettings(){
+//    QFont cFont;
+
+//    l = new QLabel(this);
+//    l->setGeometry(20,10, 300, 30);
+//    cFont.setPointSize(16);
+//    cFont.setBold(true);
+//    l->setFont(cFont);
+//    l->setText(QStringLiteral("Registration"));
+
+//    // ----------------------------------------------------------
+
+//<<<<<<< HEAD
+//    emailLabel->setGeometry(20, 50, 350, 30);
+//    cFont.setPointSize(12);
+//    cFont.setBold(false);
+//    emailLabel->setFont(cFont);
+//    emailLabel->setText(QStringLiteral("Please retrieve the code sent by email to \n") + mEmail);
+
+//    codeLabel->setGeometry(20, 90, 350, 30);
+//    cFont.setPointSize(12);
+//=======
+//    userLabel->setGeometry(20, 50, 100, 30);
+//    cFont.setPointSize(10);
+//    cFont.setBold(false);
+//    userLabel->setFont(cFont);
+//    userLabel->setText(QStringLiteral("Enter valid email\n to get code"));
+
+//    userEdit->setGeometry(140, 50, 200, 30);
+//    cFont.setPointSize(10);
+//    userEdit->setFont(cFont);
+//    userEdit->setText("");
+
+//    passLabel->setGeometry(20, 85, 100, 30);
+//    cFont.setPointSize(10);
+//>>>>>>> 6fd5755ec8b7c90a1c1ec3adf9cc98c20b08ce6c
+//    cFont.setBold(false);
+//    codeLabel->setFont(cFont);
+//    codeLabel->setText(QStringLiteral("Code "));
+
+//<<<<<<< HEAD
+//    userEdit->setGeometry(100, 90, 200, 30);
+//    cFont.setPointSize(12);
+//    userEdit->setFont(cFont);
+//    userEdit->setText("");
+
+//// ----------------------------------------------------------
+
+//    okButton->setGeometry( QRect(20 , 140, 50 ,30));
+//    cFont.setPointSize(12);
+//=======
+//    passEdit->setGeometry(140, 85, 200, 30);
+//    cFont.setPointSize(10);
+//    passEdit->setEchoMode(QLineEdit::Password);
+//    passEdit->setFont(cFont);
+//    passEdit->setText("");
+
+//    okButton->setGeometry( QRect(20 , 140, 100 ,30));
+//    cFont.setPointSize(10);
+//>>>>>>> 6fd5755ec8b7c90a1c1ec3adf9cc98c20b08ce6c
+//    cFont.setBold(true);
+//    okButton->setFont(cFont);
+//    okButton->setText(QStringLiteral("Ok"));
+//    connect(okButton, SIGNAL(clicked(bool)), this, SLOT(procOk(bool)));
+//    okButton->show();
+
+//<<<<<<< HEAD
+//    cancelButton->setGeometry( QRect(70 , 140, 60 ,30));
+//    cFont.setPointSize(12);
+//=======
+//    cancelButton->setGeometry( QRect(120 , 140, 100 ,30));
+//    cFont.setPointSize(10);
+//>>>>>>> 6fd5755ec8b7c90a1c1ec3adf9cc98c20b08ce6c
+//    cFont.setBold(true);
+//    cancelButton->setFont(cFont);
+//    cancelButton->setText(QStringLiteral("Cancel"));
+//    connect(cancelButton, SIGNAL(clicked(bool)), this, SLOT(procCancel(bool)));
+//    cancelButton->show();
+
+
+//    sendNewCodeButton->setGeometry( QRect(130 , 140, 120 ,30));
+//    cFont.setPointSize(12);
+//    cFont.setBold(true);
+//    sendNewCodeButton->setFont(cFont);
+//    sendNewCodeButton->setText(QStringLiteral("New code"));
+//    connect(sendNewCodeButton, SIGNAL(clicked(bool)), this, SLOT(procNewCode(bool)));
+//    sendNewCodeButton->show();
+
+//    sendNewEmailButton->setGeometry( QRect(250 , 140, 120 ,30));
+//    cFont.setPointSize(12);
+//    cFont.setBold(true);
+//    sendNewEmailButton->setFont(cFont);
+//    sendNewEmailButton->setText(QStringLiteral("Change email"));
+//    connect(sendNewEmailButton, SIGNAL(clicked(bool)), this, SLOT(procNewEmail(bool)));
+//    sendNewEmailButton->show();
+//}
+
+
 void CRegistrationVerifyDialog::dialogSettings(){
     QFont cFont;
 
@@ -65,7 +163,9 @@ void CRegistrationVerifyDialog::dialogSettings(){
     userEdit->setGeometry(100, 90, 200, 30);
     cFont.setPointSize(12);
     userEdit->setFont(cFont);
+    userEdit->setEchoMode(QLineEdit::Password);
     userEdit->setText("");
+
 
 // ----------------------------------------------------------
 
@@ -102,6 +202,9 @@ void CRegistrationVerifyDialog::dialogSettings(){
     connect(sendNewEmailButton, SIGNAL(clicked(bool)), this, SLOT(procNewEmail(bool)));
     sendNewEmailButton->show();
 }
+
+
+
 
 void CRegistrationVerifyDialog::procOk(bool stat){
     emit clickOK();

@@ -63,7 +63,7 @@ void CPasswordDialog::dialogSettings(){
     connect(okButton, SIGNAL(clicked(bool)), this, SLOT(procOk(bool)));
     okButton->show();
 
-    cancelButton->setGeometry( QRect(120 , 140, 100 ,30));
+    cancelButton->setGeometry( QRect(100 , 140, 80 ,30));
     cFont.setPointSize(12);
     cFont.setBold(true);
     cancelButton->setFont(cFont);
@@ -71,7 +71,7 @@ void CPasswordDialog::dialogSettings(){
     connect(cancelButton, SIGNAL(clicked(bool)), this, SLOT(procCancel(bool)));
     cancelButton->show();
 
-    passRecoveryButton->setGeometry( QRect(222 , 140, 158 ,30));
+    passRecoveryButton->setGeometry( QRect(180 , 140, 200 ,30));
     cFont.setPointSize(12);
     cFont.setBold(true);
     passRecoveryButton->setFont(cFont);

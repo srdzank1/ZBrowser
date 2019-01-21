@@ -911,7 +911,7 @@ void MainWindow::ProcAdminClick(){
         delete editSchedule;
         editSchedule = 0;
     }
-//    validateCode = "false";
+    validateCode = "false";
     if (validateCode != "true"){
         ProcRegistrationDialog();
     }else{
